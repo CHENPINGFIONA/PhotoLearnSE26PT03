@@ -3,9 +3,45 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
     </style>
+    <style name="AppTheme.NoActionBar" parent="@style/AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+    <style name="Login">
+        <item name="android:background">@color/secondaryColor</item>
+    </style>
+    <style name="Trainer">
 
+    </style>
+    <style name="AppTheme.Toolbar">
+        <item name="android:background">@color/primaryColor</item>
+        <item name="titleTextColor">@color/primaryTextColor</item>
+        <item name="title">@string/app_name</item>
+    </style>
+    <style name="AppTheme.Button">
+        <item name="android:background">@color/secondaryColor</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+    <style name="AppTheme.DialogTitle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/primaryColor</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+    <style name="AppTheme.TabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="tabIndicatorColor">@color/primaryDarkColor</item>
+        <item name="tabBackground">@drawable/selector_trainer</item>
+        <item name="tabSelectedTextColor">@color/primaryTextColor</item>
+        <item name="tabTextColor">@color/primaryTextColor</item>
+        <item name="tabTextAppearance">@style/AppTheme.TabItem</item>
+    </style>
+    <style name="AppTheme.TabItem" parent="TextAppearance.AppCompat.Button">
+
+    </style>
 </resources>
