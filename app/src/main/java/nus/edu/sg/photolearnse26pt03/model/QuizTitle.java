@@ -14,6 +14,7 @@ public class QuizTitle {
     private int sessionID;
     private int createdBy;
     private Date timestamp;
+    private int currentSequenceNum;
 
     private List<QuizItem> quizItems;
 
@@ -21,11 +22,11 @@ public class QuizTitle {
         quizItems = new ArrayList<QuizItem>();
     }
 
-    public void createQuizItem(QuizItem item, int userID) {
+    public void createQuizItem(QuizItem item) {
 
     }
 
-    public void updateQuizItem(QuizItem item, int userID) {
+    public void updateQuizItem(QuizItem item) {
 
     }
 
@@ -33,11 +34,27 @@ public class QuizTitle {
 
     }
 
-    public List<QuizItem> getQuizItems(int quizTitleID) {
+    public List<QuizItem> getQuizItems() {
         return (new ArrayList<QuizItem>());
     }
 
-    public int getQuizScore(int quizTitleID, int userID) {
+    public int getQuizScore(int userID) {
         return 0;
+    }
+
+    public QuizItem getCurrentItem() {
+        return new QuizItem();
+    }
+
+    public QuizItem getPreviousItem() {
+        return new QuizItem();
+    }
+
+    public QuizItem getNextItem() {
+        return new QuizItem();
+    }
+
+    public void startQuiz(){
+
     }
 }

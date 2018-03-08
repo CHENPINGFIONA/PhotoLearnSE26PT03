@@ -33,7 +33,7 @@ public class LearningTitle {
 
     }
 
-    public List<LearningItem> getLearningItems(int learningTitleID) {
+    public List<LearningItem> getLearningItems() {
         return (new ArrayList<LearningItem>());
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public class QuizItem {
     private int ID;
     private int quizTitleID;
+    private int sequenceNum;
     private String photoURL;
     private int createdBy;
     private Date timestamp;
@@ -30,6 +31,9 @@ public class QuizItem {
     }
 
     public void saveAnswer(QuizAnswer answer, int userID) {
+    }
 
+    public QuizAnswer getAnswer(int userID) {
+        return new QuizAnswer();
     }
 }
