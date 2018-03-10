@@ -19,9 +19,8 @@
 
     </style>
     <style name="AppTheme.Toolbar">
-        <item name="android:background">@color/primaryColor</item>
+        <item name="android:background">@color/primaryDarkColor</item>
         <item name="titleTextColor">@color/primaryTextColor</item>
-        <item name="title">@string/app_name</item>
     </style>
     <style name="AppTheme.Button">
         <item name="android:background">@color/secondaryColor</item>

@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 
 import sg.edu.nus.se26pt03.photolearn.R;
 
-
+/**
+ * Created by MyatMin on 08/3/18.
+ */
 public class LearningSessionDetailFragment extends Fragment {
 
     @Override

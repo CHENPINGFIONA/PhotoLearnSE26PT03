@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionList">
+    tools:context="sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionListFragment">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_addlearningsession"
@@ -16,15 +16,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <android.support.v7.app.AlertController.RecycleListView
-        android:id="@+id/rlv_learningsession"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_learningsession"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-
-    </android.support.v7.app.AlertController.RecycleListView>
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>
