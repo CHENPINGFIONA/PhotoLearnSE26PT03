@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "714384080260",
+    "firebase_url": "https://photolearnse26pt03git.firebaseio.com",
+    "project_id": "photolearnse26pt03git",
+    "storage_bucket": "photolearnse26pt03git.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714384080260:android:4327b86acdba66d7",
+        "android_client_info": {
+          "package_name": "sg.edu.nus.se26pt03.photolearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "714384080260-crquq69dakivm8l580bi86en90gobkn5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.edu.nus.se26pt03.photolearn",
+            "certificate_hash": "c60aa5349b81b241c21146e0bbbb9b44282efaad"
+          }
+        },
+        {
+          "client_id": "714384080260-1rfo41sles9l8io2nkruuj9si0cs18ht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDqPpu5MfAVbuIWa5q5mqpQ0_0UR9PlCA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "714384080260-1rfo41sles9l8io2nkruuj9si0cs18ht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
