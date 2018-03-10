@@ -1,4 +1,4 @@
-package nus.edu.sg.photolearnse26pt03.model;
+package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +7,8 @@ import java.util.List;
  * Created by chen ping on 3/8/2018.
  */
 
-public class Trainer {
-    private User user;
+public class Trainer extends User{
 
-    public Trainer(User user) {
-        this.user = user;
-    }
 
     public void createLearningSession(LearningSession session, int userID) {
 
