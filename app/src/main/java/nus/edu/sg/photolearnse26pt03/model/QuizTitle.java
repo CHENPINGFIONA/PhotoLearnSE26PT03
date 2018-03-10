@@ -14,7 +14,7 @@ public class QuizTitle {
     private int sessionID;
     private int createdBy;
     private Date timestamp;
-    private int currentSequenceNum;
+    private QuizItem currentQuizItem;
 
     private List<QuizItem> quizItems;
 
@@ -42,19 +42,18 @@ public class QuizTitle {
         return 0;
     }
 
-    public QuizItem getCurrentItem() {
-        return new QuizItem();
+
+    public void getPreviousItem() {
     }
 
-    public QuizItem getPreviousItem() {
-        return new QuizItem();
+    public void getNextItem() {
     }
 
-    public QuizItem getNextItem() {
-        return new QuizItem();
+    public void startQuiz() {
+
     }
 
-    public void startQuiz(){
+    public void removeAllAnswer() {
 
     }
 }
