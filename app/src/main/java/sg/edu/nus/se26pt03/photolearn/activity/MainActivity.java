@@ -11,7 +11,10 @@ import android.widget.FrameLayout;
 import java.security.PrivateKey;
 
 import sg.edu.nus.se26pt03.photolearn.R;
-import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.application.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.application.Action;
+
+import sg.edu.nus.se26pt03.photolearn.application.UserMode;
 import sg.edu.nus.se26pt03.photolearn.fragment.HomeFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LoginFragment;
 import sg.edu.nus.se26pt03.photolearn.application.AppFragment;
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements AppFragment.AppEv
     }
 
     @Override
-    public void onModeChanged(App.UserMode userMode, App.AccessMode accessMode) {
+    public void onModeChanged(UserMode userMode, AccessMode accessMode) {
         Log.d("Trigger", "onModeChanged");
     }
 
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements AppFragment.AppEv
     }
 
     @Override
-    public void onLearningSessionReaction(App.Action action) {
+    public void onLearningSessionReaction(Action action) {
         switch (action) {
             case SELECTED:
                 homeFragment.setTitle("Learning Session 1", true);
@@ -60,27 +63,27 @@ public class MainActivity extends AppCompatActivity implements AppFragment.AppEv
     }
 
     @Override
-    public void onLearningTitleReaction(App.Action action) {
+    public void onLearningTitleReaction(Action action) {
 
     }
 
     @Override
-    public void onLearningItemReaction(App.Action action) {
+    public void onLearningItemReaction(Action action) {
 
     }
 
     @Override
-    public void onQuizTitleReaction(App.Action action) {
+    public void onQuizTitleReaction(Action action) {
 
     }
 
     @Override
-    public void onQuizItemReaction(App.Action action) {
+    public void onQuizItemReaction(Action action) {
 
     }
 
     @Override
-    public void onQuizAnswerReaction(App.Action action) {
+    public void onQuizAnswerReaction(Action action) {
 
     }
 

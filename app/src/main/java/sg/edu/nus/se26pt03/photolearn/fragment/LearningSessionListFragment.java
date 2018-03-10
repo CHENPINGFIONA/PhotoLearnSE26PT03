@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import sg.edu.nus.se26pt03.photolearn.R;
-import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.application.Action;
 import sg.edu.nus.se26pt03.photolearn.application.AppFragment;
 
 /**
@@ -31,7 +31,7 @@ public class LearningSessionListFragment extends AppFragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLearningEventListener.onLearningSessionReaction(App.Action.SELECTED);
+                mLearningEventListener.onLearningSessionReaction(Action.SELECTED);
             }
         });
     }

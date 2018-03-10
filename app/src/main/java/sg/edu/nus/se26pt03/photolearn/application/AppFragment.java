@@ -15,17 +15,17 @@ public class AppFragment extends Fragment {
     public LearningEventListener mLearningEventListener;
 
     public interface AppEventListener {
-        void onModeChanged(App.UserMode userMode, App.AccessMode accessMode);
+        void onModeChanged(UserMode userMode, AccessMode accessMode);
         void onLoggedIn();
     }
 
     public interface LearningEventListener {
-        void onLearningSessionReaction(App.Action action);
-        void onLearningTitleReaction(App.Action action);
-        void onLearningItemReaction(App.Action action);
-        void onQuizTitleReaction(App.Action action);
-        void onQuizItemReaction(App.Action action);
-        void onQuizAnswerReaction(App.Action action);
+        void onLearningSessionReaction(Action action);
+        void onLearningTitleReaction(Action action);
+        void onLearningItemReaction(Action action);
+        void onQuizTitleReaction(Action action);
+        void onQuizItemReaction(Action action);
+        void onQuizAnswerReaction(Action action);
     }
 
     protected void setFragment(int id,Fragment fragment) {

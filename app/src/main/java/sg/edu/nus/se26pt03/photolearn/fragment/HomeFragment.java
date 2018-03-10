@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import sg.edu.nus.se26pt03.photolearn.R;
-import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.application.Action;
 import sg.edu.nus.se26pt03.photolearn.application.AppFragment;
 
 
@@ -55,7 +55,7 @@ public class HomeFragment extends AppFragment implements AppFragment.LearningEve
     }
 
     @Override
-    public void onLearningSessionReaction(App.Action action) {
+    public void onLearningSessionReaction(Action action) {
         switch (action) {
             case SELECTED:
                 setFragment(R.id.fl_main, new LearningSessionFragment());
@@ -64,27 +64,27 @@ public class HomeFragment extends AppFragment implements AppFragment.LearningEve
     }
 
     @Override
-    public void onLearningTitleReaction(App.Action action) {
+    public void onLearningTitleReaction(Action action) {
 
     }
 
     @Override
-    public void onLearningItemReaction(App.Action action) {
+    public void onLearningItemReaction(Action action) {
 
     }
 
     @Override
-    public void onQuizTitleReaction(App.Action action) {
+    public void onQuizTitleReaction(Action action) {
 
     }
 
     @Override
-    public void onQuizItemReaction(App.Action action) {
+    public void onQuizItemReaction(Action action) {
 
     }
 
     @Override
-    public void onQuizAnswerReaction(App.Action action) {
+    public void onQuizAnswerReaction(Action action) {
 
     }
 }
