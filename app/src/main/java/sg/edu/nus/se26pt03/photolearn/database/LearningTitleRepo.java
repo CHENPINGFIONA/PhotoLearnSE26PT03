@@ -9,7 +9,7 @@ import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
  * Created by yijie on 2018/3/11.
  */
 
-public class LearningTitleRepo implements IRepository<LearningTitleDAO> {
+public class LearningTitleRepo extends BaseRepo implements IRepository<LearningTitleDAO> {
 
     @Override
     public LearningTitleDAO save(LearningTitleDAO learningTitleDAO) {
@@ -40,5 +40,4 @@ public class LearningTitleRepo implements IRepository<LearningTitleDAO> {
     public Collection<LearningTitleDAO> getAll() {
         return null;
     }
-
 }

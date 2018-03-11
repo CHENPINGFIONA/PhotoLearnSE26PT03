@@ -8,7 +8,7 @@ import sg.edu.nus.se26pt03.photolearn.DAL.UserDAO;
  * Created by yijie on 2018/3/11.
  */
 
-public class UserRepo implements IRepository<UserDAO> {
+public class UserRepo extends BaseRepo implements IRepository<UserDAO> {
 
     @Override
     public UserDAO save(UserDAO userDAO) {

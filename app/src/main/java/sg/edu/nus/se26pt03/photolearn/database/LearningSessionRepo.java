@@ -8,7 +8,7 @@ import sg.edu.nus.se26pt03.photolearn.DAL.LearningSessionDAO;
  * Created by yijie on 2018/3/11.
  */
 
-public class LearningSessionRepo  implements IRepository<LearningSessionDAO>  {
+public class LearningSessionRepo extends BaseRepo implements IRepository<LearningSessionDAO> {
 
     @Override
     public LearningSessionDAO save(LearningSessionDAO learningSessionDAO) {

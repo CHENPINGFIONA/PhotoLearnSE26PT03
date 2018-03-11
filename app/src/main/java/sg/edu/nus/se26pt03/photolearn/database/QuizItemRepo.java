@@ -8,7 +8,7 @@ import sg.edu.nus.se26pt03.photolearn.DAL.QuizItemDAO;
  * Created by yijie on 2018/3/11.
  */
 
-public class QuizItemRepo implements IRepository<QuizItemDAO> {
+public class QuizItemRepo extends BaseRepo implements IRepository<QuizItemDAO> {
 
     @Override
     public QuizItemDAO save(QuizItemDAO quizItemDAO) {

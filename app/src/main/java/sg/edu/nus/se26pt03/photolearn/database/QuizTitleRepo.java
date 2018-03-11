@@ -8,7 +8,7 @@ import sg.edu.nus.se26pt03.photolearn.DAL.QuizTitleDAO;
  * Created by yijie on 2018/3/11.
  */
 
-public class QuizTitleRepo implements IRepository<QuizTitleDAO> {
+public class QuizTitleRepo  extends BaseRepo implements IRepository<QuizTitleDAO> {
 
     @Override
     public QuizTitleDAO save(QuizTitleDAO quizTitleDAO) {

@@ -8,7 +8,7 @@ import sg.edu.nus.se26pt03.photolearn.DAL.LearningItemDAO;
  * Created by yijie on 2018/3/11.
  */
 
-public class LearningItemRepo implements IRepository<LearningItemDAO> {
+public class LearningItemRepo extends BaseRepo implements IRepository<LearningItemDAO> {
 
     @Override
     public LearningItemDAO save(LearningItemDAO learningItemDAO) {

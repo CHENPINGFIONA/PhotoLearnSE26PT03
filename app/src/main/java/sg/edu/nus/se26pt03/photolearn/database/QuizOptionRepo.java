@@ -9,7 +9,7 @@ import sg.edu.nus.se26pt03.photolearn.DAL.QuizOptionDAO;
  * Created by yijie on 2018/3/11.
  */
 
-public class QuizOptionRepo implements IRepository<QuizOptionDAO> {
+public class QuizOptionRepo extends BaseRepo implements IRepository<QuizOptionDAO> {
 
     @Override
     public QuizOptionDAO save(QuizOptionDAO quizOptionDAO) {
