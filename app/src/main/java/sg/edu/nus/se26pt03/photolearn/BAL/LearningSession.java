@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 public class LearningSession {
-    private int ID;
+    private int id;
     private Date courseDate;
     private String courseName;
     private String courseCode;
@@ -27,48 +27,48 @@ public class LearningSession {
         quizTitles = new ArrayList<QuizTitle>();
     }
 
-    public String getLearningSessionID() {
+    public String getLearningSessionId() {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         return String.format("{0}-{1}-M{2}", df.format(courseDate), courseCode, moduleNumber);
     }
 
-    public void createLearningTitle(LearningTitle title, int userID) {
+    public void createLearningTitle(LearningTitle title, int userId) {
 
     }
 
-    public void updateLearningTitle(LearningTitle title, int userID) {
+    public void updateLearningTitle(LearningTitle title, int userId) {
 
     }
 
-    public void deleteLearningTitle(int learningTitleID) {
+    public void deleteLearningTitle(int learningTitleId) {
 
     }
 
-    public List<LearningTitle> getLearningTitles(int sessionID, int mode, int userID) {
+    public List<LearningTitle> getLearningTitles(int sessionId, int mode, int userId) {
         return (new ArrayList<LearningTitle>());
     }
 
-    public LearningTitle getLearningTitle(int learningTitleID) {
+    public LearningTitle getLearningTitle(int learningTitleId) {
         return new LearningTitle();
     }
 
-    public void createQuizTitle(QuizTitle title, int userID) {
+    public void createQuizTitle(QuizTitle title, int userId) {
 
     }
 
-    public void updateQuizTitle(QuizTitle title, int userID) {
+    public void updateQuizTitle(QuizTitle title, int userId) {
 
     }
 
-    public void deleteQuizTitle(int quizTitleID) {
+    public void deleteQuizTitle(int quizTitleId) {
 
     }
 
-    public List<QuizTitle> getQuizTitles(int sessionID, int userID) {
+    public List<QuizTitle> getQuizTitles(int sessionId, int userId) {
         return (new ArrayList<QuizTitle>());
     }
 
-    public QuizTitle getQuizTitle(int quizTitleID) {
+    public QuizTitle getQuizTitle(int quizTitleId) {
         return new QuizTitle();
     }
 }

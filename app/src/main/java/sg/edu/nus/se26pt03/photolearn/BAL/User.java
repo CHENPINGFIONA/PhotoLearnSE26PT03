@@ -7,8 +7,8 @@ import java.util.Date;
  */
 
 public class User {
-    private int ID;
-    private String loginID;
+    private int id;
+    private String loginId;
     private String loginSource;
     private Date lastLoginDate;
     private Date timestamp;

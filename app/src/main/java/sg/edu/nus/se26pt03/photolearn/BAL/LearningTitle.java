@@ -15,7 +15,6 @@ public class LearningTitle extends Title {
         learningItems = new ArrayList<LearningItem>();
     }
 
-
    @Override
     public void createItem(Item item) {
 

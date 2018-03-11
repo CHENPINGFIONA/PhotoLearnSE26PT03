@@ -3,14 +3,13 @@ package sg.edu.nus.se26pt03.photolearn.DAL;
 import java.util.Date;
 
 /**
- * Created by zdr on 3/10/2018.
+ * Created by chen ping on 3/10/2018.
  */
 
 public class LearningTitleDAO {
-    private int ID;
-    private String title;
-    private int sessionID;
-    private int createdBy;
-    private Date timestamp;
-
+    private int Id;
+    private String Title;
+    private int SessionId;
+    private int CreatedBy;
+    private Date Timestamp;
 }

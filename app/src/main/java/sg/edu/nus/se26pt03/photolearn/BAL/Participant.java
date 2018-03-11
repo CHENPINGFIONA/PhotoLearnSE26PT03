@@ -8,9 +8,7 @@ import java.util.List;
  */
 
 public class Participant extends User {
-
-
-    public LearningSession getLearningSession(int sessionID) {
+    public LearningSession getLearningSession(int sessionId) {
         return new LearningSession();
     }
 

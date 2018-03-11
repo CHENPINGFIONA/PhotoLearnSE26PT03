@@ -9,16 +9,13 @@ import java.util.List;
  */
 
 public class QuizItem extends Item{
-
-    private String explaination ;
-    private int position;
     private List<QuizOption> options;
 
     public QuizItem() {
         options = new ArrayList<QuizOption>();
     }
 
-    public boolean checkAnswer(int selectedOptionID) {
+    public boolean checkAnswer(int selectedOptionId) {
         return true;
     }
 
@@ -35,7 +32,7 @@ public class QuizItem extends Item{
         return  null;
     }
 
-    public void createQuizAnswer(QuizAnswer answer, int userID) {
+    public void createQuizAnswer(QuizAnswer answer, int userId) {
     }
 
 }

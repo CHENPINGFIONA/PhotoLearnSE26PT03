@@ -3,18 +3,17 @@ package sg.edu.nus.se26pt03.photolearn.DAL;
 import java.util.Date;
 
 /**
- * Created by zdr on 3/10/2018.
+ * Created by chen ping on 3/10/2018.
  */
 
 public class QuizItemDAO {
-    private int ID;
-    private int TitleID;
-    private String photoURL;
-    private String content;
-    private String Latitude;
-    private String Longitude;
+    private int Id;
+    private int TitleId;
+    private String PhotoURL;
+    private String Content;
+    private String Explaination ;
+    private int Position;
 
-    private int createdBy;
-    private Date timestamp;
-
+    private int CreatedBy;
+    private Date Timestamp;
 }

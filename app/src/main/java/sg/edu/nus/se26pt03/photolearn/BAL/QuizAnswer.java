@@ -9,10 +9,12 @@ import java.util.List;
  */
 
 public class QuizAnswer {
-    private int ID;
-    private int quizItemID;
+    private int id;
+    private int quizItemId;
     private Participant participant;
     private Date timestamp;
+
+    private List<QuizOption> answerOptions;
 
     public List<QuizOption> getAnswerOptions() {
         return answerOptions;
@@ -21,9 +23,4 @@ public class QuizAnswer {
     public void setAnswerOptions(List<QuizOption> answerOptions) {
         this.answerOptions = answerOptions;
     }
-
-    private List<QuizOption> answerOptions;
-
-
-
 }

@@ -9,17 +9,13 @@ import java.util.List;
  */
 
 public class QuizTitle extends Title {
-
-
     private List<QuizItem> quizItems;
 
     public QuizTitle() {
         quizItems = new ArrayList<QuizItem>();
     }
 
-
-
-    public int getQuizScore(int userID) {
+    public int getQuizScore(int userId) {
         return 0;
     }
 

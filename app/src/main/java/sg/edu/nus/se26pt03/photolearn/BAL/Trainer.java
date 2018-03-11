@@ -8,17 +8,15 @@ import java.util.List;
  */
 
 public class Trainer extends User{
-
-
-    public void createLearningSession(LearningSession session, int userID) {
+    public void createLearningSession(LearningSession session, int userId) {
 
     }
 
-    public void updateLearningSession(LearningSession session, int userID) {
+    public void updateLearningSession(LearningSession session, int userId) {
 
     }
 
-    public void deleteLearningSession(int sessionID) {
+    public void deleteLearningSession(int sessionId) {
 
     }
 

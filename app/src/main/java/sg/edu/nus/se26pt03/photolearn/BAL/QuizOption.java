@@ -5,7 +5,7 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
  */
 
 public class QuizOption {
-    private int ID;
+    private int id;
     private String content;
     private boolean isAnswer;
 }
