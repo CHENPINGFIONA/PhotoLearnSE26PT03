@@ -137,4 +137,28 @@ public class LearningItemRepo extends BaseRepo implements IRepository<LearningIt
         return result;
     }
 
+    public Collection<LearningItemDAO> getAllByLearningTitleIDandCreator(final int learningTitleID, final int userID) {
+        final List<LearningItemDAO> result = new ArrayList<>();
+        learningItemRef.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //use the onDataChange() method to read a static snapshot of the contents at a given path
+                        // Get Post object and use the values to update the UI
+                        for (DataSnapshot learningItem : dataSnapshot.getChildren()) {
+                            LearningItemDAO learningItemDAO = learningItem.getValue(LearningItemDAO.class);
+                            if (learningItemDAO.getCreatedBy() == userID && learningItemDAO.getTitleId() == learningTitleID) {
+                                result.add(learningItem.getValue(LearningItemDAO.class));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Getting Post failed, log a message
+                    }
+                });
+        return result;
+    }
+
 }
