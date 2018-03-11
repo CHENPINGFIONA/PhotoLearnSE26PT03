@@ -5,7 +5,7 @@ import android.app.Application;
 /**
  * Created by MyatMin on 9/3/18.
  */
-public class app extends Application {
+public class App extends Application {
 
 }
 
