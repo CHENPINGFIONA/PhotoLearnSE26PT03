@@ -5,4 +5,5 @@ package sg.edu.nus.se26pt03.photolearn.utility;
  */
 
 public class ConstHelper {
+    public static String SharedPreferences_User_Id = "USERID";
 }
