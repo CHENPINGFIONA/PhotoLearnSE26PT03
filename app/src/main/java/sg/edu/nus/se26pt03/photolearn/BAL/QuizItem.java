@@ -19,13 +19,13 @@ public class QuizItem extends Item{
         return true;
     }
 
-    public  void createQuizeOption(QuizOption option){
+    public  void createQuizOption(QuizOption option){
 
     }
-    public  void updateQuizeOption(QuizOption option){
+    public  void updateQuizOption(QuizOption option){
 
     }
-    public  void deleteQuizeOption(int optionId){
+    public  void deleteQuizOption(int optionId){
 
     }
     public List<QuizOption> getOptions(){
