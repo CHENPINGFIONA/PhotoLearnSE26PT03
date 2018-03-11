@@ -10,10 +10,6 @@ import sg.edu.nus.se26pt03.photolearn.DAL.QuizItemDAO;
 
 public class QuizItemRepo implements IRepository<QuizItemDAO> {
 
-    public QuizItemDAO saveQuizItem(QuizItemDAO quizItem) {
-        return null;
-    };
-
     @Override
     public QuizItemDAO save(QuizItemDAO quizItemDAO) {
         return null;
