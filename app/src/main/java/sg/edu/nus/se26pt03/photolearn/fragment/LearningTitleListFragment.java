@@ -45,7 +45,7 @@ public class LearningTitleListFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.fragment_learning_title_list, container, false);
         ListView learningTitleList = (ListView) fragmentView.findViewById(R.id.rv_learning_title);
         sessionId = this.getArguments().getInt("sessionId");
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_ACCESS_Mode, 0);
+        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, 0);
         createdBy = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, 0);
 
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
@@ -91,10 +91,10 @@ public class LearningTitleListFragment extends Fragment {
             public void onClick(View v) {
                 try (LearningTitleRepo repo = new LearningTitleRepo()) {
                     LearningTitleDAO learningTitleDao = new LearningTitleDAO();
-                    learningTitleDao.Title = etContent.toString();
-                    learningTitleDao.SessionId = sessionId;
-                    learningTitleDao.CreatedBy = createdBy;
-                    learningTitleDao.Timestamp = new Date();
+                    learningTitleDao.setTitle(etContent.toString());
+                    learningTitleDao.setSessionId(sessionId);
+                    learningTitleDao.setCreatedBy(createdBy);
+                    learningTitleDao.setTimestamp(new Date());
 
                     repo.save(learningTitleDao);
                 } catch (Exception e) {

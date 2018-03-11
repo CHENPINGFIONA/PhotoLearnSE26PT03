@@ -42,8 +42,11 @@ public class MainActivity extends AppCompatActivity implements AppFragment.AppEv
 
     @Override
     public void onLoggedIn() {
-        homeFragment= HomeFragment.newInstance("Welcome to PhotoLearn");
-        setFragment(homeFragment);
+        Intent intent = new Intent(this, SessionActivity.class);
+        startActivity(intent);
+
+       /* homeFragment= HomeFragment.newInstance("Welcome to PhotoLearn");
+        setFragment(homeFragment);*/
     }
 
     protected void setFragment(Fragment fragment) {

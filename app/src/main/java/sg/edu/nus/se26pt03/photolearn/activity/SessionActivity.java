@@ -1,11 +1,11 @@
 package sg.edu.nus.se26pt03.photolearn.activity;
 
+import android.os.Bundle;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import sg.edu.nus.se26pt03.photolearn.R;
@@ -16,20 +16,20 @@ public class SessionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_session);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //set testing data
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(ConstHelper.SharedPreferences_User_Id, 1);
-        editor.putInt(ConstHelper.SharedPreferences_ACCESS_Mode, 0);
+        editor.putInt(ConstHelper.SharedPreferences_Access_Mode, 0);
         editor.commit();
         //end testing data
 
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_session);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 2);
         viewPager.setAdapter(pagerAdapter);

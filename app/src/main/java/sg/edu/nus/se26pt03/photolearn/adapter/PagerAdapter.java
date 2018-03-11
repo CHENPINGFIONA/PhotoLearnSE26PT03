@@ -20,18 +20,13 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new LearningTitleListFragment();
-//        LearningTitleListFragment learningTitleListFragment = new LearningTitleListFragment();
-//        return learningTitleListFragment;
-//        switch (position) {
-//            case 0:
-//                LearningTitleListFragment learningTitleListFragment = new LearningTitleListFragment();
-//                return learningTitleListFragment;
-//            case 1:
-//            default:
-//                LearningTitleListFragment learningTitleListFragment = new LearningTitleListFragment();
-//                return learningTitleListFragment;
-//        }
+        switch (position) {
+            case 0:
+                return new LearningTitleListFragment();
+            case 1:
+            default:
+                return new LearningTitleListFragment();
+        }
     }
 
     @Override
