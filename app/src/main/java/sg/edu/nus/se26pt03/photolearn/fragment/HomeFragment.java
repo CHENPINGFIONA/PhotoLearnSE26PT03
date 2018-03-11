@@ -58,7 +58,7 @@ public class HomeFragment extends AppFragment implements AppFragment.LearningEve
     public void onLearningSessionReaction(Action action) {
         switch (action) {
             case SELECTED:
-                setFragment(R.id.fl_main, new LearningSessionFragment());
+                //setFragment(R.id.fl_main, new LearningSessionFragment());
         }
         mLearningEventListener.onLearningSessionReaction(action);
     }

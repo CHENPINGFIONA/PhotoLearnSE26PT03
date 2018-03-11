@@ -1,8 +1,16 @@
 <resources>
+    <!-- App Name and page names -->
     <string name="app_name">PhotoLearn.SE26.PT03</string>
-    <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
+    <string name="learning_title">Learning Title</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Control text -->
+    <string name="button_save">Save</string>
+    <string name="button_cancel">Cancel</string>
+
+    <!-- messages-->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_records_found">No Records Found.</string>
+    <string name="enter_title">Enter title</string>
+
+
 </resources>

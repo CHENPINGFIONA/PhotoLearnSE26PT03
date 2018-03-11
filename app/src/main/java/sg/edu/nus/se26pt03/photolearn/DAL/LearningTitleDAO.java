@@ -7,9 +7,9 @@ import java.util.Date;
  */
 
 public class LearningTitleDAO {
-    private int Id;
-    private String Title;
-    private int SessionId;
-    private int CreatedBy;
-    private Date Timestamp;
+    public int Id;
+    public String Title;
+    public int SessionId;
+    public int CreatedBy;
+    public Date Timestamp;
 }
