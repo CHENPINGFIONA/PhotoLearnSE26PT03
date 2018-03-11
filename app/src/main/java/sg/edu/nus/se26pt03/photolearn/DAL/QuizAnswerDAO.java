@@ -10,4 +10,36 @@ public class QuizAnswerDAO {
     private int QuizItemId;
     private int ParticipantId;
     private Date Timestamp;
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public int getQuizItemId() {
+        return QuizItemId;
+    }
+
+    public void setQuizItemId(int quizItemId) {
+        QuizItemId = quizItemId;
+    }
+
+    public int getParticipantId() {
+        return ParticipantId;
+    }
+
+    public void setParticipantId(int participantId) {
+        ParticipantId = participantId;
+    }
+
+    public Date getTimestamp() {
+        return Timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        Timestamp = timestamp;
+    }
 }
