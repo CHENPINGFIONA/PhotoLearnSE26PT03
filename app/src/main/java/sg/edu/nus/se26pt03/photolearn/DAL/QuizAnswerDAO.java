@@ -1,7 +1,5 @@
 package sg.edu.nus.se26pt03.photolearn.DAL;
 
-import com.google.firebase.database.Exclude;
-
 import java.util.Date;
 /**
  * Created by chen ping on 11/3/2018.
