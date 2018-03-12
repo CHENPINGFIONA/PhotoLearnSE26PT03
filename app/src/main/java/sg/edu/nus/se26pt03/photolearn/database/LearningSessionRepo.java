@@ -16,7 +16,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
  * Restructured by MyatMin on 3/12/2018.
  */
 
-public class LearningSessionRepo extends BaseRepo<LearningSessionDAO>{
+public class LearningSessionRepo extends BaseRepo<LearningSessionDAO> {
 
     public LearningSessionRepo() {
         super(LearningSessionDAO.class);
@@ -33,7 +33,7 @@ public class LearningSessionRepo extends BaseRepo<LearningSessionDAO>{
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningSessionDAO learningSessionDAO = getValue(childDataSnapshot);
-                            if (learningSessionDAO.getCreatedBy() == uid) {
+                            if (learningSessionDAO.getCreatedBy().equals(uid)) {
                                 result.add(learningSessionDAO);
                             }
                         }

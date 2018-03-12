@@ -32,7 +32,7 @@ public class LearningItemRepo extends BaseRepo<LearningItemDAO> {
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningItemDAO learningItemDAO = getValue(childDataSnapshot);
-                            if (learningItemDAO.getLearningTitleId() == learningTitleId) {
+                            if (learningItemDAO.getLearningTitleId().equals(learningTitleId)) {
                                 result.add(learningItemDAO);
                             }
                         }
@@ -56,7 +56,8 @@ public class LearningItemRepo extends BaseRepo<LearningItemDAO> {
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningItemDAO learningItemDAO = getValue(childDataSnapshot);
-                            if (learningItemDAO.getCreatedBy() == uid && learningItemDAO.getLearningTitleId() == learningTitleId) {
+                            if (learningItemDAO.getCreatedBy().equals(uid)
+                                    && learningItemDAO.getLearningTitleId().equals(learningTitleId)) {
                                 result.add(learningItemDAO);
                             }
                         }
