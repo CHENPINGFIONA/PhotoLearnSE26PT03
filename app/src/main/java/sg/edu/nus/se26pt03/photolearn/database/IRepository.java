@@ -4,6 +4,7 @@ import java.util.Collection;
 
 /**
  * Created by c.banisetty on 3/11/2018.
+ * Modified by MyatMin on 12/3/2018.
  */
 
 public interface IRepository<T> {
@@ -11,7 +12,7 @@ public interface IRepository<T> {
     T save(T t);
     T update(T t);
     boolean delete(T t);
-    boolean deleteByID(int ID);
-    T getByID(int ID);
+    boolean deleteById(String id);
+    T getById(String id);
     Collection<T> getAll();
 }

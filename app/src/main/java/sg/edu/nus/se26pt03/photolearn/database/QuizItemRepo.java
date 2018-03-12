@@ -1,42 +1,17 @@
 package sg.edu.nus.se26pt03.photolearn.database;
 
-import java.util.Collection;
-
 import sg.edu.nus.se26pt03.photolearn.DAL.QuizItemDAO;
+import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 /**
  * Created by yijie on 2018/3/11.
+ * Restructured by MyatMin on 3/12/2018.
  */
 
-public class QuizItemRepo extends BaseRepo implements IRepository<QuizItemDAO> {
+public class QuizItemRepo extends BaseRepo<QuizItemDAO> {
 
-    @Override
-    public QuizItemDAO save(QuizItemDAO quizItemDAO) {
-        return null;
-    }
-
-    @Override
-    public QuizItemDAO update(QuizItemDAO quizItemDAO) {
-        return null;
-    }
-
-    @Override
-    public boolean delete(QuizItemDAO quizItemDAO) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteByID(int ID) {
-        return false;
-    }
-
-    @Override
-    public QuizItemDAO getByID(int ID) {
-        return null;
-    }
-
-    @Override
-    public Collection<QuizItemDAO> getAll() {
-        return null;
+    public QuizItemRepo() {
+        super(QuizItemDAO.class);
+        mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_QUIZ_ITEMS);
     }
 }

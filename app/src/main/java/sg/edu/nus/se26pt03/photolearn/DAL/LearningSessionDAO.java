@@ -1,28 +1,22 @@
 package sg.edu.nus.se26pt03.photolearn.DAL;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.Date;
 
 /**
  * Created by chen ping on 3/10/2018.
+ * Restructured by MyatMin on 12/3/2018.
  */
 
-public class LearningSessionDAO {
-    private int Id;
+public class LearningSessionDAO extends BaseDAO {
     private Date CourseDate;
     private String CourseName;
     private String CourseCode;
     private int ModuleNumber;
 
-    private int CreatedBy;
+    private String CreatedBy;
     private Date Timestamp;
-
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
 
     public Date getCourseDate() {
         return CourseDate;
@@ -56,11 +50,11 @@ public class LearningSessionDAO {
         ModuleNumber = moduleNumber;
     }
 
-    public int getCreatedBy() {
+    public String getCreatedBy() {
         return CreatedBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(String createdBy) {
         CreatedBy = createdBy;
     }
 
