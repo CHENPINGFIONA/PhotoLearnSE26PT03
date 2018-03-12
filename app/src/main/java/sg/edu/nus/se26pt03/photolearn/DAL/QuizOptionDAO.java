@@ -2,27 +2,19 @@ package sg.edu.nus.se26pt03.photolearn.DAL;
 
 /**
  * Created by chen ping on 11/3/2018.
+ * Restructured by MyatMin on 12/3/2018.
  */
 
-public class QuizOptionDAO {
-    private int Id;
-    private int QuizItemId;
+public class QuizOptionDAO extends BaseDAO {
+    private String QuizItemId;
     private String Content;
     private boolean IsAnswer;
 
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
-
-    public int getQuizItemId() {
+    public String getQuizItemId() {
         return QuizItemId;
     }
 
-    public void setQuizItemId(int quizItemId) {
+    public void setQuizItemId(String quizItemId) {
         QuizItemId = quizItemId;
     }
 

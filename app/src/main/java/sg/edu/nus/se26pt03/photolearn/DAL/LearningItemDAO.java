@@ -4,33 +4,25 @@ import java.util.Date;
 
 /**
  * Created by chen ping on 3/10/2018.
+ * Restructured by MyatMin on 12/3/2018.
  */
 
-public class LearningItemDAO {
-    private int Id;
-    private int TitleId;
+public class LearningItemDAO extends BaseDAO {
+    private String LearningTitleId;
     private String PhotoURL;
     private String Content;
     private String Latitude;
     private String Longitude;
 
-    private int CreatedBy;
+    private String CreatedBy;
     private Date Timestamp;
 
-    public int getId() {
-        return Id;
+    public String getLearningTitleId() {
+        return LearningTitleId;
     }
 
-    public void setId(int id) {
-        Id = id;
-    }
-
-    public int getTitleId() {
-        return TitleId;
-    }
-
-    public void setTitleId(int titleId) {
-        TitleId = titleId;
+    public void setLearningTitleId(String learningTitleId) {
+        LearningTitleId = learningTitleId;
     }
 
     public String getPhotoURL() {
@@ -65,11 +57,11 @@ public class LearningItemDAO {
         Longitude = longitude;
     }
 
-    public int getCreatedBy() {
+    public String getCreatedBy() {
         return CreatedBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(String createdBy) {
         CreatedBy = createdBy;
     }
 

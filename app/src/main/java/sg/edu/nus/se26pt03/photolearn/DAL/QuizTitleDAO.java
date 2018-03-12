@@ -4,22 +4,14 @@ import java.util.Date;
 
 /**
  * Created by chen ping on 3/10/2018.
+ * Restructured by MyatMin on 12/3/2018.
  */
 
-public class QuizTitleDAO {
-    private int Id;
+public class QuizTitleDAO extends BaseDAO {
     private String Title;
-    private int SessionId;
-    private int CreatedBy;
+    private String LearningSessionId;
+    private String CreatedBy;
     private Date Timestamp;
-
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
 
     public String getTitle() {
         return Title;
@@ -29,19 +21,19 @@ public class QuizTitleDAO {
         Title = title;
     }
 
-    public int getSessionId() {
-        return SessionId;
+    public String getLearningSessionId() {
+        return LearningSessionId;
     }
 
-    public void setSessionId(int sessionId) {
-        SessionId = sessionId;
+    public void setLearningSessionId(String learningSessionId) {
+        LearningSessionId = learningSessionId;
     }
 
-    public int getCreatedBy() {
+    public String getCreatedBy() {
         return CreatedBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(String createdBy) {
         CreatedBy = createdBy;
     }
 

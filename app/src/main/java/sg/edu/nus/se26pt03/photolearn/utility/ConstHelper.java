@@ -10,14 +10,14 @@ public class ConstHelper {
 
     //these consts are for DB connection, please do not modify
     //start of DB const
-    public static String LearningItem = "LearningItem";
-    public static String LearningTitle = "LearningTitle";
-    public static String LearningSession = "LearningSession";
-    public static String QuizTitle = "QuizTitle";
-    public static String QuizOption = "QuizOption";
-    public static String QuizItem = "QuizItem";
-    public static String QuizAnswer = "QuizAnswer";
-    public static String QuizAnswerOption = "QuizAnswerOption";
-    public static String User = "User";
+    public static final String REF_LEARNING_ITEMS = "LearningItems";
+    public static final String REF_LEARNING_TITLES= "LearningTitles";
+    public static final String REF_LEARNING_SESSIONS = "LearningSessions";
+    public static final String REF_QUIZ_TITLES = "QuizTitles";
+    public static final String REF_QUIZ_OPTIONS = "QuizOptions";
+    public static final String REF_QUIZ_ITEMS = "QuizItems";
+    public static final String REF_QUIZ_ANSWERS = "QuizAnswers";
+    public static final String REF_QUIZ_ANSWER_OPTIONS = "QuizAnswerOptions";
+    public static final String REF_USERS = "Users";
     //end of DB const
 }

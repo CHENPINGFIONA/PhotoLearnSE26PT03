@@ -4,22 +4,14 @@ import java.util.Date;
 
 /**
  * Created by chen ping on 3/10/2018.
+ * Restructured by MyatMin on 12/3/2018.
  */
 
-public class UserDAO {
-    private int Id;
+public class UserDAO extends BaseDAO {
     private String LoginId;
     private String LoginSource;
     private Date LastLoginDate;
     private Date Timestamp;
-
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
 
     public String getLoginId() {
         return LoginId;
