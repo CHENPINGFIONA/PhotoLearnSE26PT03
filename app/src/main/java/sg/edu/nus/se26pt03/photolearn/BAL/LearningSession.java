@@ -44,7 +44,7 @@ public class LearningSession {
 
     }
 
-    public List<LearningTitle> getLearningTitles(int sessionId, int mode, int userId) {
+    public List<LearningTitle> getLearningTitles(String sessionId, String mode, String userId) {
         return (new ArrayList<LearningTitle>());
     }
 

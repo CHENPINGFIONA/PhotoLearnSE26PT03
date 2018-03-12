@@ -1,37 +1,39 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
-
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.Date;
+import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.database.LearningTitleRepo;
+import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class LearningTitleListFragment extends Fragment {
     private TextView tvEmpty;
     private LearningTitleListAdapter learningTitleListAdapter;
     private Dialog dialog;
-    private int sessionId;
-    private int mode;
-    private int createdBy;
+    private String sessionId;
+    private String mode;
+    private String userId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,13 +45,17 @@ public class LearningTitleListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_learning_title_list, container, false);
-        ListView learningTitleList = (ListView) fragmentView.findViewById(R.id.rv_learning_title);
-        sessionId = this.getArguments().getInt("sessionId");
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, 0);
-        createdBy = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, 0);
+        RecyclerView learningTitleList = (RecyclerView) fragmentView.findViewById(R.id.rv_learning_title);
+//        sessionId = this.getArguments().getString("sessionId");
+        sessionId = "1";
+        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT.toString());
+        userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "");
 
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
-        learningTitleListAdapter = new LearningTitleListAdapter(getActivity(), sessionId, mode, createdBy);
+
+        List<LearningTitle> titles = new LearningSession().getLearningTitles(sessionId, mode, userId);
+
+        learningTitleListAdapter = new LearningTitleListAdapter(titles);
 
         learningTitleList.setAdapter(learningTitleListAdapter);
         FloatingActionButton floatingActionButton =
@@ -68,7 +74,7 @@ public class LearningTitleListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         learningTitleListAdapter.refreshLearningTitles();
-        tvEmpty.setVisibility(learningTitleListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        tvEmpty.setVisibility(learningTitleListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     private void showDialogue(Context context) {
@@ -92,8 +98,8 @@ public class LearningTitleListFragment extends Fragment {
                 try (LearningTitleRepo repo = new LearningTitleRepo()) {
                     LearningTitleDAO learningTitleDao = new LearningTitleDAO();
                     learningTitleDao.setTitle(etContent.toString());
-                    learningTitleDao.setSessionId(sessionId);
-                    learningTitleDao.setCreatedBy(createdBy);
+                    learningTitleDao.setLearningSessionId(sessionId);
+                    learningTitleDao.setCreatedBy(userId);
                     learningTitleDao.setTimestamp(new Date());
 
                     repo.save(learningTitleDao);

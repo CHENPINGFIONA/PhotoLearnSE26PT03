@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.PagerAdapter;
+import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class SessionActivity extends AppCompatActivity {
@@ -24,8 +25,8 @@ public class SessionActivity extends AppCompatActivity {
         //set testing data
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(ConstHelper.SharedPreferences_User_Id, 1);
-        editor.putInt(ConstHelper.SharedPreferences_Access_Mode, 0);
+        editor.putString(ConstHelper.SharedPreferences_User_Id, "1");
+        editor.putString(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT.toString());
         editor.commit();
         //end testing data
 
