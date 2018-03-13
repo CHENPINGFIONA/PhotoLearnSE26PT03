@@ -6,6 +6,8 @@
     <!-- Control text -->
     <string name="button_save">Save</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_edit">Edit</string>
+    <string name="button_delete">Delete</string>
 
     <!-- messages-->
     <string name="hello_blank_fragment">Hello blank fragment</string>

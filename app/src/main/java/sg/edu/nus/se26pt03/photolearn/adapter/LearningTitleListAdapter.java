@@ -9,10 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
-import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
-import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.application.App;
 
 /**
  * Created by chen ping on 11/3/2018.
@@ -21,6 +21,9 @@ import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitleListAdapter.LearningTitleViewHolder> {
     private Context context;
     private List<LearningTitle> titles;
+    private String sessionId;
+    private String mode;
+    private String userId;
 
     public class LearningTitleViewHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle;
@@ -35,15 +38,16 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
         }
     }
 
-    public LearningTitleListAdapter(List<LearningTitle> titles) {
+    public LearningTitleListAdapter(List<LearningTitle> titles, String sessionId, String mode, String userId) {
         this.titles = titles;
+        this.sessionId = sessionId;
+        this.mode = mode;
+        this.userId = userId;
     }
 
     public void refreshLearningTitles() {
-        LearningSession session = new LearningSession();
-
         titles.clear();
-        titles.addAll(titles);
+        titles.addAll(App.session.getLearningTitles(this.sessionId, this.mode, this.userId));
         notifyDataSetChanged();
     }
 
@@ -57,7 +61,7 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
 
     @Override
     public void onBindViewHolder(LearningTitleViewHolder holder, int position) {
-        LearningTitle title= titles.get(position);
+        LearningTitle title = titles.get(position);
         holder.tvTitle.setText(title.title);
         //SET EDIT & DELETE BUTTON EVENT
     }

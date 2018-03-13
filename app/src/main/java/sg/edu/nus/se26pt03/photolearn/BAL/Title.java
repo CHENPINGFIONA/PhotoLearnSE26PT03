@@ -9,10 +9,10 @@ import java.util.List;
  */
 
 public abstract class Title {
-    public int id;
+    public String id;
+    public String sessionId;
     public String title;
-    public int sessionId;
-    public int createdBy;
+    public String createdBy;
     public Date timestamp;
 
     public abstract void createItem(Item item) ;

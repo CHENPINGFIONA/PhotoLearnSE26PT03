@@ -32,8 +32,11 @@ public class LearningSession {
         return String.format("{0}-{1}-M{2}", df.format(courseDate), courseCode, moduleNumber);
     }
 
-    public void createLearningTitle(LearningTitle title, int userId) {
-
+    public void createLearningTitle(LearningTitle title) {
+        //test to add in to list
+        String size = Integer.toString(learningTitles.size());
+        title = new LearningTitle(size, "test" + size, "1");
+        learningTitles.add(title);
     }
 
     public void updateLearningTitle(LearningTitle title, int userId) {
@@ -45,7 +48,12 @@ public class LearningSession {
     }
 
     public List<LearningTitle> getLearningTitles(String sessionId, String mode, String userId) {
-        return (new ArrayList<LearningTitle>());
+        //get from database
+        //test to return learningTitles;
+        LearningTitle title = new LearningTitle("1", "test1", "1");
+        learningTitles.add(title);
+
+        return learningTitles;
     }
 
     public LearningTitle getLearningTitle(int learningTitleId) {

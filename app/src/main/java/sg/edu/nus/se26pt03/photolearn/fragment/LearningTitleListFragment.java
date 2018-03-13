@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +20,10 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.List;
 
-import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
-import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningTitleListAdapter;
-import sg.edu.nus.se26pt03.photolearn.database.LearningTitleRepo;
+import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
@@ -45,7 +45,7 @@ public class LearningTitleListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_learning_title_list, container, false);
-        RecyclerView learningTitleList = (RecyclerView) fragmentView.findViewById(R.id.rv_learning_title);
+        RecyclerView rvLearningTitle = (RecyclerView) fragmentView.findViewById(R.id.rv_learning_title);
 //        sessionId = this.getArguments().getString("sessionId");
         sessionId = "1";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT.toString());
@@ -53,11 +53,14 @@ public class LearningTitleListFragment extends Fragment {
 
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
 
-        List<LearningTitle> titles = new LearningSession().getLearningTitles(sessionId, mode, userId);
+        List<LearningTitle> titles = App.session.getLearningTitles(sessionId, mode, userId);
 
-        learningTitleListAdapter = new LearningTitleListAdapter(titles);
+        learningTitleListAdapter = new LearningTitleListAdapter(titles, sessionId, mode, userId);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        rvLearningTitle.setLayoutManager(mLayoutManager);
+        rvLearningTitle.setItemAnimator(new DefaultItemAnimator());
+        rvLearningTitle.setAdapter(learningTitleListAdapter);
 
-        learningTitleList.setAdapter(learningTitleListAdapter);
         FloatingActionButton floatingActionButton =
                 (FloatingActionButton) fragmentView.findViewById(R.id.fab_add);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +76,7 @@ public class LearningTitleListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        learningTitleListAdapter.refreshLearningTitles();
+//learningTitleListAdapter.refreshLearningTitles();
         tvEmpty.setVisibility(learningTitleListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
@@ -95,17 +98,9 @@ public class LearningTitleListFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try (LearningTitleRepo repo = new LearningTitleRepo()) {
-                    LearningTitleDAO learningTitleDao = new LearningTitleDAO();
-                    learningTitleDao.setTitle(etContent.toString());
-                    learningTitleDao.setLearningSessionId(sessionId);
-                    learningTitleDao.setCreatedBy(userId);
-                    learningTitleDao.setTimestamp(new Date());
-
-                    repo.save(learningTitleDao);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                App.session.createLearningTitle(new LearningTitle(sessionId, etContent.toString(), userId));
+                learningTitleListAdapter.refreshLearningTitles();
+                dialog.dismiss();
             }
         });
 
