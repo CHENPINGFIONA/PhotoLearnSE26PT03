@@ -60,7 +60,7 @@ public class LearningSession {
         return new LearningTitle();
     }
 
-    public void createQuizTitle(QuizTitle title, int userId) {
+    public void createQuizTitle(QuizTitle title) {
 
     }
 
@@ -72,8 +72,14 @@ public class LearningSession {
 
     }
 
-    public List<QuizTitle> getQuizTitles(int sessionId, int userId) {
-        return (new ArrayList<QuizTitle>());
+    public List<QuizTitle> getQuizTitles(String sessionId) {
+
+        //get from database
+        //test to return learningTitles;
+        QuizTitle title = new QuizTitle("1", "testQuizTitle1", "1");
+        quizTitles.add(title);
+
+        return quizTitles;
     }
 
     public QuizTitle getQuizTitle(int quizTitleId) {

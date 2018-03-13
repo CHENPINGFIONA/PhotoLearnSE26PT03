@@ -15,6 +15,12 @@ public class QuizTitle extends Title {
         quizItems = new ArrayList<QuizItem>();
     }
 
+    public QuizTitle(String sessionId, String title, String createdBy) {
+        this.sessionId = sessionId;
+        this.title = title;
+        this.createdBy = createdBy;
+    }
+
     public int getQuizScore(int userId) {
         return 0;
     }

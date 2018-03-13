@@ -2,6 +2,7 @@
     <!-- App Name and page names -->
     <string name="app_name">PhotoLearn.SE26.PT03</string>
     <string name="learning_title">Learning Title</string>
+    <string name="quiz_title">Quiz Title</string>
 
     <!-- Control text -->
     <string name="button_save">Save</string>

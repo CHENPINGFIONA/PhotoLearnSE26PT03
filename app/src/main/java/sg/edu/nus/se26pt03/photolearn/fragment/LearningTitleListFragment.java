@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
@@ -83,7 +82,7 @@ public class LearningTitleListFragment extends Fragment {
     private void showDialogue(Context context) {
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_learning_title);
+        dialog.setContentView(R.layout.dialog_title);
         dialog.show();
 
         TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningTitleListFragment;
+import sg.edu.nus.se26pt03.photolearn.fragment.QuizTitleListFragment;
 
 /**
  * Created by chen ping on 11/3/2018.
@@ -25,7 +26,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 return new LearningTitleListFragment();
             case 1:
             default:
-                return new LearningTitleListFragment();
+                return new QuizTitleListFragment();
         }
     }
 
