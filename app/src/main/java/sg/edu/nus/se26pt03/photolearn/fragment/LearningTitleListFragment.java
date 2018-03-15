@@ -28,6 +28,7 @@ import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class LearningTitleListFragment extends Fragment {
+    private SearchView svSearchView;
     private TextView tvEmpty;
     private LearningTitleListAdapter learningTitleListAdapter;
     private Dialog dialog;
@@ -53,7 +54,7 @@ public class LearningTitleListFragment extends Fragment {
         RecyclerView rvLearningTitle = (RecyclerView) fragmentView.findViewById(R.id.rv_learning_title);
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
 
-        List<LearningTitle> titles = App.session.getLearningTitles(sessionId, mode, userId);
+        List<LearningTitle> titles = App.session.getLearningTitles(sessionId, mode, userId, "");
 
         learningTitleListAdapter = new LearningTitleListAdapter(titles, sessionId, mode, userId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -61,7 +62,7 @@ public class LearningTitleListFragment extends Fragment {
         rvLearningTitle.setItemAnimator(new DefaultItemAnimator());
         rvLearningTitle.setAdapter(learningTitleListAdapter);
 
-        SearchView svSearchView = (SearchView) fragmentView.findViewById(R.id.sv_learningtitle);
+        svSearchView = (SearchView) fragmentView.findViewById(R.id.sv_learningtitle);
         svSearchView.setVisibility(mode == AccessMode.VIEW.toString() ? View.VISIBLE : View.GONE);
 
         svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -98,7 +99,7 @@ public class LearningTitleListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        learningTitleListAdapter.refreshLearningTitles();
+        learningTitleListAdapter.refreshLearningTitles(svSearchView.getQuery().toString());
         tvEmpty.setVisibility(learningTitleListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
@@ -121,7 +122,7 @@ public class LearningTitleListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 App.session.createLearningTitle(new LearningTitle(sessionId, etContent.getText().toString(), userId));
-                learningTitleListAdapter.refreshLearningTitles();
+                learningTitleListAdapter.refreshLearningTitles("");
                 dialog.dismiss();
             }
         });
