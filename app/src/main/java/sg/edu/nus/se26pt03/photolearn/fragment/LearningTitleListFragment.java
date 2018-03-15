@@ -25,6 +25,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class LearningTitleListFragment extends Fragment {
@@ -32,8 +33,9 @@ public class LearningTitleListFragment extends Fragment {
     private TextView tvEmpty;
     private LearningTitleListAdapter learningTitleListAdapter;
     private Dialog dialog;
+    private int role;
+    private int mode;
     private String sessionId;
-    private String mode;
     private String userId;
 
     @Override
@@ -46,7 +48,9 @@ public class LearningTitleListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // sessionId = this.getArguments().getString("sessionId");
         sessionId = "1";
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT.toString());
+
+        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
+        role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.TRAINER));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
         // Inflate the layout for this fragment
@@ -54,7 +58,7 @@ public class LearningTitleListFragment extends Fragment {
         RecyclerView rvLearningTitle = (RecyclerView) fragmentView.findViewById(R.id.rv_learning_title);
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
 
-        List<LearningTitle> titles = App.session.getLearningTitles(sessionId, mode, userId, "");
+        List<LearningTitle> titles = App.session.getLearningTitles(sessionId, userId, mode, "");
 
         learningTitleListAdapter = new LearningTitleListAdapter(titles, sessionId, mode, userId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -63,7 +67,7 @@ public class LearningTitleListFragment extends Fragment {
         rvLearningTitle.setAdapter(learningTitleListAdapter);
 
         svSearchView = (SearchView) fragmentView.findViewById(R.id.sv_learningtitle);
-        svSearchView.setVisibility(mode == AccessMode.VIEW.toString() ? View.VISIBLE : View.GONE);
+        svSearchView.setVisibility(mode == AccessMode.toInt(AccessMode.VIEW) ? View.VISIBLE : View.GONE);
 
         svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -86,6 +90,7 @@ public class LearningTitleListFragment extends Fragment {
 
         FloatingActionButton floatingActionButton =
                 (FloatingActionButton) fragmentView.findViewById(R.id.fab_add);
+        floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

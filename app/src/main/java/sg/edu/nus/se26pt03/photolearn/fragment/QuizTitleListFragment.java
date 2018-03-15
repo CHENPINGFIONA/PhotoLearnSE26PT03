@@ -24,12 +24,15 @@ import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class QuizTitleListFragment extends Fragment {
     private TextView tvEmpty;
     private QuizTitleListAdapter quizTitleListAdapter;
     private Dialog dialog;
+    private int role;
     private String sessionId;
     private String userId;
 
@@ -47,6 +50,7 @@ public class QuizTitleListFragment extends Fragment {
         //  sessionId = this.getArguments().getString("sessionId");
         sessionId = "1";
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
+        role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.TRAINER));
 
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
 
@@ -60,6 +64,7 @@ public class QuizTitleListFragment extends Fragment {
 
         FloatingActionButton floatingActionButton =
                 (FloatingActionButton) fragmentView.findViewById(R.id.fab_add);
+        floatingActionButton.setVisibility(role == UserRole.toInt(UserRole.TRAINER) ? View.VISIBLE : View.GONE);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
