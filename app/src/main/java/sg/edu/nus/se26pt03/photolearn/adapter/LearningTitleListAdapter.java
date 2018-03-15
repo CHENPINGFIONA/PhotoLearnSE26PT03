@@ -25,8 +25,8 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
 
     private List<LearningTitle> titles;
     private String sessionId;
-    private String mode;
     private String userId;
+    private int mode;
 
     public class LearningTitleViewHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle;
@@ -41,7 +41,7 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
         }
     }
 
-    public LearningTitleListAdapter(List<LearningTitle> titles, String sessionId, String mode, String userId) {
+    public LearningTitleListAdapter(List<LearningTitle> titles, String sessionId, int mode, String userId) {
         this.titles = titles;
         this.sessionId = sessionId;
         this.mode = mode;
@@ -50,7 +50,7 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
 
     public void refreshLearningTitles(String text) {
         titles.clear();
-        titles.addAll(App.session.getLearningTitles(this.sessionId, this.mode, this.userId, text));
+        titles.addAll(App.session.getLearningTitles(this.sessionId, this.userId, this.mode, text));
         notifyDataSetChanged();
     }
 

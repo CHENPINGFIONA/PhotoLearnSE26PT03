@@ -56,9 +56,9 @@ public class LearningSession {
         learningTitleRepo.delete(ConvertHelper.toLearningTitleDao(title));
     }
 
-    public List<LearningTitle> getLearningTitles(String learningSessionId, String mode, String userId, String text) {
+    public List<LearningTitle> getLearningTitles(String learningSessionId, String userId, int mode, String text) {
         Collection<LearningTitleDAO> learningTitleDAOs;
-        if (mode == AccessMode.EDIT.toString()) {
+        if (mode == AccessMode.toInt(AccessMode.EDIT)) {
             learningTitleDAOs = learningTitleRepo.getAllByCreator(learningSessionId, userId);
         } else {
             learningTitleDAOs = learningTitleRepo.getAllByLearningSessionID(learningSessionId, text);
