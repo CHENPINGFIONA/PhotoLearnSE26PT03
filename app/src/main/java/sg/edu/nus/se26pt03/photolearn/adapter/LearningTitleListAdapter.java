@@ -48,9 +48,9 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
         this.userId = userId;
     }
 
-    public void refreshLearningTitles() {
+    public void refreshLearningTitles(String text) {
         titles.clear();
-        titles.addAll(App.session.getLearningTitles(this.sessionId, this.mode, this.userId));
+        titles.addAll(App.session.getLearningTitles(this.sessionId, this.mode, this.userId, text));
         notifyDataSetChanged();
     }
 

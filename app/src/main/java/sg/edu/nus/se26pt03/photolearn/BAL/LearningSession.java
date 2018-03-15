@@ -56,12 +56,12 @@ public class LearningSession {
         learningTitleRepo.delete(ConvertHelper.toLearningTitleDao(title));
     }
 
-    public List<LearningTitle> getLearningTitles(String learningSessionId, String mode, String userId) {
+    public List<LearningTitle> getLearningTitles(String learningSessionId, String mode, String userId, String text) {
         Collection<LearningTitleDAO> learningTitleDAOs;
         if (mode == AccessMode.EDIT.toString()) {
             learningTitleDAOs = learningTitleRepo.getAllByCreator(learningSessionId, userId);
         } else {
-            learningTitleDAOs = learningTitleRepo.getAllByLearningSessionID(learningSessionId);
+            learningTitleDAOs = learningTitleRepo.getAllByLearningSessionID(learningSessionId, text);
         }
 
         for (LearningTitleDAO learningTitleDAO : learningTitleDAOs) {

@@ -23,7 +23,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_TITLES);
     }
 
-    public Collection<LearningTitleDAO> getAllByLearningSessionID(final String learningSessionID) {
+    public Collection<LearningTitleDAO> getAllByLearningSessionID(final String learningSessionID, final String text) {
         final List<LearningTitleDAO> result = new ArrayList<>();
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -33,7 +33,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningTitleDAO learningTitleDAO = getValue(childDataSnapshot);
-                            if (learningTitleDAO.getLearningSessionId().equals(learningSessionID)) {
+                            if (learningTitleDAO.getLearningSessionId().equals(learningSessionID) && learningTitleDAO.getLearningSessionId().contains(text)) {
                                 result.add(learningTitleDAO);
                             }
                         }

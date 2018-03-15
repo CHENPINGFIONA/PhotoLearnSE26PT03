@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -42,14 +43,14 @@ public class LearningTitleListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View fragmentView = inflater.inflate(R.layout.fragment_learning_title_list, container, false);
-        RecyclerView rvLearningTitle = (RecyclerView) fragmentView.findViewById(R.id.rv_learning_title);
-//        sessionId = this.getArguments().getString("sessionId");
+        // sessionId = this.getArguments().getString("sessionId");
         sessionId = "1";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT.toString());
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
+        // Inflate the layout for this fragment
+        View fragmentView = inflater.inflate(R.layout.fragment_learning_title_list, container, false);
+        RecyclerView rvLearningTitle = (RecyclerView) fragmentView.findViewById(R.id.rv_learning_title);
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
 
         List<LearningTitle> titles = App.session.getLearningTitles(sessionId, mode, userId);
@@ -59,6 +60,28 @@ public class LearningTitleListFragment extends Fragment {
         rvLearningTitle.setLayoutManager(mLayoutManager);
         rvLearningTitle.setItemAnimator(new DefaultItemAnimator());
         rvLearningTitle.setAdapter(learningTitleListAdapter);
+
+        SearchView svSearchView = (SearchView) fragmentView.findViewById(R.id.sv_learningtitle);
+        svSearchView.setVisibility(mode == AccessMode.VIEW.toString() ? View.VISIBLE : View.GONE);
+
+        svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // your text view here
+                callSearch(newText);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                callSearch(text);
+                return true;
+            }
+
+            private void callSearch(String text) {
+                learningTitleListAdapter.refreshLearningTitles(text);
+            }
+        });
 
         FloatingActionButton floatingActionButton =
                 (FloatingActionButton) fragmentView.findViewById(R.id.fab_add);
