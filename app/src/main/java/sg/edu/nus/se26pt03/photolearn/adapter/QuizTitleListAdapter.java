@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -66,14 +67,17 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
         final QuizTitle title = titles.get(position);
         holder.tvTitle.setText(title.title);
         //SET EDIT & DELETE BUTTON EVENT
-
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
-                showDialogue(title);
+                Toast.makeText(context, title.title + "edit clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                App.session.deleteQuizTitle(title);
+            }
+        });
     }
 
     @Override

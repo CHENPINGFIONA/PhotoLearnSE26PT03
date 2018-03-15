@@ -48,7 +48,7 @@ public class LearningTitleListFragment extends Fragment {
 //        sessionId = this.getArguments().getString("sessionId");
         sessionId = "1";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT.toString());
-        userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "");
+        userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
 
@@ -75,7 +75,7 @@ public class LearningTitleListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//learningTitleListAdapter.refreshLearningTitles();
+        learningTitleListAdapter.refreshLearningTitles();
         tvEmpty.setVisibility(learningTitleListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
@@ -97,7 +97,7 @@ public class LearningTitleListFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.session.createLearningTitle(new LearningTitle(sessionId, etContent.toString(), userId));
+                App.session.createLearningTitle(new LearningTitle(sessionId, etContent.getText().toString(), userId));
                 learningTitleListAdapter.refreshLearningTitles();
                 dialog.dismiss();
             }

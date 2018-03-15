@@ -44,9 +44,9 @@ public class QuizTitleListFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_quiz_title_list, container, false);
         RecyclerView rvQuizTitle = (RecyclerView) fragmentView.findViewById(R.id.rv_quiz_title);
-//        sessionId = this.getArguments().getString("sessionId");
+        //  sessionId = this.getArguments().getString("sessionId");
         sessionId = "1";
-        userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "");
+        userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
 
@@ -95,7 +95,7 @@ public class QuizTitleListFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.session.createQuizTitle(new QuizTitle(sessionId, etContent.toString(), userId));
+                App.session.createQuizTitle(new QuizTitle(sessionId, etContent.getText().toString(), userId));
                 quizTitleListAdapter.refreshQuizTitles();
                 dialog.dismiss();
             }

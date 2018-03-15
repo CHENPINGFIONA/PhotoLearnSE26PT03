@@ -47,7 +47,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         return result;
     }
 
-    public Collection<LearningTitleDAO> getAllByCreator(final String uid) {
+    public Collection<LearningTitleDAO> getAllByCreator(final String learningSessionID, final String userId) {
         final List<LearningTitleDAO> result = new ArrayList<>();
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -57,7 +57,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningTitleDAO learningTitleDAO = getValue(childDataSnapshot);
-                            if (learningTitleDAO.getCreatedBy().equals(uid)) {
+                            if (learningTitleDAO.getCreatedBy().equals(userId) && learningTitleDAO.getLearningSessionId().equals(learningSessionID)) {
                                 result.add(learningTitleDAO);
                             }
                         }

@@ -19,8 +19,6 @@ public class SessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         //set testing data
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);

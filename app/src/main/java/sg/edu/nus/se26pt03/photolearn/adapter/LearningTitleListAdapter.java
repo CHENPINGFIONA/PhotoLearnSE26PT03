@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import sg.edu.nus.se26pt03.photolearn.application.App;
 
 public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitleListAdapter.LearningTitleViewHolder> {
     private Context context;
+
     private List<LearningTitle> titles;
     private String sessionId;
     private String mode;
@@ -61,9 +64,20 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
 
     @Override
     public void onBindViewHolder(LearningTitleViewHolder holder, int position) {
-        LearningTitle title = titles.get(position);
+        final LearningTitle title = titles.get(position);
         holder.tvTitle.setText(title.title);
         //SET EDIT & DELETE BUTTON EVENT
+        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(context, title.title + "edit clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                App.session.deleteLearningTitle(title);
+            }
+        });
     }
 
     @Override
