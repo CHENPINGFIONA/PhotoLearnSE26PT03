@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
@@ -70,6 +69,7 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(context, title.title + "edit clicked", Toast.LENGTH_SHORT).show();
+                showDialogue(title);
             }
         });
 
@@ -85,7 +85,7 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
         return titles.size();
     }
 
-    private void showDialogue(QuizTitle title) {
+    private void showDialogue(final QuizTitle title) {
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_title);
@@ -96,14 +96,17 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
 
         final EditText etContent = (EditText) dialog.findViewById(R.id.et_content);
         etContent.setHint(R.string.enter_title);
+        etContent.setText(title.title);
 
         Button btnSave = (Button) dialog.findViewById(R.id.btn_save);
         Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //set title content
-                //update title
+                title.title = etContent.getText().toString();
+                App.session.updateQuizTitle(title);
+
+                refreshQuizTitles();
                 dialog.dismiss();
             }
         });

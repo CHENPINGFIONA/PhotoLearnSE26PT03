@@ -78,7 +78,7 @@ public class QuizTitleListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//quizTitleListAdapter.refreshQuizTitles();
+        quizTitleListAdapter.refreshQuizTitles();
         tvEmpty.setVisibility(quizTitleListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 

@@ -66,9 +66,9 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         // Getting Post failed, log a message
+                        System.out.println("The read failed: " + databaseError.getCode());
                     }
                 });
         return result;
     }
-
 }
