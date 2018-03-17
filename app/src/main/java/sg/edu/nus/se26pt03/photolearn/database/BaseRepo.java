@@ -82,7 +82,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
     }
 
     @Override
-    public T getById(String id) {
+    public T getById(String id, final FireBaseCallback<T> fireBaseCallback) {
         final List<T> result = new ArrayList<>();
         mDatabaseRef.child(id).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -91,6 +91,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
                         //use the onDataChange() method to read a static snapshot of the contents at a given path
                         // Get Post object and use the values to update the UI
                         result.add(getValue(dataSnapshot));
+                        fireBaseCallback.onCallback(result);
                     }
 
                     @Override
@@ -135,4 +136,5 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
         }
         return t;
     }
+
 }

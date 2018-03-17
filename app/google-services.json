@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "714384080260-965f0q60nmcnc1i5qrc3d0hp5c6v4pec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.edu.nus.se26pt03.photolearn",
+            "certificate_hash": "b62789c847c4d02a4ca1a2dd1362d023550b3577"
+          }
+        },
+        {
+          "client_id": "714384080260-d54kiucdndfnjhrvaqmpa5vikcp2sbp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.edu.nus.se26pt03.photolearn",
+            "certificate_hash": "014bd7ba451ff4a6aeceaa69a874ea9fb5249ccf"
+          }
+        },
+        {
           "client_id": "714384080260-crquq69dakivm8l580bi86en90gobkn5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

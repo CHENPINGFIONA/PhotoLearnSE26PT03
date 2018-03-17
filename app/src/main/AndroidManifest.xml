@@ -3,12 +3,14 @@
     package="sg.edu.nus.se26pt03.photolearn">
 
     <application
+        android:name=".application.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
         <activity android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
@@ -18,8 +20,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayMessageActivity" />
+        <activity android:name=".activity.SessionActivity"></activity>
         <activity android:name=".activity.LearningActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        
     </application>
 
 </manifest>
