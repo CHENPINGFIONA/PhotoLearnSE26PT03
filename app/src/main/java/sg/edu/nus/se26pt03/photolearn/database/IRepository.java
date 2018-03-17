@@ -13,6 +13,6 @@ public interface IRepository<T> {
     T update(T t);
     boolean delete(T t);
     boolean deleteById(String id);
-    T getById(String id);
+    T getById(String id, FireBaseCallback<T> fireBaseCallback);
     Collection<T> getAll();
 }
