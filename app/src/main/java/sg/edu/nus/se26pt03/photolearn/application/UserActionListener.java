@@ -22,7 +22,8 @@ public interface UserActionListener {
         LOGOUT,
         LOAD,
         CREATE,
-        EDIT
+        EDIT,
+        BACKSTACK
     }
     List<UserActionListener> getRelatives();
 
@@ -34,6 +35,7 @@ public interface UserActionListener {
     boolean onLoad(Object object, UserActionListener source);
     boolean onCreate(Object object, UserActionListener source);
     boolean onEdit(Object object, UserActionListener source);
+    boolean onBackstack(Object object, UserActionListener source);
 
     boolean onBefore(Event event);
     boolean onModeChange(AppMode appMode);
@@ -44,6 +46,7 @@ public interface UserActionListener {
     boolean onLoad(LearningTitle learningTitle);
     boolean onCreate(LearningSession learningSession);
     boolean onEdit(LearningSession learningSession);
+    boolean onBackstack(Object object);
 
 //    boolean dynamicRoute(Event event, boolean outbound, Object object);
 
