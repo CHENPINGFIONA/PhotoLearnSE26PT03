@@ -41,7 +41,8 @@ public class LearningActivity extends BaseActivity{
             public void onClick(View v) {
                 if (App.currentAppMode == AppMode.TRAINER) App.currentAppMode = AppMode.PARTICIPENT;
                 else if (App.currentAppMode == AppMode.PARTICIPENT) App.currentAppMode = AppMode.TRAINER;
-                onModeChange(App.currentAppMode);
+//                onModeChange(App.currentAppMode);
+                onLoad(new LearningTitle());
             }
         });
     }
@@ -71,5 +72,11 @@ public class LearningActivity extends BaseActivity{
             startActivity(getIntent());
         }
         return true;
+    }
+
+    @Override
+    public boolean onLoad(LearningTitle learningTitle) {
+        if (super.onLoad(learningTitle)) setFragment(R.id.fl_main, new LearningItemListFragment(), "Someing Learning Title", true, null, null);
+    return true;
     }
 }

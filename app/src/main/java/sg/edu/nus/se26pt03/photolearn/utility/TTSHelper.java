@@ -3,6 +3,7 @@ package sg.edu.nus.se26pt03.photolearn.utility;
 import android.content.Context;
 import android.content.res.Resources;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -41,6 +42,33 @@ public class TTSHelper implements TextToSpeech.OnInitListener {
         this.ctx = ctx;
         this.ttsButton = ttsButton;
         textToSpeech = new TextToSpeech(ctx, this);
+        textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String s) {
+                if (s.equals("TESTID")) {
+                    //TTSHelper.this.ttsButton.setImageResource(android.R.drawable.ic_lock_silent_mode);
+                }
+            }
+
+            @Override
+            public void onDone(String s) {
+                if (s.equals("TESTID")) {
+                    //TTSHelper.this.ttsButton.setImageResource(android.R.drawable.ic_lock_silent_mode_off);
+                }
+            }
+
+            @Override
+            public void onError(String s) {
+
+            }
+
+            @Override
+            public void onStop(String utteranceId, boolean interrupted) {
+                if (utteranceId.equals("TESTID")) {
+                    // TTSHelper.this.ttsButton.setImageResource(android.R.drawable.ic_lock_silent_mode_off);
+                }
+            }
+        });
 
 
     }
@@ -69,15 +97,17 @@ public class TTSHelper implements TextToSpeech.OnInitListener {
         }
     }
 
+
     public void startandStopTalking() {
+
         if (this.textToSpeech.isSpeaking()) {
             this.textToSpeech.stop();
             Resources res = this.ctx.getResources();
-            ttsButton.setImageResource(android.R.drawable.ic_lock_silent_mode_off);
+
         } else {
 
             this.textToSpeech.speak(this.getTexttoSpeak(), TextToSpeech.QUEUE_FLUSH, null, "TESTID");
-            ttsButton.setImageResource(android.R.drawable.ic_lock_silent_mode);
+
 
         }
     }

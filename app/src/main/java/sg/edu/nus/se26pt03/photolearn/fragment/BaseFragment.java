@@ -150,6 +150,7 @@ public class BaseFragment extends Fragment implements UserActionListener {
             mStackBack = getArguments().getBoolean(ARG_STACKBACK);
         }
         SynchronizeLayout();
+
     }
 
     public String getTitle() {
