@@ -40,12 +40,20 @@ public class QuizTitleDAO extends BaseDAO {
     }
 
     public Date getTimestamp() {
-        DateConversionHelper dateConversionHelper = new DateConversionHelper();
-        return dateConversionHelper.convertStringToDate(Timestamp);
+        if (Timestamp == null) {
+            return null;
+        } else {
+            DateConversionHelper dateConversionHelper = new DateConversionHelper();
+            return dateConversionHelper.convertStringToDate(Timestamp);
+        }
     }
 
     public void setTimestamp(Date timestamp) {
-        DateConversionHelper dateConversionHelper = new DateConversionHelper();
-        Timestamp = dateConversionHelper.convertDateToString(timestamp);
+        if (timestamp == null) {
+            Timestamp = null;
+        } else {
+            DateConversionHelper dateConversionHelper = new DateConversionHelper();
+            Timestamp = dateConversionHelper.convertDateToString(timestamp);
+        }
     }
 }

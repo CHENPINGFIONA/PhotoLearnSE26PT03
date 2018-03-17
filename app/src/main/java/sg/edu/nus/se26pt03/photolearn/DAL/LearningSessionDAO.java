@@ -20,13 +20,21 @@ public class LearningSessionDAO extends BaseDAO {
     private String Timestamp;
 
     public Date getCourseDate() {
-        DateConversionHelper dateConversionHelper = new DateConversionHelper();
-        return dateConversionHelper.convertStringToDate(CourseDate);
+        if (CourseDate == null) {
+            return null;
+        } else {
+            DateConversionHelper dateConversionHelper = new DateConversionHelper();
+            return dateConversionHelper.convertStringToDate(CourseDate);
+        }
     }
 
     public void setCourseDate(Date courseDate) {
-        DateConversionHelper dateConversionHelper = new DateConversionHelper();
-        CourseDate = dateConversionHelper.convertDateToString(courseDate);
+        if (courseDate == null) {
+            CourseDate = null;
+        } else {
+            DateConversionHelper dateConversionHelper = new DateConversionHelper();
+            CourseDate = dateConversionHelper.convertDateToString(courseDate);
+        }
     }
 
     public String getCourseName() {
@@ -70,12 +78,20 @@ public class LearningSessionDAO extends BaseDAO {
     }
 
     public Date getTimestamp() {
-        DateConversionHelper dateConversionHelper = new DateConversionHelper();
-        return dateConversionHelper.convertStringToDate(Timestamp);
+        if (Timestamp == null) {
+            return null;
+        } else {
+            DateConversionHelper dateConversionHelper = new DateConversionHelper();
+            return dateConversionHelper.convertStringToDate(Timestamp);
+        }
     }
 
     public void setTimestamp(Date timestamp) {
-        DateConversionHelper dateConversionHelper = new DateConversionHelper();
-        Timestamp = dateConversionHelper.convertDateToString(timestamp);
+        if (timestamp == null) {
+            Timestamp = null;
+        } else {
+            DateConversionHelper dateConversionHelper = new DateConversionHelper();
+            Timestamp = dateConversionHelper.convertDateToString(timestamp);
+        }
     }
 }
