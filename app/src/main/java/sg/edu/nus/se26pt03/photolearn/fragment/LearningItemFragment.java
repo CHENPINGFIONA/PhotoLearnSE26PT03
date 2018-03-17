@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.R;
+import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.GPSHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.TTSHelper;
@@ -101,7 +102,19 @@ public class LearningItemFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-  /*  @Override
+    @Override
+    public boolean onBefore(Event event) {
+        if (super.onBefore(event)) Log.d("Test", "Stop irriitated TTTTT");
+        return  true;
+    }
+
+    @Override
+    public boolean onBackstack(Object object) {
+
+        if(super.onBackstack(object)) ttsHelper.startandStopTalking();
+        return true;
+    }
+    /*  @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         final View view = getView();

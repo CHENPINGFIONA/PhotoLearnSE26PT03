@@ -35,7 +35,6 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
         return  relatives;
     }
 
-
     @Override
     public final boolean onModeChange(AppMode appMode, UserActionListener source) {
         return userActionRouter.dynamicRoute( Event.MODE_CHANGE, false, appMode, source);
@@ -76,6 +75,10 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
         return userActionRouter.dynamicRoute( Event.EDIT, false, object, source);
     }
 
+    @Override
+    public final boolean onBackstack(Object object, UserActionListener source) {
+        return userActionRouter.dynamicRoute( Event.BACKSTACK, false, object, source);
+    }
     @Override
     public boolean onBefore(Event event) {
         return userActionRouter.dynamicRoute(Event.BEFORE, true, event, null);
@@ -122,9 +125,14 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     }
 
     @Override
+    public boolean onBackstack(Object object) {
+        return userActionRouter.dynamicRoute(Event.BACKSTACK, true, object, null);
+    }
+
+    @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){
-            getSupportFragmentManager().popBackStack();
+            if (onBackstack(null)) getSupportFragmentManager().popBackStack();
 
         } else {
             //super.onBackPressed();

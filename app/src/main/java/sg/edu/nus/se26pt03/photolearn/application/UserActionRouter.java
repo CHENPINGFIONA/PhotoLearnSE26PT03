@@ -58,6 +58,9 @@ public class UserActionRouter {
                                 if (object instanceof LearningSession)
                                     result = userActionListener.onEdit((LearningSession) object, base);
                                 break;
+                            case BACKSTACK:
+                                result = userActionListener.onBackstack(object, base);
+                                break;
                         }
                         if (!result) return result;
                     }
@@ -99,6 +102,8 @@ public class UserActionRouter {
                     if (object instanceof LearningSession)
                         return base.onEdit((LearningSession) object);
                     break;
+                case BACKSTACK:
+                    return base.onBackstack(object);
             }
         }
         return  result;

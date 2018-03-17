@@ -92,6 +92,10 @@ public class BaseFragment extends Fragment implements UserActionListener {
     }
 
     @Override
+    public final boolean onBackstack(Object object, UserActionListener source) {
+        return userActionRouter.dynamicRoute( Event.BACKSTACK, false, object, source);
+    }
+    @Override
     public boolean onBefore(Event event) {
         return userActionRouter.dynamicRoute(Event.BEFORE, true, event, null);
     }
@@ -134,6 +138,11 @@ public class BaseFragment extends Fragment implements UserActionListener {
     @Override
     public boolean onEdit(LearningSession learningSession) {
         return userActionRouter.dynamicRoute(Event.EDIT, true, learningSession, null);
+    }
+
+    @Override
+    public boolean onBackstack(Object object) {
+        return userActionRouter.dynamicRoute(Event.BACKSTACK, true, object, null);
     }
 
     @Override
