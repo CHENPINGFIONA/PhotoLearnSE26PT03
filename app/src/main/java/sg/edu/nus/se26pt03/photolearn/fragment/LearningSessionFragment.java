@@ -28,9 +28,9 @@ public class LearningSessionFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        addFragment(R.id.vp_titlecategorylist, new LearningTitleListFragment(),"Titles");
-//        addFragment(R.id.vp_titlecategorylist, new QuizTitleListFragment(),"Quizzes");
-        setupTabLayout(R.id.tl_titlecategory, R.id.vp_titlecategorylist);
+        addFragment(R.id.vp_learningsession_pager, new LearningTitleListFragment(),"Titles");
+        addFragment(R.id.vp_learningsession_pager, new QuizTitleListFragment(),"Quizzes");
+        setupTabLayout(R.id.tab_learningsession_layout, R.id.vp_learningsession_pager);
     }
 
 }

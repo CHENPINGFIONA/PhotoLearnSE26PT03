@@ -28,7 +28,7 @@ import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
-public class QuizTitleListFragment extends Fragment {
+public class QuizTitleListFragment extends BaseFragment {
     private TextView tvEmpty;
     private QuizTitleListAdapter quizTitleListAdapter;
     private Dialog dialog;

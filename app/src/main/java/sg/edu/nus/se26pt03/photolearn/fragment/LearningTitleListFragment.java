@@ -28,7 +28,7 @@ import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
-public class LearningTitleListFragment extends Fragment {
+public class LearningTitleListFragment extends BaseFragment {
     private SearchView svSearchView;
     private TextView tvEmpty;
     private LearningTitleListAdapter learningTitleListAdapter;
