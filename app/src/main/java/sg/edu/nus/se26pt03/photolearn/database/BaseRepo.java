@@ -36,13 +36,9 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
 
     @Override
     public T save(final T t) {
-        mDatabaseRef.push().setValue(t, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError,
-                                   DatabaseReference databaseReference) {
-                t.setId(databaseReference.getKey());
-            }
-        });
+        String key = mDatabaseRef.push().getKey();
+        t.setId(key);
+        mDatabaseRef.child(key).setValue(t);
         return t;
     }
 
