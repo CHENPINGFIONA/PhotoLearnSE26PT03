@@ -15,13 +15,7 @@ public class LearningTitle extends Title {
         learningItems = new ArrayList<LearningItem>();
     }
 
-    public LearningTitle(String sessionId, String title, String createdBy) {
-        this.sessionId = sessionId;
-        this.title = title;
-        this.createdBy = createdBy;
-    }
-
-    @Override
+   @Override
     public void createItem(Item item) {
 
     }

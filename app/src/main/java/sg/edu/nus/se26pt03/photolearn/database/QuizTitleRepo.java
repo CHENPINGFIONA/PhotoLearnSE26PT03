@@ -46,4 +46,28 @@ public class QuizTitleRepo extends BaseRepo<QuizTitleDAO> {
                 });
         return result;
     }
+
+    public Collection<QuizTitleDAO> getAllByCreator(final String uid) {
+        final List<QuizTitleDAO> result = new ArrayList<>();
+        mDatabaseRef.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //use the onDataChange() method to read a static snapshot of the contents at a given path
+                        // Get Post object and use the values to update the UI
+                        for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                            QuizTitleDAO quizTitleDAO = getValue(childDataSnapshot);
+                            if (quizTitleDAO.getCreatedBy().equals(uid)) {
+                                result.add(quizTitleDAO);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Getting Post failed, log a message
+                    }
+                });
+        return result;
+    }
 }

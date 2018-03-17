@@ -1,21 +1,8 @@
 <resources>
-    <!-- App Name and page names -->
     <string name="app_name">PhotoLearn.SE26.PT03</string>
-    <string name="learning_title">Learning Title</string>
-    <string name="quiz_title">Quiz Title</string>
-
-    <!-- Control text -->
-    <string name="button_save">Save</string>
-    <string name="button_cancel">Cancel</string>
-    <string name="button_edit">Edit</string>
-    <string name="button_delete">Delete</string>
-
-    <!-- messages-->
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
     <string name="tv_learningsessionlist_hint_participant">Search your learnig sessin by learning sessin id to start</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="no_records_found">No Records Found.</string>
-    <string name="enter_title">Enter title</string>
-
-
 </resources>

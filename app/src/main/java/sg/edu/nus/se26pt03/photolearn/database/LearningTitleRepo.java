@@ -23,7 +23,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_TITLES);
     }
 
-    public Collection<LearningTitleDAO> getAllByLearningSessionID(final String learningSessionID, final String text) {
+    public Collection<LearningTitleDAO> getAllByLearningSessionID(final String learningSessionID) {
         final List<LearningTitleDAO> result = new ArrayList<>();
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -33,7 +33,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningTitleDAO learningTitleDAO = getValue(childDataSnapshot);
-                            if (learningTitleDAO.getLearningSessionId().equals(learningSessionID) && learningTitleDAO.getLearningSessionId().contains(text)) {
+                            if (learningTitleDAO.getLearningSessionId().equals(learningSessionID)) {
                                 result.add(learningTitleDAO);
                             }
                         }
@@ -47,7 +47,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         return result;
     }
 
-    public Collection<LearningTitleDAO> getAllByCreator(final String learningSessionID, final String userId) {
+    public Collection<LearningTitleDAO> getAllByCreator(final String uid) {
         final List<LearningTitleDAO> result = new ArrayList<>();
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -57,7 +57,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningTitleDAO learningTitleDAO = getValue(childDataSnapshot);
-                            if (learningTitleDAO.getCreatedBy().equals(userId) && learningTitleDAO.getLearningSessionId().equals(learningSessionID)) {
+                            if (learningTitleDAO.getCreatedBy().equals(uid)) {
                                 result.add(learningTitleDAO);
                             }
                         }
@@ -66,9 +66,9 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         // Getting Post failed, log a message
-                        System.out.println("The read failed: " + databaseError.getCode());
                     }
                 });
         return result;
     }
+
 }

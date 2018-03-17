@@ -9,11 +9,11 @@ import java.util.List;
  */
 
 public abstract class Title {
-    public String id;
-    public String sessionId;
-    public String title;
-    public String createdBy;
-    public Date timestamp;
+    private int id;
+    private String title;
+    private int sessionId;
+    private int createdBy;
+    private Date timestamp;
 
     public abstract void createItem(Item item) ;
     public abstract void updateItem(Item item);
