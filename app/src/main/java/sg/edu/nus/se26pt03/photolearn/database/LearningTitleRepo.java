@@ -17,7 +17,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
  * Restructured by MyatMin on 3/12/2018.
  */
 
-public class LearningTitleRepo extends BaseRepo<LearningTitleDAO>{
+public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
     public LearningTitleRepo() {
         super(LearningTitleDAO.class);
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_TITLES);
@@ -33,7 +33,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO>{
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningTitleDAO learningTitleDAO = getValue(childDataSnapshot);
-                            if (learningTitleDAO.getLearningSessionId() == learningSessionID) {
+                            if (learningTitleDAO.getLearningSessionId().equals(learningSessionID)) {
                                 result.add(learningTitleDAO);
                             }
                         }
@@ -57,7 +57,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO>{
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningTitleDAO learningTitleDAO = getValue(childDataSnapshot);
-                            if (learningTitleDAO.getCreatedBy() == uid) {
+                            if (learningTitleDAO.getCreatedBy().equals(uid)) {
                                 result.add(learningTitleDAO);
                             }
                         }

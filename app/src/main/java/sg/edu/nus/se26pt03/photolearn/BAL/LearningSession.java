@@ -10,7 +10,7 @@ import java.util.List;
  * Created by chen ping on 7/3/2018.
  */
 
-public class LearningSession {
+public class LearningSession implements ICallback{
     private int id;
     private Date courseDate;
     private String courseName;
@@ -111,5 +111,10 @@ public class LearningSession {
 
     public QuizTitle getQuizTitle(int quizTitleId) {
         return new QuizTitle();
+    }
+
+    @Override
+    public void callback() {
+        
     }
 }

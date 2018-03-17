@@ -99,7 +99,11 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
                     }
                 });
         //why use list here? because value inside EventListener can not be directly passed to outside(need final as Modifier)
-        return result.get(0);
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
     }
 
     @Override
