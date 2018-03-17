@@ -108,6 +108,12 @@ public class LearningItemFragment extends BaseFragment {
         return  true;
     }
 
+    @Override
+    public boolean onBackstack(Object object) {
+
+        if(super.onBackstack(object)) ttsHelper.startandStopTalking();
+        return true;
+    }
     /*  @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
