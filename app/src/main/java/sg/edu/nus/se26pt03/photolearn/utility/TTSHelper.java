@@ -96,7 +96,9 @@ public class TTSHelper implements TextToSpeech.OnInitListener {
 
         }
     }
-
+    public void StopTalking() {
+        this.textToSpeech.stop();
+    }
 
     public void startandStopTalking() {
 

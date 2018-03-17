@@ -111,7 +111,7 @@ public class LearningItemFragment extends BaseFragment {
     @Override
     public boolean onBackstack(Object object) {
 
-        if(super.onBackstack(object)) ttsHelper.startandStopTalking();
+        if(super.onBackstack(object)) ttsHelper.StopTalking();
         return true;
     }
     /*  @Override
