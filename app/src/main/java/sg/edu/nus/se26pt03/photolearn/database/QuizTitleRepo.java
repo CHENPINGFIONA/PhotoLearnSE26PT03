@@ -23,7 +23,7 @@ public class QuizTitleRepo extends BaseRepo<QuizTitleDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_QUIZ_TITLES);
     }
 
-    public Collection<QuizTitleDAO> getAllByLearningSessionID(final String learningSessionID) {
+    public Collection<QuizTitleDAO> getAllByLearningSessionID(final String learningSessionID, final FireBaseCallback<QuizTitleDAO> fireBaseCallback) {
         final List<QuizTitleDAO> result = new ArrayList<>();
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -37,6 +37,7 @@ public class QuizTitleRepo extends BaseRepo<QuizTitleDAO> {
                                 result.add(quizTitleDAO);
                             }
                         }
+                        fireBaseCallback.onCallback(result);
                     }
 
                     @Override

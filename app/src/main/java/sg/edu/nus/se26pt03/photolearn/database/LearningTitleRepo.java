@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
+import sg.edu.nus.se26pt03.photolearn.DAL.QuizTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 /**
@@ -23,7 +24,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_TITLES);
     }
 
-    public Collection<LearningTitleDAO> getAllByLearningSessionID(final String learningSessionID, final String text) {
+    public Collection<LearningTitleDAO> getAllByLearningSessionID(final String learningSessionID, final String text, final FireBaseCallback<LearningTitleDAO> fireBaseCallback) {
         final List<LearningTitleDAO> result = new ArrayList<>();
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -37,6 +38,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                                 result.add(learningTitleDAO);
                             }
                         }
+                        fireBaseCallback.onCallback(result);
                     }
 
                     @Override
@@ -47,7 +49,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         return result;
     }
 
-    public Collection<LearningTitleDAO> getAllByCreator(final String learningSessionID, final String userId) {
+    public Collection<LearningTitleDAO> getAllByCreator(final String learningSessionID, final String userId, final FireBaseCallback<LearningTitleDAO> fireBaseCallback) {
         final List<LearningTitleDAO> result = new ArrayList<>();
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -61,6 +63,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                                 result.add(learningTitleDAO);
                             }
                         }
+                        fireBaseCallback.onCallback(result);
                     }
 
                     @Override
