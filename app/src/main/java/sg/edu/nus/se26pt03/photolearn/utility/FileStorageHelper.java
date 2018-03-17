@@ -10,11 +10,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -41,24 +44,49 @@ public class FileStorageHelper {
         {
             fileName = UUID.randomUUID().toString() ;
             StorageReference ref = storageReference.child("images/"+ fileName);
-            ref.putFile(uri);
+            ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // Get a URL to the uploaded content
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
 
         }
         return  fileName;
     }
 
-    private Uri downloadFile(String fileName) {
+    private String downloadFile(String fileName) throws IOException{
 
-        //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-        Uri uri=null;
+
+        String[] fsplit= fileName.split(".");
 
         if(fileName != null)
         {
             StorageReference ref = storageReference.child("images/"+ fileName);
-            ref.getFile(uri);
+            ref.getFile(File.createTempFile(fsplit[0], fsplit[1])).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Successfully downloaded data to local file
+                // ...
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle failed download
+                // ...
+            }
+        });
 
         }
-        return  uri;
+        return  fileName;
     }
 
 }
