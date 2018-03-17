@@ -1,6 +1,9 @@
 package sg.edu.nus.se26pt03.photolearn.DAL;
 
 import java.util.Date;
+
+import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
+
 /**
  * Created by chen ping on 11/3/2018.
  * Restructured by MyatMin on 12/3/2018.
@@ -9,7 +12,7 @@ import java.util.Date;
 public class QuizAnswerDAO extends BaseDAO {
     private String QuizItemId;
     private String CreatedBy;
-    private Date Timestamp;
+    private String Timestamp;
 
     public String getQuizItemId() {
         return QuizItemId;
@@ -28,10 +31,12 @@ public class QuizAnswerDAO extends BaseDAO {
     }
 
     public Date getTimestamp() {
-        return Timestamp;
+        DateConversionHelper dateConversionHelper = new DateConversionHelper();
+        return dateConversionHelper.convertStringToDate(Timestamp);
     }
 
     public void setTimestamp(Date timestamp) {
-        Timestamp = timestamp;
+        DateConversionHelper dateConversionHelper = new DateConversionHelper();
+        Timestamp = dateConversionHelper.convertDateToString(timestamp);
     }
 }

@@ -2,27 +2,31 @@ package sg.edu.nus.se26pt03.photolearn.DAL;
 
 import java.util.Date;
 
+import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
+
 /**
  * Created by chen ping on 3/10/2018.
  * Restructured by MyatMin on 12/3/2018.
  */
 
 public class LearningSessionDAO extends BaseDAO {
-    private Date CourseDate;
+    private String CourseDate;
     private String CourseName;
     private String CourseCode;
     private int ModuleNumber;
     private  String ModuleName;
 
     private String CreatedBy;
-    private Date Timestamp;
+    private String Timestamp;
 
     public Date getCourseDate() {
-        return CourseDate;
+        DateConversionHelper dateConversionHelper = new DateConversionHelper();
+        return dateConversionHelper.convertStringToDate(CourseDate);
     }
 
     public void setCourseDate(Date courseDate) {
-        CourseDate = courseDate;
+        DateConversionHelper dateConversionHelper = new DateConversionHelper();
+        CourseDate = dateConversionHelper.convertDateToString(courseDate);
     }
 
     public String getCourseName() {
@@ -66,10 +70,12 @@ public class LearningSessionDAO extends BaseDAO {
     }
 
     public Date getTimestamp() {
-        return Timestamp;
+        DateConversionHelper dateConversionHelper = new DateConversionHelper();
+        return dateConversionHelper.convertStringToDate(Timestamp);
     }
 
     public void setTimestamp(Date timestamp) {
-        Timestamp = timestamp;
+        DateConversionHelper dateConversionHelper = new DateConversionHelper();
+        Timestamp = dateConversionHelper.convertDateToString(timestamp);
     }
 }
