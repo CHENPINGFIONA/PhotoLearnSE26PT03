@@ -12,7 +12,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 /**
  * Created by MyatMin on 08/3/18.
  */
-public class QuizSubmissionFragment extends Fragment {
+public class QuizSubmissionFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

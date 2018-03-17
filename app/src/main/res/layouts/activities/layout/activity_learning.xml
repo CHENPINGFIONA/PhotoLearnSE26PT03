@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="sg.edu.nus.se26pt03.photolearn.fragment.HomeFragment">
+    tools:context="sg.edu.nus.se26pt03.photolearn.activity.LearningActivity">
 
 
     <android.support.v7.widget.Toolbar
