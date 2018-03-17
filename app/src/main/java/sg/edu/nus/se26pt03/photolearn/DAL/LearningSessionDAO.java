@@ -12,6 +12,7 @@ public class LearningSessionDAO extends BaseDAO {
     private String CourseName;
     private String CourseCode;
     private int ModuleNumber;
+    private  String ModuleName;
 
     private String CreatedBy;
     private Date Timestamp;
@@ -46,6 +47,14 @@ public class LearningSessionDAO extends BaseDAO {
 
     public void setModuleNumber(int moduleNumber) {
         ModuleNumber = moduleNumber;
+    }
+
+    public String getModuleName() {
+        return ModuleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        ModuleName = moduleName;
     }
 
     public String getCreatedBy() {

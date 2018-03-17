@@ -8,4 +8,12 @@
     <color name="secondaryDarkColor">#b54f00</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
+    <color name="dangerColor">#DE3C4B</color>
+    <color name="dangerTextColor">#ffffff</color>
+    <color name="warningColor">#F7B05B</color>
+    <color name="warningTextColor">#ffffff</color>
+    <color name="infoColor">#0E6BA8</color>
+    <color name="infoTextColor">#ffffff</color>
+    <color name="successColor">#23CE6B</color>
+    <color name="successTextColor">#ffffff</color>
 </resources>

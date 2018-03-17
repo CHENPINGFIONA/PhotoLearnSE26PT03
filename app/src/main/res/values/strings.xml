@@ -11,6 +11,8 @@
     <string name="button_delete">Delete</string>
 
     <!-- messages-->
+    <string name="tv_learningsessionlist_hint_participant">Search your learnig sessin by learning sessin id to start</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_records_found">No Records Found.</string>
     <string name="enter_title">Enter title</string>

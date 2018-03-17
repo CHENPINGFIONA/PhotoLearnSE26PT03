@@ -11,14 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
 
-        <activity android:name=".activity.SessionActivity">
+        <activity android:name=".activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.DisplayMessageActivity" />
+        <activity android:name=".activity.SessionActivity"></activity>
+        <activity android:name=".activity.LearningActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        
     </application>
 
 </manifest>

@@ -18,19 +18,60 @@ import sg.edu.nus.se26pt03.photolearn.utility.ConvertHelper;
  * Created by chen ping on 7/3/2018.
  */
 
-public class LearningSession {
+public class LearningSession implements ICallback{
     private int id;
     private Date courseDate;
     private String courseName;
     private String courseCode;
     private int moduleNumber;
-    private int createdBy;
+    private String moduleName;
+    private int createdBßy;
     private Date timestamp;
 
     private List<LearningTitle> learningTitles;
     private List<QuizTitle> quizTitles;
     private LearningTitleRepo learningTitleRepo;
     private QuizTitleRepo quizTitleRepo;
+
+    public Date getCourseDate() {
+        return courseDate;
+    }
+
+    public void setCourseDate(Date courseDate) {
+        this.courseDate = courseDate;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public int getModuleNumber() {
+        return moduleNumber;
+    }
+
+    public void setModuleNumber(int moduleNumber) {
+        this.moduleNumber = moduleNumber;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
 
     public LearningSession() {
         learningTitleRepo = new LearningTitleRepo();
@@ -102,5 +143,10 @@ public class LearningSession {
 
     public QuizTitle getQuizTitle(int quizTitleId) {
         return new QuizTitle();
+    }
+
+    @Override
+    public void callback() {
+        
     }
 }
