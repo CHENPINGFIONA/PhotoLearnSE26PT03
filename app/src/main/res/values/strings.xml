@@ -14,13 +14,11 @@
     <string name="tv_learningsessionlist_hint_participant">Search your learnig sessin by learning sessin id to start</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-<<<<<<< HEAD
+
     <string name="ItemImageContentDescription">No Image Found</string>
-    <string name="no_records_found">No Relavent records found</string>
-=======
-    <string name="no_records_found">No Records Found.</string>
+
+  <string name="no_records_found">No Records Found.</string>
     <string name="enter_title">Enter title</string>
 
     <string name="facebook_application_id" translatable="false">1929382460709589</string>
->>>>>>> 10f8d5763ba85a6a311ec5365fa4e16f5bbc6e5a
 </resources>
