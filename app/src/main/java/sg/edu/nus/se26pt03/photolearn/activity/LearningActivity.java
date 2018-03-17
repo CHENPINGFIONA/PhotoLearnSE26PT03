@@ -1,25 +1,18 @@
 package sg.edu.nus.se26pt03.photolearn.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
-import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
-import sg.edu.nus.se26pt03.photolearn.application.AppMode;
-import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningItemListFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionDetailFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionListFragment;
-import sg.edu.nus.se26pt03.photolearn.fragment.LearningTitleListFragment;
 
 public class LearningActivity extends BaseActivity{
 

@@ -5,6 +5,8 @@ import android.app.Application;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 
 /**
  * Created by MyatMin on 9/3/18.

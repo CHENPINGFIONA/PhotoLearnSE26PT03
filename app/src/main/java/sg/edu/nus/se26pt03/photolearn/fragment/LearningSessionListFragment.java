@@ -8,13 +8,11 @@ import android.support.design.widget.FloatingActionButton;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 
 import java.text.ParseException;
@@ -23,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
-import sg.edu.nus.se26pt03.photolearn.application.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.application.App;
-import sg.edu.nus.se26pt03.photolearn.application.AppMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningSessionListAdapter;

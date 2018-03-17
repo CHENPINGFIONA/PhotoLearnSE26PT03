@@ -3,6 +3,8 @@ package sg.edu.nus.se26pt03.photolearn.application;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 
 /**
  * Created by Drake on 17/3/18.

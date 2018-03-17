@@ -1,15 +1,12 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
 
-import android.content.Context;
-import android.icu.text.StringPrepParseException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +16,8 @@ import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.activity.BaseActivity;
 import sg.edu.nus.se26pt03.photolearn.adapter.AppFragmentPagerAdapter;
-import sg.edu.nus.se26pt03.photolearn.application.AccessMode;
-import sg.edu.nus.se26pt03.photolearn.application.AppMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionRouter;
 

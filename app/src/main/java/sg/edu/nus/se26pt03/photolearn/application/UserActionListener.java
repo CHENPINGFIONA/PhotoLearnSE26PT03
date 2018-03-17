@@ -1,14 +1,12 @@
 package sg.edu.nus.se26pt03.photolearn.application;
 
-import android.content.Context;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
-import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 
 /**
  * Created by MyatMin on 13/3/18.
