@@ -11,7 +11,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 /**
  * Created by MyatMin on 08/3/18.
  */
-public class QuizTitleListFragment extends Fragment {
+public class QuizTitleListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -13,7 +13,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 /**
  * Created by MyatMin on 08/3/18.
  */
-public class LearningItemListFragment extends Fragment {
+public class LearningItemListFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
