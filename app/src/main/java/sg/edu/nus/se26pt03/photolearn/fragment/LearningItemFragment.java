@@ -114,6 +114,13 @@ public class LearningItemFragment extends BaseFragment {
         if(super.onBackstack(object)) ttsHelper.StopTalking();
         return true;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ttsHelper.StopTalking();
+    }
+
     /*  @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

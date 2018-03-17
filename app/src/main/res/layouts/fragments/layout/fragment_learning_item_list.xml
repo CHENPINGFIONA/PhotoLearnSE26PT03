@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="sg.edu.nus.se26pt03.photolearn.fragment.LearningItemListFragment">
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_addlearningitem"
         android:layout_width="wrap_content"
@@ -13,7 +14,7 @@
         android:clickable="true"
         android:src="@drawable/ic_add_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_learningitem"
@@ -23,6 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_itemempty_value"
         android:layout_width="0dp"
@@ -45,4 +47,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_popupmenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:forceHasOverlappingRendering="true"
+        android:src="@drawable/ic_more_vert_white_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
