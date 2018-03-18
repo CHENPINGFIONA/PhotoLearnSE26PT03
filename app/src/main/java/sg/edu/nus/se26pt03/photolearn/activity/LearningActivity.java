@@ -8,6 +8,7 @@ import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningItemListFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionDetailFragment;
@@ -34,42 +35,50 @@ public class LearningActivity extends BaseActivity{
             public void onClick(View v) {
                 if (App.currentAppMode == AppMode.TRAINER) App.currentAppMode = AppMode.PARTICIPENT;
                 else if (App.currentAppMode == AppMode.PARTICIPENT) App.currentAppMode = AppMode.TRAINER;
-                //onModeChange(App.currentAppMode);
-                onLoad(new LearningTitle());
+                onModeChange(App.currentAppMode, null);
             }
         });
     }
 
     @Override
-    public boolean onLoad(LearningSession learningSession) {
-        if (super.onLoad(learningSession)) setFragment(R.id.fl_main, new LearningSessionFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
-        return true;
+    public void onModeChange(AppMode appMode, UserActionCallback callback) {
+        super.onModeChange(appMode, new UserActionCallback(){
+            @Override
+            public void onPass() {
+                finish();
+                startActivity(getIntent());
+            }
+        });
     }
 
     @Override
-    public boolean onEdit(LearningSession learningSession) {
-        if (super.onEdit(learningSession)) setFragment(R.id.fl_main, new LearningSessionDetailFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
-        return true;
+    public void onLoad(final LearningSession learningSession, UserActionCallback callback) {
+        super.onLoad(learningSession, new UserActionCallback() {
+            @Override
+            public void onPass() {
+                setFragment(R.id.fl_main, new LearningSessionFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
+            }
+        });
     }
 
     @Override
-    public boolean onCreate(LearningSession learningSession) {
-        if (super.onCreate(learningSession)) setFragment(R.id.fl_main, new LearningSessionDetailFragment(), "New Learning Session",true, null, null);
-        return true;
+    public void onEdit(final LearningSession learningSession, UserActionCallback callback) {
+        super.onCreate(learningSession, new UserActionCallback() {
+            @Override
+            public void onPass() {
+                setFragment(R.id.fl_main, new LearningSessionDetailFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
+            }
+        });
     }
 
     @Override
-    public boolean onModeChange(AppMode appMode) {
-        if (super.onModeChange(appMode)) {
-            finish();
-            startActivity(getIntent());
-        }
-        return true;
+    public void onCreate(final LearningSession learningSession, UserActionCallback callback) {
+        super.onEdit(learningSession, new UserActionCallback() {
+            @Override
+            public void onPass() {
+                setFragment(R.id.fl_main, new LearningSessionDetailFragment(), "New Learning Session",true, null, null);
+            }
+        });
     }
 
-    @Override
-    public boolean onLoad(LearningTitle learningTitle) {
-        if (super.onLoad(learningTitle)) setFragment(R.id.fl_main, new LearningItemListFragment(), "Someing Learning Title", true, null, null);
-    return true;
-    }
 }

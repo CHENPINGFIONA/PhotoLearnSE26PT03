@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
@@ -68,7 +69,7 @@ public class LearningSessionListFragment extends BaseFragment {
         learningSessionListAdapter = new LearningSessionListAdapter(learningSessionList, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
             @Override
             public void onItemClick(LearningSessionListAdapter.LearningSessionViewHolder viewHolder) {
-                onLoad(learningSessionList.get(viewHolder.getAdapterPosition()));
+                onLoad(learningSessionList.get(viewHolder.getAdapterPosition()), null);
             }
         });
     }
@@ -105,7 +106,7 @@ public class LearningSessionListFragment extends BaseFragment {
                             learningSessionListAdapter.notifyItemRangeChanged(position, learningSessionListAdapter.getItemCount());
                             break;
                         case "edit":
-                            onEdit(learningSessionListAdapter.learningSessionList.get(position));
+                            onEdit(learningSessionListAdapter.learningSessionList.get(position), null);
                             break;
                     }
             }
@@ -125,7 +126,7 @@ public class LearningSessionListFragment extends BaseFragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCreate(new LearningSession());
+                onCreate(new LearningSession(), null);
             }
         });
     }

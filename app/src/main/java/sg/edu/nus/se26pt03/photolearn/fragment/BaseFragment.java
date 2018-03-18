@@ -11,15 +11,20 @@ import android.support.v4.view.ViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizAnswer;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.activity.BaseActivity;
 import sg.edu.nus.se26pt03.photolearn.adapter.AppFragmentPagerAdapter;
+import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
-import sg.edu.nus.se26pt03.photolearn.application.UserActionRouter;
+import sg.edu.nus.se26pt03.photolearn.application.UserActionEmitter;
 
 /**
  * Created by MyatMin on 10/3/18.
@@ -32,7 +37,7 @@ public class BaseFragment extends Fragment implements UserActionListener {
     private  String mTitle;
     private  Boolean mStackBack = false;
 
-    private UserActionRouter userActionRouter = new UserActionRouter(this);
+    private UserActionEmitter userActionEmitter = new UserActionEmitter(this);
 
     @Override
     public List<UserActionListener> getRelatives() {
@@ -49,97 +54,167 @@ public class BaseFragment extends Fragment implements UserActionListener {
     }
 
     @Override
-    public final boolean onModeChange(AppMode appMode, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.MODE_CHANGE, false, appMode, source);
+    public final void onModeChange(AppMode appMode, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.MODE_CHANGE, false, appMode, callback, source);
     }
 
     @Override
-    public final boolean onModeChange(AccessMode accessMode, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.MODE_CHANGE, false, accessMode, source);
+    public final void onModeChange(AccessMode accessMode, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.MODE_CHANGE, false, accessMode,callback,  source);
     }
 
     @Override
-    public final boolean onLogIn(User user, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.LOGIN, false, user, source);
+    public final void onLogIn(User user, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.LOGIN, false, user,callback,  source);
     }
 
     @Override
-    public final boolean onLogOut(User user, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.LOGOUT, false, user, source);
+    public final void onLogOut(User user, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.LOGOUT, false, user, callback, source);
     }
 
     @Override
-    public final boolean onBefore(Event event, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.BEFORE, false, event, source);
+    public final void onBefore(Event event, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.BEFORE, false, event,  callback, source);
     }
 
     @Override
-    public final boolean onLoad(Object object, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.LOAD, false, object, source);
+    public final void onLoad(Object object, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.LOAD, false, object, callback, source);
     }
 
     @Override
-    public final boolean onCreate(Object object, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.CREATE, false, object, source);
+    public final void onCreate(Object object, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.CREATE, false, object, callback, source);
     }
 
     @Override
-    public final boolean onEdit(Object object, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.EDIT, false, object, source);
+    public final void onEdit(Object object, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.EDIT, false, object, callback, source);
     }
 
     @Override
-    public final boolean onBackstack(Object object, UserActionListener source) {
-        return userActionRouter.dynamicRoute( Event.BACKSTACK, false, object, source);
+    public final void onBackstack(Object object, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( Event.BACKSTACK, false, object, callback, source);
     }
     @Override
-    public boolean onBefore(Event event) {
-        return userActionRouter.dynamicRoute(Event.BEFORE, true, event, null);
-    }
-
-    @Override
-    public boolean onModeChange(AppMode appMode) {
-        return userActionRouter.dynamicRoute(Event.MODE_CHANGE, true, appMode, null);
+    public void onBefore(Event event, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.BEFORE, true, event, callback, null  );
     }
 
     @Override
-    public boolean onModeChange(AccessMode accessMode) {
-        return userActionRouter.dynamicRoute(Event.MODE_CHANGE, true, accessMode, null);
+    public void onModeChange(AppMode appMode, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.MODE_CHANGE, true, appMode, callback, null);
     }
 
     @Override
-    public  boolean onLogIn(User user) {
-        return userActionRouter.dynamicRoute(Event.LOGIN, true, user, null);
+    public void onModeChange(AccessMode accessMode, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.MODE_CHANGE, true, accessMode, callback, null);
     }
 
     @Override
-    public boolean onLogOut(User user) {
-        return userActionRouter.dynamicRoute(Event.LOGOUT, true, user, null);
+    public  void onLogIn(User user, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.LOGIN, true, user, callback, null);
     }
 
     @Override
-    public boolean onLoad(LearningSession learningSession) {
-        return userActionRouter.dynamicRoute(Event.LOAD, true, learningSession, null);
+    public void onLogOut(User user, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.LOGOUT, true, user, callback, null);
     }
 
     @Override
-    public boolean onLoad(LearningTitle learningTitle) {
-        return userActionRouter.dynamicRoute(Event.LOAD, true, learningTitle, null);
+    public void onLoad(LearningSession learningSession, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.LOAD, true, learningSession, callback, null);
     }
 
     @Override
-    public boolean onCreate(LearningSession learningSession) {
-        return userActionRouter.dynamicRoute(Event.CREATE, true, learningSession, null);
+    public void onLoad(LearningTitle learningTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.LOAD, true, learningTitle, callback, null);
     }
 
     @Override
-    public boolean onEdit(LearningSession learningSession) {
-        return userActionRouter.dynamicRoute(Event.EDIT, true, learningSession, null);
+    public void onLoad(LearningItem learningItem, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.LOAD, true, learningItem, callback, null);
     }
 
     @Override
-    public boolean onBackstack(Object object) {
-        return userActionRouter.dynamicRoute(Event.BACKSTACK, true, object, null);
+    public void onLoad(QuizTitle quizTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.LOAD, true, quizTitle, callback, null);
+    }
+
+    @Override
+    public void onLoad(QuizItem quizItem, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.LOAD, true, quizItem, callback, null);
+    }
+
+    @Override
+    public void onLoad(QuizAnswer quizAnswer, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.LOAD, true, quizAnswer, callback, null);
+    }
+
+    @Override
+    public void onCreate(LearningSession learningSession, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.CREATE, true, learningSession, callback, null);
+    }
+
+    @Override
+    public void onCreate(LearningTitle learningTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.CREATE, true, learningTitle, callback, null);
+    }
+
+    @Override
+    public void onCreate(LearningItem learningItem, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.CREATE, true, learningItem, callback, null);
+    }
+
+    @Override
+    public void onCreate(QuizTitle quizTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.CREATE, true, quizTitle, callback, null);
+    }
+
+    @Override
+    public void onCreate(QuizItem quizItem, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.CREATE, true, quizItem, callback, null);
+    }
+
+    @Override
+    public void onCreate(QuizAnswer quizAnswer, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.CREATE, true, quizAnswer, callback, null);
+    }
+
+    @Override
+    public void onEdit(LearningSession learningSession, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.EDIT, true, learningSession, callback, null);
+    }
+
+    @Override
+    public void onEdit(LearningTitle learningTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.EDIT, true, learningTitle, callback, null);
+    }
+
+    @Override
+    public void onEdit(LearningItem learningItem, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.EDIT, true, learningItem, callback, null);
+    }
+
+    @Override
+    public void onEdit(QuizTitle quizTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.EDIT, true, quizTitle, callback, null);
+    }
+
+    @Override
+    public void onEdit(QuizItem quizItem, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.EDIT, true, quizItem, callback, null);
+    }
+
+    @Override
+    public void onEdit(QuizAnswer quizAnswer, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.EDIT, true, quizAnswer, callback, null);
+    }
+
+    @Override
+    public void onBackstack(Object object, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(Event.BACKSTACK, true, object, callback, null);
     }
 
     @Override

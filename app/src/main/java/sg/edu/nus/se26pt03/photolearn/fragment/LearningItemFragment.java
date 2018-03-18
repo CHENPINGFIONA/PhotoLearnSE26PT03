@@ -96,30 +96,30 @@ public class LearningItemFragment extends BaseFragment {
 
         return rootView;
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public boolean onBefore(Event event) {
-        if (super.onBefore(event)) Log.d("Test", "Stop irriitated TTTTT");
-        return  true;
-    }
-
-    @Override
-    public boolean onBackstack(Object object) {
-
-        if(super.onBackstack(object)) ttsHelper.StopTalking();
-        return true;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        ttsHelper.StopTalking();
-    }
+//
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//    }
+//
+//    @Override
+//    public boolean onBefore(Event event) {
+//        if (super.onBefore(event)) Log.d("Test", "Stop irriitated TTTTT");
+//        return  true;
+//    }
+//
+//    @Override
+//    public boolean onBackstack(Object object) {
+//
+//        if(super.onBackstack(object)) ttsHelper.StopTalking();
+//        return true;
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        ttsHelper.StopTalking();
+//    }
 
     /*  @Override
     public void onConfigurationChanged(Configuration newConfig) {

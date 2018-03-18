@@ -2,8 +2,12 @@ package sg.edu.nus.se26pt03.photolearn.application;
 
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizAnswer;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
@@ -25,27 +29,43 @@ public interface UserActionListener {
     }
     List<UserActionListener> getRelatives();
 
-    boolean onBefore(Event event, UserActionListener source);
-    boolean onModeChange(AppMode appMode, UserActionListener source);
-    boolean onModeChange(AccessMode accessMode, UserActionListener source);
-    boolean onLogIn(User user, UserActionListener source);
-    boolean onLogOut(User user, UserActionListener source);
-    boolean onLoad(Object object, UserActionListener source);
-    boolean onCreate(Object object, UserActionListener source);
-    boolean onEdit(Object object, UserActionListener source);
-    boolean onBackstack(Object object, UserActionListener source);
+    void onBefore(Event event, UserActionCallback callback, UserActionListener source);
+    void onModeChange(AppMode appMode, UserActionCallback callback, UserActionListener source);
+    void onModeChange(AccessMode accessMode, UserActionCallback callback, UserActionListener source);
+    void onLogIn(User user, UserActionCallback callback, UserActionListener source);
+    void onLogOut(User user, UserActionCallback callback, UserActionListener source);
+    void onLoad(Object object, UserActionCallback callback, UserActionListener source);
+    void onCreate(Object object, UserActionCallback callback, UserActionListener source);
+    void onEdit(Object object, UserActionCallback callback, UserActionListener source);
+    void onBackstack(Object object, UserActionCallback callback, UserActionListener source);
 
-    boolean onBefore(Event event);
-    boolean onModeChange(AppMode appMode);
-    boolean onModeChange(AccessMode accessMode);
-    boolean onLogIn(User user);
-    boolean onLogOut(User user);
-    boolean onLoad(LearningSession learningSession);
-    boolean onLoad(LearningTitle learningTitle);
-    boolean onCreate(LearningSession learningSession);
-    boolean onEdit(LearningSession learningSession);
-    boolean onBackstack(Object object);
+    void onBefore(Event event, UserActionCallback callback);
+    void onModeChange(AppMode appMode, UserActionCallback callback);
+    void onModeChange(AccessMode accessMode, UserActionCallback callback);
+    void onLogIn(User user, UserActionCallback callback);
+    void onLogOut(User user, UserActionCallback callback);
 
-//    boolean dynamicRoute(Event event, boolean outbound, Object object);
+    void onLoad(LearningSession learningSession, UserActionCallback callback);
+    void onLoad(LearningTitle learningTitle, UserActionCallback callback);
+    void onLoad(LearningItem learningItem, UserActionCallback callback);
+    void onLoad(QuizTitle quizTitle, UserActionCallback callback);
+    void onLoad(QuizItem quizItem, UserActionCallback callback);
+    void onLoad(QuizAnswer quizAnswer, UserActionCallback callback);
+
+    void onCreate(LearningSession learningSession, UserActionCallback callback);
+    void onCreate(LearningTitle learningTitle, UserActionCallback callback);
+    void onCreate(LearningItem learningItem, UserActionCallback callback);
+    void onCreate(QuizTitle quizTitle, UserActionCallback callback);
+    void onCreate(QuizItem quizItem, UserActionCallback callback);
+    void onCreate(QuizAnswer quizAnswer, UserActionCallback callback);
+
+    void onEdit(LearningSession learningSession, UserActionCallback callback);
+    void onEdit(LearningTitle learningTitle, UserActionCallback callback);
+    void onEdit(LearningItem learningItem, UserActionCallback callback);
+    void onEdit(QuizTitle quizTitle, UserActionCallback callback);
+    void onEdit(QuizItem quizItem, UserActionCallback callback);
+    void onEdit(QuizAnswer quizAnswer, UserActionCallback callback);
+
+    void onBackstack(Object object, UserActionCallback callback);
 
 }
