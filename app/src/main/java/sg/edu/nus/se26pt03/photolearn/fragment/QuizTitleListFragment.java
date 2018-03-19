@@ -54,9 +54,7 @@ public class QuizTitleListFragment extends BaseFragment {
 
         tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_value);
 
-        List<QuizTitle> titles = App.session.getQuizTitles(sessionId);
-
-        quizTitleListAdapter = new QuizTitleListAdapter(titles, sessionId);
+        quizTitleListAdapter = new QuizTitleListAdapter(sessionId);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rvQuizTitle.setLayoutManager(mLayoutManager);
         rvQuizTitle.setItemAnimator(new DefaultItemAnimator());

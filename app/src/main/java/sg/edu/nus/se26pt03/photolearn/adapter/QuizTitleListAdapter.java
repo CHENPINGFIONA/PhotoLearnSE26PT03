@@ -12,11 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.database.FireBaseCallback;
 
 /**
  * Created by chen ping on 11/3/2018.
@@ -42,15 +44,20 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
         }
     }
 
-    public QuizTitleListAdapter(List<QuizTitle> titles, String sessionId) {
-        this.titles = titles;
+    public QuizTitleListAdapter(String sessionId) {
+        this.titles = new ArrayList<>();
         this.sessionId = sessionId;
     }
 
     public void refreshQuizTitles() {
-        titles.clear();
-        titles.addAll(App.session.getQuizTitles(this.sessionId));
-        notifyDataSetChanged();
+        App.session.getQuizTitles(this.sessionId, new FireBaseCallback<QuizTitle>() {
+            @Override
+            public void onCallback(List<QuizTitle> itemList) {
+                titles.clear();
+                titles.addAll(itemList);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
