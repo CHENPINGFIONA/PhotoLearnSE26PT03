@@ -1,7 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.application;
 
 /**
- * Created by Drake on 17/3/18.
+ * Created by MyatMin on 17/3/18.
  */
 
 public class UserActionCallback implements IUserActionCallback {

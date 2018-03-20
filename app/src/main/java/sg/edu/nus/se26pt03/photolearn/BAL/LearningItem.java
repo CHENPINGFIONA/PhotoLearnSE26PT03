@@ -7,12 +7,4 @@ import java.util.Date;
  */
 
 public class LearningItem extends Item {
-    private String GPS;
-    public void playAudio() {
-        //read content
-    }
-
-    public  void displayPhoto(){
-
-    }
 }

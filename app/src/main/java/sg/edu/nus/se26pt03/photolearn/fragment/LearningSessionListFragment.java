@@ -9,11 +9,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.DAL.LearningSessionDAO;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
+import sg.edu.nus.se26pt03.photolearn.database.LearningSessionRepo;
+import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
@@ -34,6 +44,7 @@ import sg.edu.nus.se26pt03.photolearn.adapter.LearningSessionListAdapter;
  */
 public class LearningSessionListFragment extends BaseFragment {
     private LearningSessionListAdapter learningSessionListAdapter;
+    private LearningSessionRepo a = new LearningSessionRepo();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,6 +86,47 @@ public class LearningSessionListFragment extends BaseFragment {
     }
 
     private void setupViews() {
+        // Write a message to the database
+//        LearningSessionDAO l = new LearningSessionDAO();
+//        l.setCourseCode("iot");
+//        l.setCourseName("Internet of Things");
+//        LearningSessionDAO l2 = new LearningSessionDAO();
+//        l2.setCourseCode("iot");
+//        l2.setCourseName("Internet of Things 2");
+//        l.setCourseName("Internet of Things");
+//        LearningSessionDAO l3 = new LearningSessionDAO();
+//        l3.setCourseCode("iot");
+//        l3.setCourseName("Internet of Things 3");
+//        List <LearningSessionDAO> m = new ArrayList<LearningSessionDAO>();
+//        m.add(l);
+//        m.add(l2);
+//        l3.setNested(m);
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("LearningSessions");
+//        String a = myRef.push().getKey();
+//        myRef.child(a).setValue(l3);
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                LearningSessionDAO value = dataSnapshot.getValue(LearningSessionDAO.class);
+//                Log.d("dd", "Value is: " + value);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w("ddd", "Failed to read value.", error.toException());
+//            }
+//        });
+        a.getAll(new RepoCallback<LearningSessionDAO>() {
+            @Override
+            public void onRecieved(List<LearningSessionDAO> data) {
+                Log.d("aa", data.toString());
+            }
+        });
+
         if (learningSessionListAdapter.learningSessionList.size() >0) getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
         switch (App.currentAppMode) {
             case TRAINER:

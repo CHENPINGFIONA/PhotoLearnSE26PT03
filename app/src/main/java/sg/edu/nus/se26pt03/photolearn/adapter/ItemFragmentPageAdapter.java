@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.Coordinate;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningItemFragment;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
@@ -26,18 +27,15 @@ public class ItemFragmentPageAdapter extends FragmentStatePagerAdapter {
         LearningItem item=new LearningItem();
         item.setContent(" Content for basic \n Content for basic \n Content for basic \n Content for basic \n Content for basic \n Content for basic \n Content for basic \n Content for basic \n Content for basic \n Content for basic \n Content for basic usage Content for basic usageContent for basic usageContent for basic usageContent for basic usageContent for basic usageContent for basic usage \n Content for basic usage Content for basic usageContent for basic usageContent for basic usageContent for basic usageContent for basic usageContent for basic usage \n Content for basic usage Content for basic usageContent for basic usageContent for basic usageContent for basic usageContent for basic usageContent for basic usage \n Content for basic usage \n Content for basic usage \n Content for basic usage \n Content for basic usage");
         item.setPhotoURL("http://i63.tinypic.com/2yjzcrr.jpg");
-        item.setLatitude(37.137089);
-        item.setLongitude(-93.276932);
+        item.setCoordinate(new Coordinate(37.137089, -93.276932) );
         LearningItem item2=new LearningItem();
         item2.setContent("Content for basic usage 23");
         item2.setPhotoURL("http://i63.tinypic.com/rrmh4y.jpg");
-        item2.setLatitude(51.507351);
-        item2.setLongitude(-0.127758);
+        item.setCoordinate(new Coordinate(51.507351, -0.127758) );
         LearningItem item3=new LearningItem();
         item3.setContent("Content for basic usage 24");
         item3.setPhotoURL("http://i64.tinypic.com/mv3kb7.jpg");
-        item3.setLatitude(26.820553);
-        item3.setLongitude(30.802498);
+        item.setCoordinate(new Coordinate(26.820553, 30.802498) );
         this.learningItemList.add(item);
         this.learningItemList.add(item2);
         this.learningItemList.add(item3);

@@ -73,8 +73,10 @@ public class LearningItemFragment extends BaseFragment {
         txtContentView.setMovementMethod(new ScrollingMovementMethod());
         TextView txtViewLocation = rootView.findViewById(R.id.txtViewLocation);
         ImageButton btnTTS = rootView.findViewById(R.id.TTSImageButton);
-        String location=gpsHelper.GetLocationByLatandLongitudeAsString(Double.valueOf(learningItem.getLatitude()),Double.valueOf(learningItem.getLongitude()));
-        txtViewLocation.setText(location);
+        if (learningItem.getCoordinate() != null) {
+            String location = gpsHelper.GetLocationByLatandLongitudeAsString(Double.valueOf(learningItem.getCoordinate().getLatitude()), Double.valueOf(learningItem.getCoordinate().getLongitude()));
+            txtViewLocation.setText(location);
+        }
         ttsHelper.setTtsButton(btnTTS);
         ttsHelper.setTexttoSpeak(learningItem.getContent());
         try {

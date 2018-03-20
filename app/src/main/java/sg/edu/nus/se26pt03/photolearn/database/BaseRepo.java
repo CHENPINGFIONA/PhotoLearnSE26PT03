@@ -1,5 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.database;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
+import sg.edu.nus.se26pt03.photolearn.fragment.LoginFragment;
 
 /**
  * Created by chen ping on 11/3/2018.
@@ -104,7 +107,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
     }
 
     @Override
-    public Collection<T> getAll() {
+    public Collection<T> getAll(final RepoCallback<T> callback) {
         final List<T> result = new ArrayList<>();
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -115,6 +118,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             result.add(getValue(childDataSnapshot));
                         }
+                        callback.onRecieved(result);
                     }
 
                     @Override

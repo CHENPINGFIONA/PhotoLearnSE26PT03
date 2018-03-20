@@ -1,15 +1,21 @@
 package sg.edu.nus.se26pt03.photolearn.DAL;
 
-import java.util.Date;
+import android.animation.TypeConverter;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.Date;
+import java.util.List;
+
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 /**
  * Created by chen ping on 3/10/2018.
  * Restructured by MyatMin on 12/3/2018.
  */
-
-public class LearningSessionDAO extends BaseDAO {
+@IgnoreExtraProperties
+public class LearningSessionDAO extends BaseDAO{
     private String CourseDate;
     private String CourseName;
     private String CourseCode;
@@ -18,6 +24,17 @@ public class LearningSessionDAO extends BaseDAO {
 
     private String CreatedBy;
     private String Timestamp;
+
+//    @Override
+//    public LearningSession convert(LearningSessionDAO value) {
+//        LearningSession learningSession = new LearningSession();
+//        learningSession.setCourseDate(value.getCourseDate());
+//        learningSession.setCourseCode(value.getCourseCode());
+//        learningSession.setCourseName(value.getCourseName());
+//        learningSession.setModuleNumber(value.getModuleNumber());
+//        learningSession.setModuleName(value.getModuleName());
+//        return learningSession;
+//    }
 
     public Date getCourseDate() {
         if (CourseDate == null) {
