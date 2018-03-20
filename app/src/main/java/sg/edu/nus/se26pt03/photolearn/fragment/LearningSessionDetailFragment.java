@@ -31,6 +31,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
                 .setTitle("Title")
                 .setMessage("Your unsaved data will be lost.\n Are you sure you wanted to continue?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         callback.onPass();
                     }})

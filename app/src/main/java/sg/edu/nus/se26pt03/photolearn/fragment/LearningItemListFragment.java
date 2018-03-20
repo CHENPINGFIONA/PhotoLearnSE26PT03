@@ -13,8 +13,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
@@ -58,11 +61,25 @@ public class LearningItemListFragment extends BaseFragment {
        // Delete= (FloatingActionButton) findViewById(R.id.DeleteItemfloatingActionButton);
        // Edit=(FloatingActionButton) findViewById(R.id.EditItemfloatingActionButton);
 
+
+
         mPager = (ViewPager) view.findViewById(R.id.vp_learningitem);
         mPagerAdapter = new ItemFragmentPageAdapter(getFragmentManager(), "1");
         mPager.setAdapter(mPagerAdapter);
         return view;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ImageView imageView = (ImageView) getView().findViewById(R.id.img_popupmenu);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEdit(new LearningItem(), null);
+            }
+        });
+    }
+
     @Override
     public void onResume() {
         super.onResume();

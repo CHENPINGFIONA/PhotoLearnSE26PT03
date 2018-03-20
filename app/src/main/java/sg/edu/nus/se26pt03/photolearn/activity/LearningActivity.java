@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
+import sg.edu.nus.se26pt03.photolearn.fragment.LearnigItemDetailFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningItemListFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionDetailFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionFragment;
@@ -73,6 +75,16 @@ public class LearningActivity extends BaseActivity{
     }
 
     @Override
+    public void onEdit(LearningItem learningItem, UserActionCallback callback) {
+        super.onEdit(learningItem, new UserActionCallback() {
+            @Override
+            public void onPass() {
+                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2",true, null, null);
+            }
+        });
+    }
+
+    @Override
     public void onCreate(final LearningSession learningSession, UserActionCallback callback) {
         super.onEdit(learningSession, new UserActionCallback() {
             @Override
@@ -87,7 +99,7 @@ public class LearningActivity extends BaseActivity{
         super.onLoad(learningTitle, new UserActionCallback(){
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, new LearningItemListFragment(),"Learning Item List", true, null, null);
+                setFragment(R.id.fl_main, new LearningItemListFragment(),"Learning Title 1", true, null, null);
             }
         });
     }
