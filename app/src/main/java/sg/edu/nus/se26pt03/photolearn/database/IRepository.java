@@ -13,7 +13,7 @@ public interface IRepository<T extends BaseDAO> {
 
     T save(T t);
 
-    T update(T t);
+    T update(T t, ICallback<Boolean> iCallback);
 
     void delete(T t, ICallback<Boolean> iCallback);
 

@@ -91,8 +91,8 @@ public class LearningSession {
         learningTitleRepo.save(ConvertHelper.toLearningTitleDao(title));
     }
 
-    public void updateLearningTitle(LearningTitle title) {
-        learningTitleRepo.update(ConvertHelper.toLearningTitleDao(title));
+    public void updateLearningTitle(LearningTitle title, ICallback<Boolean> iCallback) {
+        learningTitleRepo.update(ConvertHelper.toLearningTitleDao(title), iCallback);
     }
 
     public void deleteLearningTitle(LearningTitle title, ICallback<Boolean> iCallback) {
@@ -126,8 +126,8 @@ public class LearningSession {
         repo.save(ConvertHelper.toQuizTitleDao(title));
     }
 
-    public void updateQuizTitle(QuizTitle title) {
-        quizTitleRepo.update(ConvertHelper.toQuizTitleDao(title));
+    public void updateQuizTitle(QuizTitle title, ICallback<Boolean> iCallback) {
+        quizTitleRepo.update(ConvertHelper.toQuizTitleDao(title), iCallback);
     }
 
     public void deleteQuizTitle(QuizTitle title, ICallback<Boolean> iCallback) {
