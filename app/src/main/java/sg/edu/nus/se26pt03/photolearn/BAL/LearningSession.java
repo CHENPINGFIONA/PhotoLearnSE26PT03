@@ -20,20 +20,35 @@ import sg.edu.nus.se26pt03.photolearn.utility.ConvertHelper;
  */
 
 public class LearningSession {
-    private int id;
+    private String id;
     private Date courseDate;
     private String courseName;
     private String courseCode;
     private int moduleNumber;
     private String moduleName;
 
-    private int createdBy;
     private Date timestamp;
 
     private List<LearningTitle> learningTitles;
     private List<QuizTitle> quizTitles;
     private LearningTitleRepo learningTitleRepo;
     private QuizTitleRepo quizTitleRepo;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public Date getCourseDate() {
         return courseDate;

@@ -22,7 +22,6 @@ public class LearningSessionDAO extends BaseDAO{
     private int ModuleNumber;
     private  String ModuleName;
 
-    private String CreatedBy;
     private String Timestamp;
 
 //    @Override
