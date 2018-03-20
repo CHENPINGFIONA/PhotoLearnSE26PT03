@@ -33,10 +33,7 @@ import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class LearningTitleListFragment extends BaseFragment {
-    private SearchView svSearchView;
-    private TextView tvEmpty;
     private LearningTitleListAdapter learningTitleListAdapter;
-    private Dialog dialog;
     private int role;
     private int mode;
     private String sessionId;
@@ -85,10 +82,10 @@ public class LearningTitleListFragment extends BaseFragment {
         rvLearningTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvLearningTitle.setAdapter(learningTitleListAdapter);
 
-        tvEmpty = getView().findViewById(R.id.tv_empty_value);
+        TextView tvEmpty = getView().findViewById(R.id.tv_empty_value);
         tvEmpty.setVisibility(learningTitleListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
 
-        svSearchView = getView().findViewById(R.id.sv_learningtitle);
+        SearchView svSearchView = getView().findViewById(R.id.sv_learningtitle);
         svSearchView.setVisibility(mode == AccessMode.toInt(AccessMode.VIEW) ? View.VISIBLE : View.GONE);
         svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -131,16 +128,10 @@ public class LearningTitleListFragment extends BaseFragment {
                         App.session.deleteLearningTitle(learningTitleListAdapter.learningTitleList.get(position), new ICallback<Boolean>() {
                             @Override
                             public void onCallback(Boolean item) {
-//                                if (item) {
-//                                    learningTitleListAdapter.learningTitleList.remove(position);
-//                                    learningTitleListAdapter.notifyItemRemoved(position);
-//                                    learningTitleListAdapter.notifyItemRangeChanged(position, learningTitleListAdapter.getItemCount());
-//                                }
                                 loadLearningTitleList();
                             }
                         });
 
-                        //loadLearningTitleList();
                         break;
                     case "edit":
                         //onEdit(learningSessionListAdapter.learningSessionList.get(position), null);
@@ -163,7 +154,6 @@ public class LearningTitleListFragment extends BaseFragment {
     private void setupControls() {
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningtitlelist);
         // floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
-        floatingActionButton.setVisibility(View.VISIBLE);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,7 +163,7 @@ public class LearningTitleListFragment extends BaseFragment {
     }
 
     private void showDialogue(LearningTitle title) {
-        dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_title);
         dialog.show();

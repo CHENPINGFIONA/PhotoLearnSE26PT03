@@ -1,11 +1,9 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
-
 import android.app.Dialog;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
@@ -35,25 +32,16 @@ import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class QuizTitleListFragment extends BaseFragment {
-    private TextView tvEmpty;
     private QuizTitleListAdapter quizTitleListAdapter;
-    private Dialog dialog;
     private int role;
     private String sessionId;
     private int mode;
     private String userId;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View fragmentView = inflater.inflate(R.layout.fragment_quiz_title_list, container, false);
-        RecyclerView rvQuizTitle = (RecyclerView) fragmentView.findViewById(R.id.rv_quiz_title);
+        // View fragmentView = inflater.inflate(R.layout.fragment_quiz_title_list, container, false);
         //  sessionId = this.getArguments().getString("sessionId");
         sessionId = "1";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
@@ -94,7 +82,7 @@ public class QuizTitleListFragment extends BaseFragment {
         rvQuizTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvQuizTitle.setAdapter(quizTitleListAdapter);
 
-        tvEmpty = getView().findViewById(R.id.tv_empty_value);
+        TextView tvEmpty = getView().findViewById(R.id.tv_empty_value);
         tvEmpty.setVisibility(quizTitleListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
 
         final SwipeController swipeController = new SwipeController(0, (App.currentAccessMode == AccessMode.EDIT ? R.layout.partial_swipe_item : 0)) {
@@ -131,9 +119,7 @@ public class QuizTitleListFragment extends BaseFragment {
         };
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         itemTouchhelper.attachToRecyclerView(rvQuizTitle);
-        rvQuizTitle.addItemDecoration(new RecyclerView.ItemDecoration()
-
-        {
+        rvQuizTitle.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
                 swipeController.onDraw(c);
@@ -143,7 +129,7 @@ public class QuizTitleListFragment extends BaseFragment {
 
     private void setupControls() {
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_quiztitlelist);
-        floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
+        //floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +139,7 @@ public class QuizTitleListFragment extends BaseFragment {
     }
 
     private void showDialogue(QuizTitle title) {
-        dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_title);
         dialog.show();

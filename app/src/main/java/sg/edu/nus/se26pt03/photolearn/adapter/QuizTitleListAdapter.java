@@ -21,14 +21,14 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
     public List<QuizTitle> quizTitleList;
     public QuizTitleViewHolderClick quizTitleViewHolderClick;
 
- public QuizTitleListAdapter(List<QuizTitle> quizTitleList, QuizTitleViewHolderClick quizTitleViewHolderClick) {
+    public QuizTitleListAdapter(List<QuizTitle> quizTitleList, QuizTitleViewHolderClick quizTitleViewHolderClick) {
         this.quizTitleList = quizTitleList;
         this.quizTitleViewHolderClick = quizTitleViewHolderClick;
     }
 
     @Override
     public QuizTitleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_learning_title, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quiz_title, parent, false);
         final QuizTitleViewHolder quizTitleViewHolder = new QuizTitleViewHolder(itemView);
         itemView.setOnTouchListener(new View.OnTouchListener() {
             int MAX_CLICK_DURATION = 200;
@@ -74,7 +74,7 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
 
         public QuizTitleViewHolder(final View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tv_learningTitle_title);
+            tvTitle = itemView.findViewById(R.id.tv_quizTitle_title);
         }
     }
 }
