@@ -30,6 +30,7 @@ import java.util.List;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningSessionDAO;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
+import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
 import sg.edu.nus.se26pt03.photolearn.database.LearningSessionRepo;
 import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
@@ -120,9 +121,9 @@ public class LearningSessionListFragment extends BaseFragment {
 //                Log.w("ddd", "Failed to read value.", error.toException());
 //            }
 //        });
-        a.getAll(new RepoCallback<LearningSessionDAO>() {
+        a.getAll(new IListCallback<LearningSessionDAO>() {
             @Override
-            public void onRecieved(List<LearningSessionDAO> data) {
+            public void onCallback(List<LearningSessionDAO> data) {
                 Log.d("aa", data.toString());
             }
         });

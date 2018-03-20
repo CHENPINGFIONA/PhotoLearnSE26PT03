@@ -16,6 +16,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
  */
 @IgnoreExtraProperties
 public class LearningSessionDAO extends BaseDAO{
+    private String id;
     private String CourseDate;
     private String CourseName;
     private String CourseCode;
@@ -24,16 +25,15 @@ public class LearningSessionDAO extends BaseDAO{
 
     private String Timestamp;
 
-//    @Override
-//    public LearningSession convert(LearningSessionDAO value) {
-//        LearningSession learningSession = new LearningSession();
-//        learningSession.setCourseDate(value.getCourseDate());
-//        learningSession.setCourseCode(value.getCourseCode());
-//        learningSession.setCourseName(value.getCourseName());
-//        learningSession.setModuleNumber(value.getModuleNumber());
-//        learningSession.setModuleName(value.getModuleName());
-//        return learningSession;
-//    }
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Date getCourseDate() {
         if (CourseDate == null) {
@@ -85,13 +85,7 @@ public class LearningSessionDAO extends BaseDAO{
         ModuleName = moduleName;
     }
 
-    public String getCreatedBy() {
-        return CreatedBy;
-    }
 
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
-    }
 
     public Date getTimestamp() {
         if (Timestamp == null) {
