@@ -12,9 +12,14 @@ import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
 public interface IRepository<T extends BaseDAO> {
 
     T save(T t);
+
     T update(T t);
-    boolean delete(T t);
-    boolean deleteById(String id);
-    T getById(String id, FireBaseCallback<T> fireBaseCallback);
+
+    void delete(T t, ICallback<Boolean> iCallback);
+
+    void deleteById(String id, ICallback<Boolean> iCallback);
+
+    T getById(String id, IListCallback<T> iListCallback);
+
     Collection<T> getAll(RepoCallback<T> callback);
 }

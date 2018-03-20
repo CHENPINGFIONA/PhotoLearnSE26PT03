@@ -21,7 +21,6 @@ import sg.edu.nus.se26pt03.photolearn.fragment.LoginFragment;
  */
 
 public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T> {
-
     protected DatabaseReference mDatabaseRef;
     private final Class<T> tClass;
 
@@ -57,31 +56,45 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
     }
 
     @Override
-    public boolean delete(T t) {
+    public void delete(T t, final ICallback<Boolean> iCallback) {
         DatabaseReference databaseReference = mDatabaseRef.child(t.getId());
         if (databaseReference == null) {
-            //log item not found
-            return false;
-        } else {
-            databaseReference.removeValue();
-            return true;
+            iCallback.onCallback(false);
         }
+
+        databaseReference.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    iCallback.onCallback(false);
+                } else {
+                    iCallback.onCallback(true);
+                }
+            }
+        });
     }
 
     @Override
-    public boolean deleteById(String id) {
+    public void deleteById(String id, final ICallback<Boolean> iCallback) {
         DatabaseReference databaseReference = mDatabaseRef.child(id);
         if (databaseReference == null) {
-            //log item not found
-            return false;
-        } else {
-            databaseReference.removeValue();
-            return true;
+            iCallback.onCallback(false);
         }
+
+        databaseReference.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    iCallback.onCallback(false);
+                } else {
+                    iCallback.onCallback(true);
+                }
+            }
+        });
     }
 
     @Override
-    public T getById(String id, final FireBaseCallback<T> fireBaseCallback) {
+    public T getById(String id, final IListCallback<T> iListCallback) {
         final List<T> result = new ArrayList<>();
         mDatabaseRef.child(id).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -90,7 +103,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
                         //use the onDataChange() method to read a static snapshot of the contents at a given path
                         // Get Post object and use the values to update the UI
                         result.add(getValue(dataSnapshot));
-                        fireBaseCallback.onCallback(result);
+                        iListCallback.onCallback(result);
                     }
 
                     @Override

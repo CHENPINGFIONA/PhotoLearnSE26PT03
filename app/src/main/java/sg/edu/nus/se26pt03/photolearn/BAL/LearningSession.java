@@ -3,13 +3,13 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.DAL.QuizTitleDAO;
-import sg.edu.nus.se26pt03.photolearn.database.FireBaseCallback;
+import sg.edu.nus.se26pt03.photolearn.database.ICallback;
+import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
 import sg.edu.nus.se26pt03.photolearn.database.LearningTitleRepo;
 import sg.edu.nus.se26pt03.photolearn.database.QuizTitleRepo;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
@@ -26,6 +26,7 @@ public class LearningSession {
     private String courseCode;
     private int moduleNumber;
     private String moduleName;
+
     private int createdBy;
     private Date timestamp;
 
@@ -94,24 +95,23 @@ public class LearningSession {
         learningTitleRepo.update(ConvertHelper.toLearningTitleDao(title));
     }
 
-    public void deleteLearningTitle(LearningTitle title) {
-        learningTitleRepo.delete(ConvertHelper.toLearningTitleDao(title));
+    public void deleteLearningTitle(LearningTitle title, ICallback<Boolean> iCallback) {
+        learningTitleRepo.delete(ConvertHelper.toLearningTitleDao(title), iCallback);
     }
 
-
-    public void getLearningTitles(String learningSessionId, String userId, int mode, String text, final FireBaseCallback<LearningTitle> fireBaseCallback) {
+    public void getLearningTitles(String learningSessionId, String userId, int mode, String text, final IListCallback<LearningTitle> iListCallback) {
         if (mode == AccessMode.toInt(AccessMode.EDIT)) {
-            learningTitleRepo.getAllByCreator(learningSessionId, userId, new FireBaseCallback<LearningTitleDAO>() {
+            learningTitleRepo.getAllByCreator(learningSessionId, userId, new IListCallback<LearningTitleDAO>() {
                 @Override
                 public void onCallback(List<LearningTitleDAO> itemList) {
-                    fireBaseCallback.onCallback(processLearningTitles(itemList));
+                    iListCallback.onCallback(processLearningTitles(itemList));
                 }
             });
         } else {
-            learningTitleRepo.getAllByLearningSessionID(learningSessionId, text, new FireBaseCallback<LearningTitleDAO>() {
+            learningTitleRepo.getAllByLearningSessionID(learningSessionId, text, new IListCallback<LearningTitleDAO>() {
                 @Override
                 public void onCallback(List<LearningTitleDAO> itemList) {
-                    fireBaseCallback.onCallback(processLearningTitles(itemList));
+                    iListCallback.onCallback(processLearningTitles(itemList));
                 }
             });
         }
@@ -130,15 +130,15 @@ public class LearningSession {
         quizTitleRepo.update(ConvertHelper.toQuizTitleDao(title));
     }
 
-    public void deleteQuizTitle(QuizTitle title) {
-        quizTitleRepo.delete(ConvertHelper.toQuizTitleDao(title));
+    public void deleteQuizTitle(QuizTitle title, ICallback<Boolean> iCallback) {
+        quizTitleRepo.delete(ConvertHelper.toQuizTitleDao(title), iCallback);
     }
 
-    public void getQuizTitles(String learningSessionId, final FireBaseCallback<QuizTitle> fireBaseCallback) {
-        quizTitleRepo.getAllByLearningSessionID(learningSessionId, new FireBaseCallback<QuizTitleDAO>() {
+    public void getQuizTitles(String learningSessionId, final IListCallback<QuizTitle> iListCallback) {
+        quizTitleRepo.getAllByLearningSessionID(learningSessionId, new IListCallback<QuizTitleDAO>() {
             @Override
             public void onCallback(List<QuizTitleDAO> itemList) {
-                fireBaseCallback.onCallback(processQuizTitles(itemList));
+                iListCallback.onCallback(processQuizTitles(itemList));
             }
         });
     }

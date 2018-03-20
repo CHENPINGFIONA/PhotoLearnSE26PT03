@@ -6,6 +6,6 @@ import java.util.List;
  * Created by Administrator on 2018/3/17.
  */
 
-public interface FireBaseCallback<T> {
+public interface IListCallback<T> {
     void onCallback(List<T> itemList);
 }

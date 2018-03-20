@@ -22,7 +22,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_TITLES);
     }
 
-    public void getAllByLearningSessionID(final String learningSessionID, final String text, final FireBaseCallback<LearningTitleDAO> fireBaseCallback) {
+    public void getAllByLearningSessionID(final String learningSessionID, final String text, final IListCallback<LearningTitleDAO> iListCallback) {
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -34,7 +34,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                                 result.add(learningTitleDAO);
                             }
                         }
-                        fireBaseCallback.onCallback(result);
+                        iListCallback.onCallback(result);
                     }
 
                     @Override
@@ -44,7 +44,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                 });
     }
 
-    public void getAllByCreator(final String learningSessionID, final String userId, final FireBaseCallback<LearningTitleDAO> fireBaseCallback) {
+    public void getAllByCreator(final String learningSessionID, final String userId, final IListCallback<LearningTitleDAO> iListCallback) {
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -56,7 +56,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                                 result.add(learningTitleDAO);
                             }
                         }
-                        fireBaseCallback.onCallback(result);
+                        iListCallback.onCallback(result);
                     }
 
                     @Override
