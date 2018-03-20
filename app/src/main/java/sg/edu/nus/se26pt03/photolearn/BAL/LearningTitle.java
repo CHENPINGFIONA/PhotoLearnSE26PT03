@@ -1,5 +1,6 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by chen ping on 7/3/2018.
  */
 
-public class LearningTitle extends Title {
+public class LearningTitle extends Title implements Serializable {
     private List<LearningItem> learningItems;
 
     public LearningTitle() {

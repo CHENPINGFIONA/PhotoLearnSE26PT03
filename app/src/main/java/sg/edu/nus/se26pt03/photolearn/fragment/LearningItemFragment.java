@@ -1,6 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
 
+import android.app.FragmentManager;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.R;
+import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.GPSHelper;
@@ -43,6 +45,7 @@ public class LearningItemFragment extends BaseFragment {
     private GPSHelper gpsHelper;
     public static  LearningItemFragment create(int itemNumber ,LearningItem learningItem) {
         LearningItemFragment learningItemSlideFragment = new LearningItemFragment();
+
         Bundle args = new Bundle();
         args.putInt(ARG_ITEM_COUNT, itemNumber);
         args.putSerializable(ARG_ITEM,learningItem);
@@ -98,6 +101,8 @@ public class LearningItemFragment extends BaseFragment {
 
         return rootView;
     }
+
+
 //
 //    @Override
 //    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -110,13 +115,26 @@ public class LearningItemFragment extends BaseFragment {
 //        return  true;
 //    }
 //
-//    @Override
-//    public boolean onBackstack(Object object) {
-//
-//        if(super.onBackstack(object)) ttsHelper.StopTalking();
-//        return true;
-//    }
-//
+
+    @Override
+    public void onBackstack(Object object, UserActionCallback callback) {
+        ttsHelper.stopTalking();
+        super.onBackstack(object, callback);
+    }
+
+    @Override
+    public void onPause() {
+        ttsHelper.stopTalking();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        ttsHelper.stopTalking();
+        super.onDestroy();
+    }
+
+    //
 //    @Override
 //    public void onPause() {
 //        super.onPause();

@@ -75,15 +75,27 @@ public class LearningActivity extends BaseActivity{
     }
 
     @Override
-    public void onEdit(LearningItem learningItem, UserActionCallback callback) {
+    public void onEdit(final LearningItem learningItem, UserActionCallback callback) {
         super.onEdit(learningItem, new UserActionCallback() {
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2",true, null, null);
+                Bundle bundle =new Bundle();
+                bundle.putSerializable("LearningItem",learningItem);
+                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Edit Item"+learningItem.getId(),true, null, bundle);
             }
         });
     }
-
+    @Override
+    public void onCreate(final LearningItem learningItem, UserActionCallback callback) {
+        super.onCreate(learningItem, new UserActionCallback() {
+            @Override
+            public void onPass() {
+                Bundle bundle =new Bundle();
+                bundle.putSerializable("LearningItem",learningItem);
+                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "New Learning Item",true, null, bundle);
+            }
+        });
+    }
     @Override
     public void onCreate(final LearningSession learningSession, UserActionCallback callback) {
         super.onEdit(learningSession, new UserActionCallback() {
@@ -95,11 +107,13 @@ public class LearningActivity extends BaseActivity{
     }
 
     @Override
-    public void onLoad(LearningTitle learningTitle, UserActionCallback callback) {
+    public void onLoad(final LearningTitle learningTitle, UserActionCallback callback) {
         super.onLoad(learningTitle, new UserActionCallback(){
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, new LearningItemListFragment(),"Learning Title 1", true, null, null);
+                Bundle bundle =new Bundle();
+                bundle.putSerializable("LearningTitle",learningTitle);
+                setFragment(R.id.fl_main, new LearningItemListFragment(),"Learning Title 1", true, null, bundle);
             }
         });
     }

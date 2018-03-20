@@ -1,12 +1,13 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Drake on 20/3/18.
  */
 
-public class BaseModel {
+public class BaseModel implements Serializable{
     private String Id;
     private User createdBy;
     private Date timestamp;

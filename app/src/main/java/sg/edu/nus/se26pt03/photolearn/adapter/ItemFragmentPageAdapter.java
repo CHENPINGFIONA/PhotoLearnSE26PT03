@@ -46,7 +46,12 @@ public class ItemFragmentPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         return LearningItemFragment.create(position,this.learningItemList.get(position));
     }
-
+    public LearningItem getLearningItemByPosition(int position){
+        if(position <= getCount()){
+            return this.learningItemList.get(position);
+        }
+        return null;
+    }
     @Override
     public int getCount() {
         return this.learningItemList.size();
