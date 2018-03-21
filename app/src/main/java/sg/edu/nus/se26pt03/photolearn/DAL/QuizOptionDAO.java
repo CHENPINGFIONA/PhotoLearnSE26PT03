@@ -40,13 +40,13 @@ public class QuizOptionDAO extends BaseDAO {
 
     @Override
     @Exclude
-    public Date getTimestamp() {
+    public Long getTimestamp() {
         return super.getTimestamp();
     }
 
     @Override
     @Exclude
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Long timestamp) {
         super.setTimestamp(timestamp);
     }
 
