@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningSessionDAO;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
@@ -48,8 +50,8 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  */
 public class LearningSessionListFragment extends BaseFragment {
     private LearningSessionListAdapter learningSessionListAdapter;
-    private LearningSessionService learningSessionService = new LearningSessionService();
-
+    private LearningSessionService learningSessionService;
+    private List<LearningSession> learningSessions;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,32 +62,20 @@ public class LearningSessionListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadData();
+        setupData();
         setupViews();
         setupControls();
     }
-    private  void loadData() {
-        final List<LearningSession> learningSessionList = new ArrayList<LearningSession>();
+    private void setupData() {
+        learningSessionService = new LearningSessionService();
         if (App.currentAppMode == AppMode.TRAINER) {
-            learningSessionService.getAll(new ServiceCallback<List<LearningSession>>() {
-                @Override
-                public void onComplete(List<LearningSession> data) {
-                    for (LearningSession learningSession: data) {
-                        learningSessionList.add(learningSession);
-                    }
-                }
-
-                @Override
-                public void onError(int code, String message, String details) {
-                    Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT);
-                }
-            });
+            learningSessions =  ((Trainer) App.currentUser).getLearningSessions();
         }
 
-        learningSessionListAdapter = new LearningSessionListAdapter(learningSessionList, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
+        learningSessionListAdapter = new LearningSessionListAdapter(learningSessions, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
             @Override
             public void onItemClick(LearningSessionListAdapter.LearningSessionViewHolder viewHolder) {
-                onLoad(learningSessionList.get(viewHolder.getAdapterPosition()), null);
+                onLoad(learningSessions.get(viewHolder.getAdapterPosition()), null);
             }
         });
     }

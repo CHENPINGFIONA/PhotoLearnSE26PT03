@@ -5,15 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 
+import java.util.List;
+
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.R;
 
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.fragment.LoginFragment;
+import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 public class MainActivity extends BaseActivity{
+    private LearningSessionService learningSessionService = new LearningSessionService();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +42,20 @@ public class MainActivity extends BaseActivity{
             @Override
             public void onPass() {
                 App.currentUser = user;
+                App.currentAppMode = AppMode.TRAINER;
+                if (App.currentUser instanceof Trainer) {
+                    learningSessionService.getAll(new ServiceCallback<List<LearningSession>>() {
+                        @Override
+                        public void onComplete(List<LearningSession> data) {
+                            ((Trainer) App.currentUser).addLearningSession(data);
+                        }
+
+                        @Override
+                        public void onError(int code, String message, String details) {
+
+                        }
+                    });
+                }
                 Intent intent = new Intent(context, LearningActivity.class);
                 startActivity(intent);
                 callback.onPass();

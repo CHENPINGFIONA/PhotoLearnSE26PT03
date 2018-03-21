@@ -27,7 +27,7 @@ public class LearningTitleService extends BaseService<LearningTitle, LearningTit
                 learningTitle.getLearningSession().setId(value.getLearningSessionId());
                 learningTitle.setTitle(value.getTitle());
                 learningTitle.setCreatedBy(value.getCreatedBy());
-                learningTitle.setTimestamp(DateConversionHelper.convertStringToDate(value.getTimestamp()));
+                learningTitle.setTimestamp(value.getTimestamp());
                 return learningTitle;
             }
 
@@ -38,7 +38,7 @@ public class LearningTitleService extends BaseService<LearningTitle, LearningTit
                 learningTitleDAO.setLearningSessionId(value.getLearningSession().getId());
                 learningTitleDAO.setTitle(value.getTitle());
                 learningTitleDAO.setCreatedBy(value.getCreatedBy());
-                learningTitleDAO.setTimestamp(DateConversionHelper.convertDateToString(value.getTimestamp()));
+                learningTitleDAO.setTimestamp(value.getTimestamp());
                 return learningTitleDAO;
             }
         });

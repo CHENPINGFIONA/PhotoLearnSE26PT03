@@ -12,6 +12,7 @@ public class QuizTitle extends Title {
     private List<QuizItem> quizItems;
 
     public QuizTitle() {
+        setLearningSession(new LearningSession());
         quizItems = new ArrayList<QuizItem>();
     }
 

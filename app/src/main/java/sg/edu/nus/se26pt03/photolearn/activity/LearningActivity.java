@@ -37,8 +37,9 @@ public class LearningActivity extends BaseActivity{
             public void onClick(View v) {
                 if (App.currentAppMode == AppMode.TRAINER) App.currentAppMode = AppMode.PARTICIPENT;
                 else if (App.currentAppMode == AppMode.PARTICIPENT) App.currentAppMode = AppMode.TRAINER;
-                onModeChange(App.currentAppMode, null);
+                //onModeChange(App.currentAppMode, null);
                 //onLoad(new LearningTitle(), null);
+                onLoad(new LearningSession(), null);
             }
         });
     }

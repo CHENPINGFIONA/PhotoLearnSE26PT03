@@ -14,6 +14,14 @@ public class Trainer extends User{
         return learningSessions.add(learningSession);
     }
 
+    public boolean addLearningSession(List<LearningSession> learningSessions) {
+        for (LearningSession learningSession: learningSessions ) {
+            if (!addLearningSession(learningSession))
+                return false;
+        }
+        return  true;
+    }
+
     public boolean removeLearningSession(LearningSession learningSession) {
         return learningSessions.remove(learningSession);
     }
