@@ -22,7 +22,7 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_TITLES);
     }
 
-    public void getAllByLearningSessionID(final String learningSessionID, final String text, final IListCallback<LearningTitleDAO> iListCallback) {
+    public void getAllByLearningSessionID(final String learningSessionID, final String text, final RepoCallback<List<LearningTitleDAO>> callback) {
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -34,17 +34,17 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                                 result.add(learningTitleDAO);
                             }
                         }
-                        iListCallback.onCallback(result);
+                        callback.onComplete(result);
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        System.out.println("The read failed: " + databaseError.getCode());
+                        callback.onError(databaseError);
                     }
                 });
     }
 
-    public void getAllByCreator(final String learningSessionID, final String userId, final IListCallback<LearningTitleDAO> iListCallback) {
+    public void getAllByCreator(final String learningSessionID, final String userId, final RepoCallback<List<LearningTitleDAO>> callback) {
         mDatabaseRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -56,13 +56,12 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
                                 result.add(learningTitleDAO);
                             }
                         }
-                        iListCallback.onCallback(result);
+                        callback.onComplete(result);
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Getting Post failed, log a message
-                        System.out.println("The read failed: " + databaseError.getCode());
+                        callback.onError(databaseError);
                     }
                 });
     }

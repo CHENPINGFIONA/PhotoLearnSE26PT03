@@ -45,12 +45,11 @@ public class LearningTitleService extends BaseService<LearningTitle, LearningTit
         });
     }
 
-    public void getAllByLearningSessionId(String id, final ServiceCallback<List<LearningTitle>> callback) {
-        learningTitleRepo.getAllByKeyValue("LearningSessionId", id, new RepoCallback<List<LearningTitleDAO>>() {
+    public void getAllByLearningSessionId(String id, String text, final ServiceCallback<List<LearningTitle>> callback) {
+        learningTitleRepo.getAllByLearningSessionID(id, text, new RepoCallback<List<LearningTitleDAO>>() {
             @Override
             public void onComplete(List<LearningTitleDAO> data) {
                 callback.onComplete(getDAOConversion().convertFromDAO(data));
-
             }
 
             @Override

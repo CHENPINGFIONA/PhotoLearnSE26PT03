@@ -31,11 +31,6 @@ import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
-import sg.edu.nus.se26pt03.photolearn.DAL.LearningSessionDAO;
-import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
-import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
-import sg.edu.nus.se26pt03.photolearn.database.LearningSessionRepo;
-import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
@@ -43,7 +38,6 @@ import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningSessionListAdapter;
 import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
-import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
  * Created by MyatMin on 08/3/18.
@@ -52,6 +46,7 @@ public class LearningSessionListFragment extends BaseFragment {
     private LearningSessionListAdapter learningSessionListAdapter;
     private LearningSessionService learningSessionService;
     private List<LearningSession> learningSessions;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,10 +61,11 @@ public class LearningSessionListFragment extends BaseFragment {
         setupViews();
         setupControls();
     }
+
     private void setupData() {
         learningSessionService = new LearningSessionService();
         if (App.currentAppMode == AppMode.TRAINER) {
-            learningSessions =  ((Trainer) App.currentUser).getLearningSessions();
+            learningSessions = ((Trainer) App.currentUser).getLearningSessions();
         }
 
         learningSessionListAdapter = new LearningSessionListAdapter(learningSessions, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
@@ -82,7 +78,8 @@ public class LearningSessionListFragment extends BaseFragment {
 
     private void setupViews() {
 
-        if (learningSessionListAdapter.learningSessionList.size() >0) getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
+        if (learningSessionListAdapter.learningSessionList.size() > 0)
+            getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
         switch (App.currentAppMode) {
             case TRAINER:
                 getView().findViewById(R.id.sv_learningsessionlist).setVisibility(View.GONE);
@@ -106,16 +103,16 @@ public class LearningSessionListFragment extends BaseFragment {
 
             @Override
             public void onClicked(Object tag, int position) {
-                    switch (tag.toString()) {
-                        case "delete":
-                            learningSessionListAdapter.learningSessionList.remove(position);
-                            learningSessionListAdapter.notifyItemRemoved(position);
-                            learningSessionListAdapter.notifyItemRangeChanged(position, learningSessionListAdapter.getItemCount());
-                            break;
-                        case "edit":
-                            onEdit(learningSessionListAdapter.learningSessionList.get(position), null);
-                            break;
-                    }
+                switch (tag.toString()) {
+                    case "delete":
+                        learningSessionListAdapter.learningSessionList.remove(position);
+                        learningSessionListAdapter.notifyItemRemoved(position);
+                        learningSessionListAdapter.notifyItemRangeChanged(position, learningSessionListAdapter.getItemCount());
+                        break;
+                    case "edit":
+                        onEdit(learningSessionListAdapter.learningSessionList.get(position), null);
+                        break;
+                }
             }
         };
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
@@ -128,6 +125,7 @@ public class LearningSessionListFragment extends BaseFragment {
         });
 
     }
+
     private void setupControls() {
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningsessionlist);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

@@ -1,6 +1,5 @@
 package sg.edu.nus.se26pt03.photolearn.database;
 
-import java.util.Collection;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
