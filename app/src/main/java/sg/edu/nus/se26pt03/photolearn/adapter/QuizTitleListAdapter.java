@@ -57,7 +57,7 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
     @Override
     public void onBindViewHolder(QuizTitleViewHolder holder, int position) {
         QuizTitle quizTitle = quizTitleList.get(position);
-        holder.tvTitle.setText(quizTitle.title);
+        holder.tvTitle.setText(quizTitle.getTitle());
     }
 
     @Override

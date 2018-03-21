@@ -16,41 +16,18 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
  */
 @IgnoreExtraProperties
 public class LearningSessionDAO extends BaseDAO{
-    private String id;
     private String CourseDate;
     private String CourseName;
     private String CourseCode;
     private int ModuleNumber;
     private  String ModuleName;
 
-    private String Timestamp;
-
-    @Override
-    public String getId() {
-        return id;
+    public String getCourseDate() {
+        return CourseDate;
     }
 
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Date getCourseDate() {
-        if (CourseDate == null) {
-            return null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            return dateConversionHelper.convertStringToDate(CourseDate);
-        }
-    }
-
-    public void setCourseDate(Date courseDate) {
-        if (courseDate == null) {
-            CourseDate = null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            CourseDate = dateConversionHelper.convertDateToString(courseDate);
-        }
+    public void setCourseDate(String courseDate) {
+        CourseDate = courseDate;
     }
 
     public String getCourseName() {
@@ -69,7 +46,7 @@ public class LearningSessionDAO extends BaseDAO{
         CourseCode = courseCode;
     }
 
-    public int getModuleNumber() {
+    public Integer getModuleNumber() {
         return ModuleNumber;
     }
 
@@ -83,25 +60,5 @@ public class LearningSessionDAO extends BaseDAO{
 
     public void setModuleName(String moduleName) {
         ModuleName = moduleName;
-    }
-
-
-
-    public Date getTimestamp() {
-        if (Timestamp == null) {
-            return null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            return dateConversionHelper.convertStringToDate(Timestamp);
-        }
-    }
-
-    public void setTimestamp(Date timestamp) {
-        if (timestamp == null) {
-            Timestamp = null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            Timestamp = dateConversionHelper.convertDateToString(timestamp);
-        }
     }
 }

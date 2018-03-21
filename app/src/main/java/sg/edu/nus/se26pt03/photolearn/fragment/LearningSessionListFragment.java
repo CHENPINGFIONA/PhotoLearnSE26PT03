@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -39,13 +40,16 @@ import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningSessionListAdapter;
+import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
  * Created by MyatMin on 08/3/18.
  */
 public class LearningSessionListFragment extends BaseFragment {
     private LearningSessionListAdapter learningSessionListAdapter;
-    private LearningSessionRepo a = new LearningSessionRepo();
+    private LearningSessionService learningSessionService = new LearningSessionService();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,28 +60,28 @@ public class LearningSessionListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadLearingSessionList();
+        loadData();
         setupViews();
         setupControls();
     }
-    private  void loadLearingSessionList() {
+    private  void loadData() {
         final List<LearningSession> learningSessionList = new ArrayList<LearningSession>();
-        if (App.currentAppMode == AppMode.TRAINER)
-            try {
-                for(int i=1; i <= 100; i++) {
-                    LearningSession ls = new LearningSession();
-                    ls.setCourseCode("IOT");
-                    ls.setCourseName("Internet of Things");
-                    ls.setModuleName("Overview");
-                    ls.setModuleNumber(i);
-
-                    ls.setCourseDate(new SimpleDateFormat("yyyy-MM-dd").parse("2018-04-01"));
-                    learningSessionList.add(ls);
+        if (App.currentAppMode == AppMode.TRAINER) {
+            learningSessionService.getAll(new ServiceCallback<List<LearningSession>>() {
+                @Override
+                public void onComplete(List<LearningSession> data) {
+                    for (LearningSession learningSession: data) {
+                        learningSessionList.add(learningSession);
+                    }
                 }
-            }
-            catch (ParseException e) {
 
-            }
+                @Override
+                public void onError(int code, String message, String details) {
+                    Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT);
+                }
+            });
+        }
+
         learningSessionListAdapter = new LearningSessionListAdapter(learningSessionList, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
             @Override
             public void onItemClick(LearningSessionListAdapter.LearningSessionViewHolder viewHolder) {
@@ -87,46 +91,6 @@ public class LearningSessionListFragment extends BaseFragment {
     }
 
     private void setupViews() {
-        // Write a message to the database
-//        LearningSessionDAO l = new LearningSessionDAO();
-//        l.setCourseCode("iot");
-//        l.setCourseName("Internet of Things");
-//        LearningSessionDAO l2 = new LearningSessionDAO();
-//        l2.setCourseCode("iot");
-//        l2.setCourseName("Internet of Things 2");
-//        l.setCourseName("Internet of Things");
-//        LearningSessionDAO l3 = new LearningSessionDAO();
-//        l3.setCourseCode("iot");
-//        l3.setCourseName("Internet of Things 3");
-//        List <LearningSessionDAO> m = new ArrayList<LearningSessionDAO>();
-//        m.add(l);
-//        m.add(l2);
-//        l3.setNested(m);
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("LearningSessions");
-//        String a = myRef.push().getKey();
-//        myRef.child(a).setValue(l3);
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                LearningSessionDAO value = dataSnapshot.getValue(LearningSessionDAO.class);
-//                Log.d("dd", "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w("ddd", "Failed to read value.", error.toException());
-//            }
-//        });
-        a.getAll(new IListCallback<LearningSessionDAO>() {
-            @Override
-            public void onCallback(List<LearningSessionDAO> data) {
-                Log.d("aa", data.toString());
-            }
-        });
 
         if (learningSessionListAdapter.learningSessionList.size() >0) getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
         switch (App.currentAppMode) {

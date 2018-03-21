@@ -12,6 +12,7 @@ public class LearningTitle extends Title {
     private List<LearningItem> learningItems;
 
     public LearningTitle() {
+        setLearningSession(new LearningSession());
         learningItems = new ArrayList<LearningItem>();
     }
 

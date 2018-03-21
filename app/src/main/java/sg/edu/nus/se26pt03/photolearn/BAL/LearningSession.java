@@ -27,12 +27,11 @@ public class LearningSession {
     private int moduleNumber;
     private String moduleName;
 
+    private String createdBy;
     private Date timestamp;
 
     private List<LearningTitle> learningTitles;
     private List<QuizTitle> quizTitles;
-    private LearningTitleRepo learningTitleRepo;
-    private QuizTitleRepo quizTitleRepo;
 
     public String getId() {
         return id;
@@ -40,6 +39,14 @@ public class LearningSession {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Date getTimestamp() {
@@ -91,10 +98,13 @@ public class LearningSession {
     }
 
     public LearningSession() {
-        learningTitleRepo = new LearningTitleRepo();
-        quizTitleRepo = new QuizTitleRepo();
         learningTitles = new ArrayList<LearningTitle>();
         quizTitles = new ArrayList<QuizTitle>();
+    }
+
+    public LearningSession(String id) {
+        this();
+        this.id = id;
     }
 
     public String getLearningSessionId() {
@@ -102,83 +112,56 @@ public class LearningSession {
         return String.format("{0}-{1}-M{2}", df.format(courseDate), courseCode, moduleNumber);
     }
 
-    public void createLearningTitle(LearningTitle title) {
-        learningTitleRepo.save(ConvertHelper.toLearningTitleDao(title));
-    }
-
-    public void updateLearningTitle(LearningTitle title, ICallback<Boolean> iCallback) {
-        learningTitleRepo.update(ConvertHelper.toLearningTitleDao(title), iCallback);
-    }
-
-    public void deleteLearningTitle(LearningTitle title, ICallback<Boolean> iCallback) {
-        learningTitleRepo.delete(ConvertHelper.toLearningTitleDao(title), iCallback);
-    }
-
-    public void getLearningTitles(String learningSessionId, String userId, int mode, String text, final IListCallback<LearningTitle> iListCallback) {
-        if (mode == AccessMode.toInt(AccessMode.EDIT)) {
-            learningTitleRepo.getAllByCreator(learningSessionId, userId, new IListCallback<LearningTitleDAO>() {
-                @Override
-                public void onCallback(List<LearningTitleDAO> itemList) {
-                    iListCallback.onCallback(processLearningTitles(itemList));
-                }
-            });
-        } else {
-            learningTitleRepo.getAllByLearningSessionID(learningSessionId, text, new IListCallback<LearningTitleDAO>() {
-                @Override
-                public void onCallback(List<LearningTitleDAO> itemList) {
-                    iListCallback.onCallback(processLearningTitles(itemList));
-                }
-            });
-        }
-    }
-
-    public LearningTitle getLearningTitle(int learningTitleId) {
-        return new LearningTitle();
-    }
-
-    public void createQuizTitle(QuizTitle title) {
-        QuizTitleRepo repo = new QuizTitleRepo();
-        repo.save(ConvertHelper.toQuizTitleDao(title));
-    }
-
-    public void updateQuizTitle(QuizTitle title, ICallback<Boolean> iCallback) {
-        quizTitleRepo.update(ConvertHelper.toQuizTitleDao(title), iCallback);
-    }
-
-    public void deleteQuizTitle(QuizTitle title, ICallback<Boolean> iCallback) {
-        quizTitleRepo.delete(ConvertHelper.toQuizTitleDao(title), iCallback);
-    }
-
-    public void getQuizTitles(String learningSessionId, final IListCallback<QuizTitle> iListCallback) {
-        quizTitleRepo.getAllByLearningSessionID(learningSessionId, new IListCallback<QuizTitleDAO>() {
-            @Override
-            public void onCallback(List<QuizTitleDAO> itemList) {
-                iListCallback.onCallback(processQuizTitles(itemList));
+    public boolean addLearningTitle(List<LearningTitle> learningTitles) {
+        for (LearningTitle learningTitle: learningTitles) {
+            if (!addLearningTitle(learningTitle)) {
+                return false;
             }
-        });
-    }
-
-    public QuizTitle getQuizTitle(int quizTitleId) {
-        return new QuizTitle();
-    }
-
-    private List<LearningTitle> processLearningTitles(List<LearningTitleDAO> daos) {
-        List<LearningTitle> titles = new ArrayList<LearningTitle>();
-
-        for (LearningTitleDAO learningTitleDAO : daos) {
-            titles.add(ConvertHelper.fromLearningTitle(learningTitleDAO));
         }
-
-        return titles;
+        return true;
     }
 
-    private List<QuizTitle> processQuizTitles(List<QuizTitleDAO> daos) {
-        List<QuizTitle> titles = new ArrayList<QuizTitle>();
+    public boolean addLearningTitle(LearningTitle learningTitle) {
+        learningTitle.setLearningSession(this);
+        return learningTitles.add(learningTitle);
+    }
 
-        for (QuizTitleDAO quizTitleDAO : daos) {
-            titles.add(ConvertHelper.fromQuizTitle(quizTitleDAO));
+    public boolean removeLearningTitle(List<LearningTitle> learningTitles) {
+        for (LearningTitle learningTitle: learningTitles) {
+            if (!removeLearningTitle(learningTitle)) {
+                return false;
+            }
         }
-
-        return titles;
+        return true;
     }
+
+    public boolean removeLearningTitle(LearningTitle learningTitle) {
+        return learningTitles.remove(learningTitle);
+    }
+
+    public List<LearningTitle> getLearningTitles() {
+        return new ArrayList<LearningTitle>(learningTitles);
+    }
+
+    public LearningTitle getLearningTitle(int index) {
+        return learningTitles.get(index);
+    }
+
+    public boolean addQuizTitle(QuizTitle quizTitle) {
+        quizTitle.setLearningSession(this);
+        return quizTitles.add(quizTitle);
+    }
+
+    public boolean removeQuizTitle(QuizTitle quizTitle) {
+        return quizTitles.remove(quizTitle);
+    }
+
+    public List<QuizTitle> getQuizTitles() {
+        return new ArrayList<QuizTitle>(quizTitles);
+    }
+
+    public QuizTitle getQuizTitle(int index) {
+        return quizTitles.get(index);
+    }
+
 }

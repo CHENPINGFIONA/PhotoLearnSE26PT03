@@ -16,8 +16,6 @@ public class LearningItemDAO extends BaseDAO {
     private String Latitude;
     private String Longitude;
 
-    private String CreatedBy;
-    private String Timestamp;
 
     public String getLearningTitleId() {
         return LearningTitleId;
@@ -57,31 +55,5 @@ public class LearningItemDAO extends BaseDAO {
 
     public void setLongitude(String longitude) {
         Longitude = longitude;
-    }
-
-    public String getCreatedBy() {
-        return CreatedBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
-    }
-
-    public Date getTimestamp() {
-        if (Timestamp == null) {
-            return null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            return dateConversionHelper.convertStringToDate(Timestamp);
-        }
-    }
-
-    public void setTimestamp(Date timestamp) {
-        if (timestamp == null) {
-            Timestamp = null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            Timestamp = dateConversionHelper.convertDateToString(timestamp);
-        }
     }
 }
