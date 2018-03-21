@@ -44,20 +44,4 @@ public class QuizTitleService extends BaseService<QuizTitle, QuizTitleDAO> {
             }
         });
     }
-
-    public void getAllByLearningSessionId(String id, final ServiceCallback<List<QuizTitle>> callback) {
-        quizTitleRepo.getAllByKeyValue("LearningSessionId", id, new RepoCallback<List<QuizTitleDAO>>() {
-            @Override
-            public void onComplete(List<QuizTitleDAO> data) {
-                callback.onComplete(getDAOConversion().convertFromDAO(data));
-
-            }
-
-            @Override
-            public void onError(DatabaseError databaseError) {
-                callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
-            }
-        });
-    }
-
 }

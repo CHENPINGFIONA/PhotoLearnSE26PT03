@@ -21,48 +21,4 @@ public class LearningTitleRepo extends BaseRepo<LearningTitleDAO> {
         super(LearningTitleDAO.class);
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_TITLES);
     }
-
-    public void getAllByLearningSessionID(final String learningSessionID, final String text, final RepoCallback<List<LearningTitleDAO>> callback) {
-        mDatabaseRef.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<LearningTitleDAO> result = new ArrayList<>();
-                        for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                            LearningTitleDAO learningTitleDAO = getValue(childDataSnapshot);
-                            if (learningTitleDAO.getLearningSessionId().equals(learningSessionID) && learningTitleDAO.getLearningSessionId().contains(text)) {
-                                result.add(learningTitleDAO);
-                            }
-                        }
-                        callback.onComplete(result);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        callback.onError(databaseError);
-                    }
-                });
-    }
-
-    public void getAllByCreator(final String learningSessionID, final String userId, final RepoCallback<List<LearningTitleDAO>> callback) {
-        mDatabaseRef.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<LearningTitleDAO> result = new ArrayList<>();
-                        for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                            LearningTitleDAO learningTitleDAO = getValue(childDataSnapshot);
-                            if (learningTitleDAO.getCreatedBy().equals(userId) && learningTitleDAO.getLearningSessionId().equals(learningSessionID)) {
-                                result.add(learningTitleDAO);
-                            }
-                        }
-                        callback.onComplete(result);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        callback.onError(databaseError);
-                    }
-                });
-    }
 }

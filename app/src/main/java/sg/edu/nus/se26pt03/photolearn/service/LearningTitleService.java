@@ -44,18 +44,4 @@ public class LearningTitleService extends BaseService<LearningTitle, LearningTit
             }
         });
     }
-
-    public void getAllByLearningSessionId(String id, String text, final ServiceCallback<List<LearningTitle>> callback) {
-        learningTitleRepo.getAllByLearningSessionID(id, text, new RepoCallback<List<LearningTitleDAO>>() {
-            @Override
-            public void onComplete(List<LearningTitleDAO> data) {
-                callback.onComplete(getDAOConversion().convertFromDAO(data));
-            }
-
-            @Override
-            public void onError(DatabaseError databaseError) {
-                callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
-            }
-        });
-    }
 }

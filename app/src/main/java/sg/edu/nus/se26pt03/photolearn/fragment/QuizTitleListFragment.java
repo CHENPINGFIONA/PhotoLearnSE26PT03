@@ -60,7 +60,7 @@ public class QuizTitleListFragment extends BaseFragment {
     }
 
     private void loadQuizTitleList() {
-        quizTitleService.getAllByLearningSessionId(App.session.getId(), new ServiceCallback<List<QuizTitle>>() {
+        quizTitleService.getAllByKeyValue("learningSessionId", App.session.getId(), new ServiceCallback<List<QuizTitle>>() {
             @Override
             public void onComplete(List<QuizTitle> data) {
                 final List<QuizTitle> quizTitleList = data;

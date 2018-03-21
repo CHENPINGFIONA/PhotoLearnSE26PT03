@@ -2,7 +2,9 @@ package sg.edu.nus.se26pt03.photolearn.service;
 
 import com.google.firebase.database.DatabaseError;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
@@ -60,12 +62,8 @@ public class BaseService<T, V extends BaseDAO> {
     public void getAll(final ServiceCallback<List<T>> callback) {
         baseRepo.getAll(new RepoCallback<List<V>>() {
             @Override
-            public void onComplete(List<V> itemList) {
-                List<T> result = new ArrayList<T>();
-                for (V v: itemList) {
-                    result.add(daoConversion.convertFromDAO(v));
-                }
-                if (callback != null) callback.onComplete(result);
+            public void onComplete(List<V> data) {
+                if (callback != null) callback.onComplete(daoConversion.convertFromDAO(data));
             }
 
             @Override
@@ -99,6 +97,21 @@ public class BaseService<T, V extends BaseDAO> {
             @Override
             public void onComplete(Boolean data) {
                 if (callback != null) callback.onComplete(data);
+            }
+
+            @Override
+            public void onError(DatabaseError databaseError) {
+                if (callback != null) callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
+            }
+        });
+    }
+
+
+    public void getAllByKeyValue(String key, Object value, final ServiceCallback<List<T>> callback) {
+        baseRepo.getAllByKeyValue(key, value, new RepoCallback<List<V>>() {
+            @Override
+            public void onComplete(List<V> data) {
+                if (callback != null) callback.onComplete(daoConversion.convertFromDAO(data));
             }
 
             @Override

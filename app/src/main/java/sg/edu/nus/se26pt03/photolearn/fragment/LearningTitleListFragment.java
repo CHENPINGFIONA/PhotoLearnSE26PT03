@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,14 +56,19 @@ public class LearningTitleListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadLearningTitleList("");
+        loadLearningTitleList("F");
     }
 
-    private void loadLearningTitleList(String text) {
-        learningTitleService.getAllByLearningSessionId(App.session.getId(), text, new ServiceCallback<List<LearningTitle>>() {
+    private void loadLearningTitleList(final String text) {
+        learningTitleService.getAllByKeyValue("learningSessionId", App.session.getId(), new ServiceCallback<List<LearningTitle>>() {
             @Override
             public void onComplete(List<LearningTitle> data) {
-                final List<LearningTitle> learningTitleList = data;
+                final List<LearningTitle> learningTitleList = new ArrayList<LearningTitle>();
+                for (LearningTitle learningTitle: data) {
+                    if (text == "" || text == null || learningTitle.getTitle().contains(text)) {
+                        learningTitleList.add(learningTitle);
+                    }
+                }
                 learningTitleListAdapter = new LearningTitleListAdapter(learningTitleList, new LearningTitleListAdapter.LearningTitleViewHolderClick() {
                     @Override
                     public void onItemClick(LearningTitleListAdapter.LearningTitleViewHolder viewHolder) {
