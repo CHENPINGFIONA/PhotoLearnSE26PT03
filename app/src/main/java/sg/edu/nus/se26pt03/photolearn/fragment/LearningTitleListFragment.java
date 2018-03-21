@@ -26,8 +26,6 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
-import sg.edu.nus.se26pt03.photolearn.database.ICallback;
-import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
@@ -57,11 +55,11 @@ public class LearningTitleListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadLearningTitleList();
+        loadLearningTitleList("");
     }
 
-    private void loadLearningTitleList() {
-        learningTitleService.getAllByLearningSessionId(App.session.getId(), new ServiceCallback<List<LearningTitle>>() {
+    private void loadLearningTitleList(String text) {
+        learningTitleService.getAllByLearningSessionId(App.session.getId(), text, new ServiceCallback<List<LearningTitle>>() {
             @Override
             public void onComplete(List<LearningTitle> data) {
                 final List<LearningTitle> learningTitleList = data;
@@ -80,25 +78,9 @@ public class LearningTitleListFragment extends BaseFragment {
 
             }
         });
-//        App.session.getLearningTitles(sessionId, userId, mode, "", new IListCallback<LearningTitle>() {
-//            @Override
-//            public void onCallback(List<LearningTitle> itemList) {
-//                final List<LearningTitle> learningTitleList = itemList;
-//                learningTitleListAdapter = new LearningTitleListAdapter(learningTitleList, new LearningTitleListAdapter.LearningTitleViewHolderClick() {
-//                    @Override
-//                    public void onItemClick(LearningTitleListAdapter.LearningTitleViewHolder viewHolder) {
-//                        onLoad(learningTitleList.get(viewHolder.getAdapterPosition()), null);
-//                    }
-//                });
-//
-//                setupViews();
-//                setupControls();
-//            }
-//        });
     }
 
     private void setupViews() {
-        // View fragmentView = inflater.inflate(R.layout.fragment_learning_title_list, container, false);
         RecyclerView rvLearningTitle = getView().findViewById(R.id.rv_learning_title);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rvLearningTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -124,7 +106,7 @@ public class LearningTitleListFragment extends BaseFragment {
             }
 
             private void callSearch(String text) {
-                // learningTitleListAdapter.refreshLearningTitles(text);
+                loadLearningTitleList(text);
             }
         });
 
@@ -226,8 +208,8 @@ public class LearningTitleListFragment extends BaseFragment {
                 newTitle.setTimestamp(new Date());
 
                 App.session.addLearningTitle(newTitle);
-                learningTitleService.save(newTitle,null);
-                loadLearningTitleList();
+                learningTitleService.save(newTitle, null);
+                loadLearningTitleList("");
 //
 //                App.session.createLearningTitle(newTitle);
 //                loadLearningTitleList();

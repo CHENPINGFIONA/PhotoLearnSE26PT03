@@ -6,15 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
-import sg.edu.nus.se26pt03.photolearn.DAL.QuizTitleDAO;
-import sg.edu.nus.se26pt03.photolearn.database.ICallback;
-import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
-import sg.edu.nus.se26pt03.photolearn.database.LearningTitleRepo;
-import sg.edu.nus.se26pt03.photolearn.database.QuizTitleRepo;
-import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
-import sg.edu.nus.se26pt03.photolearn.utility.ConvertHelper;
-
 /**
  * Created by chen ping on 7/3/2018.
  */

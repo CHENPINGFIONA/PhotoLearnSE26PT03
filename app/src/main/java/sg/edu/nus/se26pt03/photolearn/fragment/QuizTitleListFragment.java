@@ -20,17 +20,13 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.List;
 
-import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
-import sg.edu.nus.se26pt03.photolearn.database.ICallback;
-import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
-import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.QuizTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
@@ -83,21 +79,6 @@ public class QuizTitleListFragment extends BaseFragment {
 
             }
         });
-//        App.session.getQuizTitles(sessionId, new IListCallback<QuizTitle>() {
-//            @Override
-//            public void onCallback(List<QuizTitle> itemList) {
-//                final List<QuizTitle> quizTitleList = itemList;
-//                quizTitleListAdapter = new QuizTitleListAdapter(quizTitleList, new QuizTitleListAdapter.QuizTitleViewHolderClick() {
-//                    @Override
-//                    public void onItemClick(QuizTitleListAdapter.QuizTitleViewHolder viewHolder) {
-//                        onLoad(quizTitleList.get(viewHolder.getAdapterPosition()), null);
-//                    }
-//                });
-//
-//                setupViews();
-//                setupControls();
-//            }
-//        });
     }
 
     private void setupViews() {
