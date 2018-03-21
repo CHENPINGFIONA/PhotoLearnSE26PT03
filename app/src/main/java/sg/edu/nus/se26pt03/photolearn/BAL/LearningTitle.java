@@ -13,6 +13,7 @@ public class LearningTitle extends Title implements Serializable {
     private List<LearningItem> learningItems;
 
     public LearningTitle() {
+        setLearningSession(new LearningSession());
         learningItems = new ArrayList<LearningItem>();
     }
 

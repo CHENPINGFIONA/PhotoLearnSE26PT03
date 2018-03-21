@@ -26,10 +26,10 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
-import sg.edu.nus.se26pt03.photolearn.database.ICallback;
-import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
+import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class LearningTitleListFragment extends BaseFragment {
@@ -38,6 +38,7 @@ public class LearningTitleListFragment extends BaseFragment {
     private int mode;
     private String sessionId;
     private String userId;
+    private LearningTitleService learningTitleService = new LearningTitleService();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,29 +55,32 @@ public class LearningTitleListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadLearningTitleList();
+        loadLearningTitleList("");
     }
 
-    private void loadLearningTitleList() {
-        App.session.getLearningTitles(sessionId, userId, mode, "", new IListCallback<LearningTitle>() {
+    private void loadLearningTitleList(String text) {
+        learningTitleService.getAllByLearningSessionId(App.session.getId(), text, new ServiceCallback<List<LearningTitle>>() {
             @Override
-            public void onCallback(List<LearningTitle> itemList) {
-                final List<LearningTitle> learningTitleList = itemList;
+            public void onComplete(List<LearningTitle> data) {
+                final List<LearningTitle> learningTitleList = data;
                 learningTitleListAdapter = new LearningTitleListAdapter(learningTitleList, new LearningTitleListAdapter.LearningTitleViewHolderClick() {
                     @Override
                     public void onItemClick(LearningTitleListAdapter.LearningTitleViewHolder viewHolder) {
                         onLoad(learningTitleList.get(viewHolder.getAdapterPosition()), null);
                     }
                 });
-
                 setupViews();
                 setupControls();
+            }
+
+            @Override
+            public void onError(int code, String message, String details) {
+
             }
         });
     }
 
     private void setupViews() {
-        // View fragmentView = inflater.inflate(R.layout.fragment_learning_title_list, container, false);
         RecyclerView rvLearningTitle = getView().findViewById(R.id.rv_learning_title);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rvLearningTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -102,7 +106,7 @@ public class LearningTitleListFragment extends BaseFragment {
             }
 
             private void callSearch(String text) {
-                // learningTitleListAdapter.refreshLearningTitles(text);
+                loadLearningTitleList(text);
             }
         });
 
@@ -125,12 +129,26 @@ public class LearningTitleListFragment extends BaseFragment {
             public void onClicked(Object tag, final int position) {
                 switch (tag.toString()) {
                     case "delete":
-                        App.session.deleteLearningTitle(learningTitleListAdapter.learningTitleList.get(position), new ICallback<Boolean>() {
+                        learningTitleService.deleteById(learningTitleListAdapter.learningTitleList.get(position).getId(), new ServiceCallback<Boolean>() {
                             @Override
-                            public void onCallback(Boolean item) {
-                                loadLearningTitleList();
+                            public void onComplete(Boolean data) {
+                                App.session.removeLearningTitle(learningTitleListAdapter.learningTitleList.get(position));
+                                learningTitleListAdapter.notifyItemRemoved(position);
+                                learningTitleListAdapter.notifyItemRangeChanged(position, learningTitleListAdapter.getItemCount());
+                            }
+
+                            @Override
+                            public void onError(int code, String message, String details) {
+
                             }
                         });
+
+//                        App.session.deleteLearningTitle(learningTitleListAdapter.learningTitleList.get(position), new ICallback<Boolean>() {
+//                            @Override
+//                            public void onCallback(Boolean item) {
+//                                loadLearningTitleList();
+//                            }
+//                        });
 
                         break;
                     case "edit":
@@ -174,7 +192,7 @@ public class LearningTitleListFragment extends BaseFragment {
         final EditText etContent = (EditText) dialog.findViewById(R.id.et_content);
         etContent.setHint(R.string.enter_title);
         if (title != null) {
-            etContent.setText(title.title);
+            etContent.setText(title.getTitle());
         }
 
         Button btnSave = (Button) dialog.findViewById(R.id.btn_save);
@@ -184,14 +202,29 @@ public class LearningTitleListFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 LearningTitle newTitle = new LearningTitle();
-                newTitle.sessionId = sessionId;
-                newTitle.title = etContent.getText().toString();
-                newTitle.createdBy = userId;
-                newTitle.timestamp = new Date();
+                newTitle.setTitle(etContent.getText().toString());
+                newTitle.setCreatedBy(userId);
+                newTitle.setTimestamp(new Date());
 
-                App.session.createLearningTitle(newTitle);
-                loadLearningTitleList();
-                dialog.dismiss();
+                learningTitleService.save(newTitle, new ServiceCallback<LearningTitle>() {
+                    @Override
+                    public void onComplete(LearningTitle data) {
+                        App.session.addLearningTitle(data);
+                        learningTitleListAdapter.notifyDataSetChanged();
+                        //learningTitleListAdapter.notifyAll();
+
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(int code, String message, String details) {
+
+                        dialog.dismiss();
+                    }
+                });
+//
+//                App.session.createLearningTitle(newTitle);
+//                loadLearningTitleList();
             }
         });
 

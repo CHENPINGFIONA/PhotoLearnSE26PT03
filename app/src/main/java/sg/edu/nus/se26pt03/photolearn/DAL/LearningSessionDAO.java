@@ -22,36 +22,12 @@ public class LearningSessionDAO extends BaseDAO{
     private int ModuleNumber;
     private  String ModuleName;
 
-    private String CreatedBy;
-    private String Timestamp;
-
-//    @Override
-//    public LearningSession convert(LearningSessionDAO value) {
-//        LearningSession learningSession = new LearningSession();
-//        learningSession.setCourseDate(value.getCourseDate());
-//        learningSession.setCourseCode(value.getCourseCode());
-//        learningSession.setCourseName(value.getCourseName());
-//        learningSession.setModuleNumber(value.getModuleNumber());
-//        learningSession.setModuleName(value.getModuleName());
-//        return learningSession;
-//    }
-
-    public Date getCourseDate() {
-        if (CourseDate == null) {
-            return null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            return dateConversionHelper.convertStringToDate(CourseDate);
-        }
+    public String getCourseDate() {
+        return CourseDate;
     }
 
-    public void setCourseDate(Date courseDate) {
-        if (courseDate == null) {
-            CourseDate = null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            CourseDate = dateConversionHelper.convertDateToString(courseDate);
-        }
+    public void setCourseDate(String courseDate) {
+        CourseDate = courseDate;
     }
 
     public String getCourseName() {
@@ -70,7 +46,7 @@ public class LearningSessionDAO extends BaseDAO{
         CourseCode = courseCode;
     }
 
-    public int getModuleNumber() {
+    public Integer getModuleNumber() {
         return ModuleNumber;
     }
 
@@ -84,31 +60,5 @@ public class LearningSessionDAO extends BaseDAO{
 
     public void setModuleName(String moduleName) {
         ModuleName = moduleName;
-    }
-
-    public String getCreatedBy() {
-        return CreatedBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
-    }
-
-    public Date getTimestamp() {
-        if (Timestamp == null) {
-            return null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            return dateConversionHelper.convertStringToDate(Timestamp);
-        }
-    }
-
-    public void setTimestamp(Date timestamp) {
-        if (timestamp == null) {
-            Timestamp = null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            Timestamp = dateConversionHelper.convertDateToString(timestamp);
-        }
     }
 }

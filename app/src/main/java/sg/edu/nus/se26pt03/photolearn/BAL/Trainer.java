@@ -8,19 +8,29 @@ import java.util.List;
  */
 
 public class Trainer extends User{
-    public void createLearningSession(LearningSession session, int userId) {
+    private List<LearningSession> learningSessions = new ArrayList<LearningSession>();
 
+    public boolean addLearningSession(LearningSession learningSession) {
+        return learningSessions.add(learningSession);
     }
 
-    public void updateLearningSession(LearningSession session, int userId) {
-
+    public boolean addLearningSession(List<LearningSession> learningSessions) {
+        for (LearningSession learningSession: learningSessions ) {
+            if (!addLearningSession(learningSession))
+                return false;
+        }
+        return  true;
     }
 
-    public void deleteLearningSession(int sessionId) {
-
+    public boolean removeLearningSession(LearningSession learningSession) {
+        return learningSessions.remove(learningSession);
     }
 
     public List<LearningSession> getLearningSessions() {
-        return (new ArrayList<LearningSession>());
+        return (new ArrayList<LearningSession>(learningSessions));
+    }
+
+    public LearningSession getLearningSession(int index) {
+        return learningSessions.get(index);
     }
 }

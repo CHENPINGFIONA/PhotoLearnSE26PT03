@@ -29,7 +29,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
     public void onBefore(Event event, final UserActionCallback callback) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Title")
-                .setMessage("Your unsaved data will be lost.\n Are you sure you wanted to continue?")
+                .setMessage("Unsaved data will be lost.\n Are you sure you wanted to continue?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {

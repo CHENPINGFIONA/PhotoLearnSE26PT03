@@ -56,7 +56,7 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
     @Override
     public void onBindViewHolder(LearningTitleViewHolder holder, int position) {
         LearningTitle learningTitle = learningTitleList.get(position);
-        holder.tvTitle.setText(learningTitle.title);
+        holder.tvTitle.setText(learningTitle.getTitle());
     }
 
     @Override

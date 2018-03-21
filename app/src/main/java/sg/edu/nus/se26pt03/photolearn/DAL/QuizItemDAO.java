@@ -16,9 +16,6 @@ public class QuizItemDAO extends  BaseDAO {
     private String Explaination ;
     private int Position;
 
-    private String CreatedBy;
-    private String Timestamp;
-
     public String getQuizTitleId() {
         return QuizTitleId;
     }
@@ -59,29 +56,4 @@ public class QuizItemDAO extends  BaseDAO {
         Position = position;
     }
 
-    public String getCreatedBy() {
-        return CreatedBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
-    }
-
-    public Date getTimestamp() {
-        if (Timestamp == null) {
-            return null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            return dateConversionHelper.convertStringToDate(Timestamp);
-        }
-    }
-
-    public void setTimestamp(Date timestamp) {
-        if (timestamp == null) {
-            Timestamp = null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            Timestamp = dateConversionHelper.convertDateToString(timestamp);
-        }
-    }
 }

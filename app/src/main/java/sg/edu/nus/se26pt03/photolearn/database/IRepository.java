@@ -1,6 +1,6 @@
 package sg.edu.nus.se26pt03.photolearn.database;
 
-import java.util.Collection;
+import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
 
@@ -11,15 +11,17 @@ import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
 
 public interface IRepository<T extends BaseDAO> {
 
-    T save(T t);
+    void save(T t, RepoCallback<T> callback);
 
-    T update(T t, ICallback<Boolean> iCallback);
+    void update(T t, RepoCallback<Boolean> callback);
 
-    void delete(T t, ICallback<Boolean> iCallback);
+    void delete(T t, RepoCallback<Boolean> callback);
 
-    void deleteById(String id, ICallback<Boolean> iCallback);
+    void deleteById(String id, RepoCallback<Boolean> callback);
 
-    T getById(String id, IListCallback<T> iListCallback);
+    void getById(String id, RepoCallback<T> callback);
 
-    Collection<T> getAll(RepoCallback<T> callback);
+    void getAll(RepoCallback<List<T>> callback);
+
+    void getAllByKeyValue(String key, Object value, RepoCallback<List<T>> callback);
 }

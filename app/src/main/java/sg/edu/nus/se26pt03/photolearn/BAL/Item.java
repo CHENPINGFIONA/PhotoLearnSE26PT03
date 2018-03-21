@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by chen ping on 3/10/2018.
  */
 
-public class Item extends BaseModel  implements Serializable {
+public class Item implements Serializable {
     private String photoURL;
     private String content;
     private Coordinate coordinate;
