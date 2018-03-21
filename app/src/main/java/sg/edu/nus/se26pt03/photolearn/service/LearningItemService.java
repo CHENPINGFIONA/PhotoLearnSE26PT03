@@ -3,6 +3,7 @@ package sg.edu.nus.se26pt03.photolearn.service;
 import com.google.firebase.database.DatabaseError;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.Coordinate;
@@ -30,7 +31,7 @@ public class LearningItemService extends BaseService<LearningItem, LearningItemD
                 result.setPhotoURL(value.getPhotoURL());
                 result.setCreatedBy(value.getCreatedBy());
                 result.setId(value.getId());
-                result.setTimestamp(value.getTimestamp());
+                result.setTimestamp(new Date(value.getTimestamp()));
                 return result;
 
             }
@@ -44,7 +45,7 @@ public class LearningItemService extends BaseService<LearningItem, LearningItemD
                 result.setPhotoURL(value.getPhotoURL()==null?"":value.getPhotoURL());
                 result.setCreatedBy(value.getCreatedBy()==null?"":value.getCreatedBy());
                 result.setId(value.getId()==null?"":value.getId());
-                result.setTimestamp(value.getTimestamp());
+                result.setTimestamp(value.getTimestamp().getTime());
                 return result;
             }
         });
