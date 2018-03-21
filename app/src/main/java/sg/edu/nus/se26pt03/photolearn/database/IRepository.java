@@ -23,4 +23,6 @@ public interface IRepository<T extends BaseDAO> {
     void getById(String id, RepoCallback<T> callback);
 
     void getAll(RepoCallback<List<T>> callback);
+
+    void getAllByKeyValue(String key, Object value, RepoCallback<List<T>> callback);
 }

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizTitleListAdapter;
@@ -29,6 +30,9 @@ import sg.edu.nus.se26pt03.photolearn.database.ICallback;
 import sg.edu.nus.se26pt03.photolearn.database.IListCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
+import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
+import sg.edu.nus.se26pt03.photolearn.service.QuizTitleService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class QuizTitleListFragment extends BaseFragment {
@@ -37,6 +41,8 @@ public class QuizTitleListFragment extends BaseFragment {
     private String sessionId;
     private int mode;
     private String userId;
+
+    private QuizTitleService quizTitleService = new QuizTitleService();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,21 +64,40 @@ public class QuizTitleListFragment extends BaseFragment {
     }
 
     private void loadQuizTitleList() {
-        App.session.getQuizTitles(sessionId, new IListCallback<QuizTitle>() {
+        quizTitleService.getAllByLearningSessionId(App.session.getId(), new ServiceCallback<List<QuizTitle>>() {
             @Override
-            public void onCallback(List<QuizTitle> itemList) {
-                final List<QuizTitle> quizTitleList = itemList;
+            public void onComplete(List<QuizTitle> data) {
+                final List<QuizTitle> quizTitleList = data;
                 quizTitleListAdapter = new QuizTitleListAdapter(quizTitleList, new QuizTitleListAdapter.QuizTitleViewHolderClick() {
                     @Override
                     public void onItemClick(QuizTitleListAdapter.QuizTitleViewHolder viewHolder) {
                         onLoad(quizTitleList.get(viewHolder.getAdapterPosition()), null);
                     }
                 });
-
                 setupViews();
                 setupControls();
             }
+
+            @Override
+            public void onError(int code, String message, String details) {
+
+            }
         });
+//        App.session.getQuizTitles(sessionId, new IListCallback<QuizTitle>() {
+//            @Override
+//            public void onCallback(List<QuizTitle> itemList) {
+//                final List<QuizTitle> quizTitleList = itemList;
+//                quizTitleListAdapter = new QuizTitleListAdapter(quizTitleList, new QuizTitleListAdapter.QuizTitleViewHolderClick() {
+//                    @Override
+//                    public void onItemClick(QuizTitleListAdapter.QuizTitleViewHolder viewHolder) {
+//                        onLoad(quizTitleList.get(viewHolder.getAdapterPosition()), null);
+//                    }
+//                });
+//
+//                setupViews();
+//                setupControls();
+//            }
+//        });
     }
 
     private void setupViews() {
@@ -104,12 +129,16 @@ public class QuizTitleListFragment extends BaseFragment {
             public void onClicked(Object tag, int position) {
                 switch (tag.toString()) {
                     case "delete":
-                        App.session.deleteQuizTitle(quizTitleListAdapter.quizTitleList.get(position), new ICallback<Boolean>() {
-                            @Override
-                            public void onCallback(Boolean item) {
-                                loadQuizTitleList();
-                            }
-                        });
+                        quizTitleService.deleteById(quizTitleListAdapter.quizTitleList.get(position).getId(), null);
+                        App.session.removeQuizTitle(quizTitleListAdapter.quizTitleList.get(position));
+                        quizTitleListAdapter.notifyItemRemoved(position);
+                        quizTitleListAdapter.notifyItemRangeChanged(position, quizTitleListAdapter.getItemCount());
+//                        App.session.deleteQuizTitle(quizTitleListAdapter.quizTitleList.get(position), new ICallback<Boolean>() {
+//                            @Override
+//                            public void onCallback(Boolean item) {
+//                                loadQuizTitleList();
+//                            }
+//                        });
                         break;
                     case "edit":
                         //onEdit(quizSessionListAdapter.quizSessionList.get(position), null);
@@ -150,7 +179,7 @@ public class QuizTitleListFragment extends BaseFragment {
         final EditText etContent = (EditText) dialog.findViewById(R.id.et_content);
         etContent.setHint(R.string.enter_title);
         if (title != null) {
-            etContent.setText(title.title);
+            etContent.setText(title.getTitle());
         }
 
         Button btnSave = (Button) dialog.findViewById(R.id.btn_save);
@@ -160,12 +189,13 @@ public class QuizTitleListFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 QuizTitle newTitle = new QuizTitle();
-                newTitle.sessionId = sessionId;
-                newTitle.title = etContent.getText().toString();
-                newTitle.createdBy = userId;
-                newTitle.timestamp = new Date();
+                newTitle.setLearningSession(App.session);
+                newTitle.setTitle(etContent.getText().toString());
+                newTitle.setCreatedBy(userId);
+                newTitle.setTimestamp(new Date());
 
-                App.session.createQuizTitle(newTitle);
+                App.session.addQuizTitle(newTitle);
+                quizTitleService.save(newTitle,null);
                 loadQuizTitleList();
                 dialog.dismiss();
             }

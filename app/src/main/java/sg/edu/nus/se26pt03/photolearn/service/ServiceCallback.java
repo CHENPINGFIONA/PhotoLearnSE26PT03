@@ -7,5 +7,4 @@ package sg.edu.nus.se26pt03.photolearn.service;
 public interface ServiceCallback<T> {
     void onComplete(T data);
     void onError(int code, String message, String details);
-
 }

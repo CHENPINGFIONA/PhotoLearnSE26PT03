@@ -15,7 +15,7 @@ import java.util.Date;
 public class DateConversionHelper {
     static final SimpleDateFormat yymmddFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public Date convertStringToDate(String date) {
+    public static Date convertStringToDate(String date) {
         Date result = null;
         try {
             result = yymmddFormat.parse(date);
@@ -25,7 +25,7 @@ public class DateConversionHelper {
         return result;
     }
 
-    public String convertDateToString(Date date) {
+    public static String convertDateToString(Date date) {
         return yymmddFormat.format(date);
     }
 }

@@ -23,27 +23,41 @@ public class LearningSessionRepo extends BaseRepo<LearningSessionDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_SESSIONS);
     }
 
-    public Collection<LearningSessionDAO> getAllByCreator(final String uid) {
-        final List<LearningSessionDAO> result = new ArrayList<>();
-        mDatabaseRef.addListenerForSingleValueEvent(
+    public void getAllByCreator(final String uid, final RepoCallback<List<LearningSessionDAO>> callback) {
+        mDatabaseRef.orderByChild("createdBy").equalTo(uid).addListenerForSingleValueEvent(
+        new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<LearningSessionDAO> result = new ArrayList<>();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    LearningSessionDAO learningSessionDAO = getValue(childDataSnapshot);
+                    result.add(learningSessionDAO);
+                }
+                callback.onComplete(result);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onError(databaseError);
+            }
+        });
+    }
+
+    public void getByLearningSessionID(final String uid, final RepoCallback<List<LearningSessionDAO>> callback) {
+        mDatabaseRef.orderByChild("createdBy").equalTo(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //use the onDataChange() method to read a static snapshot of the contents at a given path
-                        // Get Post object and use the values to update the UI
+                        List<LearningSessionDAO> result = new ArrayList<>();
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             LearningSessionDAO learningSessionDAO = getValue(childDataSnapshot);
-                            if (learningSessionDAO.getCreatedBy().equals(uid)) {
-                                result.add(learningSessionDAO);
-                            }
+                            result.add(learningSessionDAO);
                         }
+                        callback.onComplete(result);
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Getting Post failed, log a message
+                        callback.onError(databaseError);
                     }
                 });
-        return result;
     }
 }

@@ -7,14 +7,31 @@ import com.google.firebase.database.Exclude;
  */
 
 public class BaseDAO {
-    protected String Id;
+    private String Id;
+    private String Timestamp;
+    private String CreatedBy;
     @Exclude
     public String getId() {
         return Id;
     }
-
     @Exclude
     public void setId(String id) {
         Id = id;
+    }
+
+    public String getTimestamp() {
+        return Timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        Timestamp = timestamp;
+    }
+
+    public String getCreatedBy() {
+        return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
     }
 }
