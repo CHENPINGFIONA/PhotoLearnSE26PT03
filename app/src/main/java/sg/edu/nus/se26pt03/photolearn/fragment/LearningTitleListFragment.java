@@ -202,18 +202,29 @@ public class LearningTitleListFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 LearningTitle newTitle = new LearningTitle();
-                newTitle.getLearningSession().setId(sessionId);
                 newTitle.setTitle(etContent.getText().toString());
                 newTitle.setCreatedBy(userId);
                 newTitle.setTimestamp(new Date());
 
-                App.session.addLearningTitle(newTitle);
-                learningTitleService.save(newTitle, null);
-                loadLearningTitleList("");
+                learningTitleService.save(newTitle, new ServiceCallback<LearningTitle>() {
+                    @Override
+                    public void onComplete(LearningTitle data) {
+                        App.session.addLearningTitle(data);
+                        learningTitleListAdapter.notifyDataSetChanged();
+                        //learningTitleListAdapter.notifyAll();
+
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(int code, String message, String details) {
+
+                        dialog.dismiss();
+                    }
+                });
 //
 //                App.session.createLearningTitle(newTitle);
 //                loadLearningTitleList();
-//                dialog.dismiss();
             }
         });
 
