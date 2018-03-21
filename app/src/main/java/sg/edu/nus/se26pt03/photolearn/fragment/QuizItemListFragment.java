@@ -3,44 +3,35 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import java.util.List;
-
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
-import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.adapter.QuizItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
-import sg.edu.nus.se26pt03.photolearn.service.LearningItemService;
-import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
-import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 
 /**
  * Created by MyatMin on 08/3/18.
  */
-public class LearningItemListFragment extends BaseFragment {
+public class QuizItemListFragment extends BaseFragment {
 
     public static String SharedPreferences_Access_Mode= "ACCESSMODE";
     private ViewPager mPager;
@@ -55,9 +46,6 @@ public class LearningItemListFragment extends BaseFragment {
     private String titleId;
     private String userId;
     private ImageView popupimagebutton;
-    private List<LearningItem> learningItemList=null;
-    private LearningItemService learningItemService = new LearningItemService();
-
 
 //
 //    @Override
@@ -74,30 +62,14 @@ public class LearningItemListFragment extends BaseFragment {
       //  super.onCreateView(inflater, container, savedInstanceState);
         //setContentView(R.layout.activity_view_page_with_fragment);
         sessionId = "1";
-        titleId="-L88Kii8Oc5tSrTBxNaW";
+        titleId="1";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
         return view;
     }
- /*   void loadList(String titleId){
-        this.learningItemList.clear();
-        learningItemService.getAllByLearningTitleId(titleId, new ServiceCallback<List<LearningItem>>() {
-            @Override
-            public void onComplete(List<LearningItem> data) {
-                if(data!=null)
-                    LearningItemListFragment.this.learningItemList=data;
-            }
 
-
-            @Override
-            public void onError(int code, String message, String details) {
-                Log.w("ERROR",code+"-"+message+"-"+details);
-
-            }
-        });
-    }*/
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -133,8 +105,8 @@ public class LearningItemListFragment extends BaseFragment {
         popupimagebutton = (ImageView) getView().findViewById(R.id.img_popupmenu);
 
 
-        mPager = (ViewPager) getView().findViewById(R.id.vp_learningitem);
-        mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), this.titleId);
+        mPager = (ViewPager) getView().findViewById(R.id.vp_quizitemlistt);
+        mPagerAdapter = new QuizItemFragmentPageAdapter(getFragmentManager(), "1");
         mPager.setAdapter(mPagerAdapter);
     }
 

@@ -13,8 +13,18 @@ public class LearningItemDAO extends BaseDAO {
     private String LearningTitleId;
     private String PhotoURL;
     private String Content;
-    private String Latitude;
-    private String Longitude;
+    private Double Latitude;
+    private Double Longitude;
+
+    public int getPosition() {
+        return Position;
+    }
+
+    public void setPosition(int position) {
+        Position = position;
+    }
+
+    private int Position;
 
 
     public String getLearningTitleId() {
@@ -41,19 +51,19 @@ public class LearningItemDAO extends BaseDAO {
         Content = content;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return Latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         Latitude = latitude;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return Longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         Longitude = longitude;
     }
 }

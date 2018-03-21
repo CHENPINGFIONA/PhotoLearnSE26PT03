@@ -34,6 +34,7 @@ public class LearningTitle extends Title implements Serializable {
 
     @Override
     public List<Item> getItems() {
-        return null;
+        return  null;
+
     }
 }

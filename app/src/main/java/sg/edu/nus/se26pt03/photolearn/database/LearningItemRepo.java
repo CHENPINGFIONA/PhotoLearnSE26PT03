@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningItemDAO;
+import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 /**
@@ -69,5 +70,28 @@ public class LearningItemRepo extends BaseRepo<LearningItemDAO> {
                     }
                 });
         return result;
+    }
+
+    public void getAllByLearningTitleID(final String learningTitleId, final RepoCallback<List<LearningItemDAO>> callback) {
+        mDatabaseRef.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<LearningItemDAO> result = new ArrayList<>();
+                        for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                            LearningItemDAO learningItemDAO = getValue(childDataSnapshot);
+                            if (learningItemDAO.getLearningTitleId().equals(learningTitleId)) {
+                                result.add(learningItemDAO);
+                            }
+                        }
+                        callback.onComplete(result);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        callback.onError(databaseError);
+                    }
+                });
+
     }
 }
