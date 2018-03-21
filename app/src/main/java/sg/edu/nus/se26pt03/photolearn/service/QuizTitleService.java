@@ -2,6 +2,7 @@ package sg.edu.nus.se26pt03.photolearn.service;
 
 import com.google.firebase.database.DatabaseError;
 
+import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
@@ -27,7 +28,7 @@ public class QuizTitleService extends BaseService<QuizTitle, QuizTitleDAO> {
                 quizTitle.getLearningSession().setId(value.getLearningSessionId());
                 quizTitle.setTitle(value.getTitle());
                 quizTitle.setCreatedBy(value.getCreatedBy());
-                quizTitle.setTimestamp(value.getTimestamp());
+                quizTitle.setTimestamp(new Date(value.getTimestamp()));
                 return quizTitle;
             }
 
@@ -38,7 +39,7 @@ public class QuizTitleService extends BaseService<QuizTitle, QuizTitleDAO> {
                 quizTitleDAO.setLearningSessionId(value.getLearningSession().getId());
                 quizTitleDAO.setTitle(value.getTitle());
                 quizTitleDAO.setCreatedBy(value.getCreatedBy());
-                quizTitleDAO.setTimestamp(value.getTimestamp());
+                quizTitleDAO.setTimestamp(value.getTimestamp().getTime());
                 return quizTitleDAO;
             }
         });
