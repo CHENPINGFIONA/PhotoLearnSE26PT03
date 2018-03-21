@@ -131,7 +131,7 @@ public class LearningSession {
     }
 
     public List<LearningTitle> getLearningTitles() {
-        return new ArrayList<LearningTitle>(learningTitles);
+        return learningTitles;
     }
 
     public LearningTitle getLearningTitle(int index) {
@@ -148,7 +148,7 @@ public class LearningSession {
     }
 
     public List<QuizTitle> getQuizTitles() {
-        return new ArrayList<QuizTitle>(quizTitles);
+        return quizTitles;
     }
 
     public QuizTitle getQuizTitle(int index) {

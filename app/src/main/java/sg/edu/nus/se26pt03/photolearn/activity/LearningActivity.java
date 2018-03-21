@@ -17,7 +17,7 @@ import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionDetailFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionListFragment;
 
-public class LearningActivity extends BaseActivity {
+public class LearningActivity extends BaseActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +31,14 @@ public class LearningActivity extends BaseActivity {
                 LearningActivity.super.onBackPressed();
             }
         });
-        setFragment(R.id.fl_main, new LearningSessionListFragment(), "Welcome " + (App.currentAppMode == AppMode.TRAINER ? "Trainer" : "Participant") + "!", false, null, null);
+        setFragment(R.id.fl_main, new LearningSessionListFragment(),"Welcome " + (App.currentAppMode == AppMode.TRAINER? "Trainer" : "Participant") + "!" ,false,null, null);
         findViewById(R.id.btn_user).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (App.currentAppMode == AppMode.TRAINER) App.currentAppMode = AppMode.PARTICIPENT;
-                else if (App.currentAppMode == AppMode.PARTICIPENT)
-                    App.currentAppMode = AppMode.TRAINER;
-                onModeChange(App.currentAppMode, null);
+                else if (App.currentAppMode == AppMode.PARTICIPENT) App.currentAppMode = AppMode.TRAINER;
+                //onModeChange(App.currentAppMode, null);
+                //onLoad(new LearningTitle(), null);
                 onLoad(new LearningSession(), null);
             }
         });
@@ -46,7 +46,7 @@ public class LearningActivity extends BaseActivity {
 
     @Override
     public void onModeChange(AppMode appMode, UserActionCallback callback) {
-        super.onModeChange(appMode, new UserActionCallback() {
+        super.onModeChange(appMode, new UserActionCallback(){
             @Override
             public void onPass() {
                 finish();
@@ -60,7 +60,7 @@ public class LearningActivity extends BaseActivity {
         super.onLoad(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, new LearningSessionFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(), true, null, null);
+                setFragment(R.id.fl_main, new LearningSessionFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
             }
         });
     }
@@ -70,7 +70,7 @@ public class LearningActivity extends BaseActivity {
         super.onCreate(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, new LearningSessionDetailFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(), true, null, null);
+                setFragment(R.id.fl_main, new LearningSessionDetailFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
             }
         });
     }
@@ -80,7 +80,7 @@ public class LearningActivity extends BaseActivity {
         super.onEdit(learningItem, new UserActionCallback() {
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2", true, null, null);
+                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2",true, null, null);
             }
         });
     }
@@ -90,17 +90,17 @@ public class LearningActivity extends BaseActivity {
         super.onEdit(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, new LearningSessionDetailFragment(), "New Learning Session", true, null, null);
+                setFragment(R.id.fl_main, new LearningSessionDetailFragment(), "New Learning Session",true, null, null);
             }
         });
     }
 
     @Override
     public void onLoad(LearningTitle learningTitle, UserActionCallback callback) {
-        super.onLoad(learningTitle, new UserActionCallback() {
+        super.onLoad(learningTitle, new UserActionCallback(){
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, new LearningItemListFragment(), "Learning Title 1", true, null, null);
+                setFragment(R.id.fl_main, new LearningItemListFragment(),"Learning Title 1", true, null, null);
             }
         });
     }

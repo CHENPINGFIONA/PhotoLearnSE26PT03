@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
-        <item name="colorControlNormal">@color/primaryTextColor</item>
+        <item name="colorControlNormal">@color/primaryLightColor</item>
     </style>
     <style name="AppTheme.NoActionBar" parent="@style/AppTheme">
         <item name="windowActionBar">false</item>

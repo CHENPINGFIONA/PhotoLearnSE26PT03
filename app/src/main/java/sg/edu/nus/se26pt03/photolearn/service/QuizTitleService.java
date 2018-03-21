@@ -27,7 +27,7 @@ public class QuizTitleService extends BaseService<QuizTitle, QuizTitleDAO> {
                 quizTitle.getLearningSession().setId(value.getLearningSessionId());
                 quizTitle.setTitle(value.getTitle());
                 quizTitle.setCreatedBy(value.getCreatedBy());
-                quizTitle.setTimestamp(DateConversionHelper.convertStringToDate(value.getTimestamp()));
+                quizTitle.setTimestamp(value.getTimestamp());
                 return quizTitle;
             }
 
@@ -38,7 +38,7 @@ public class QuizTitleService extends BaseService<QuizTitle, QuizTitleDAO> {
                 quizTitleDAO.setLearningSessionId(value.getLearningSession().getId());
                 quizTitleDAO.setTitle(value.getTitle());
                 quizTitleDAO.setCreatedBy(value.getCreatedBy());
-                quizTitleDAO.setTimestamp(DateConversionHelper.convertDateToString(value.getTimestamp()));
+                quizTitleDAO.setTimestamp(value.getTimestamp());
                 return quizTitleDAO;
             }
         });

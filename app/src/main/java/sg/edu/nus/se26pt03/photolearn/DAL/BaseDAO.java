@@ -2,13 +2,15 @@ package sg.edu.nus.se26pt03.photolearn.DAL;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.Date;
+
 /**
  * Created by MyatMin on 12/3/18.
  */
 
 public class BaseDAO {
     private String Id;
-    private String Timestamp;
+    private Date Timestamp;
     private String CreatedBy;
     @Exclude
     public String getId() {
@@ -19,11 +21,11 @@ public class BaseDAO {
         Id = id;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return Timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         Timestamp = timestamp;
     }
 

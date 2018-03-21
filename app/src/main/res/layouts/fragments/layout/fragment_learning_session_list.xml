@@ -9,7 +9,7 @@
         android:id="@+id/tv_learningsessionlist_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tv_learningsessionlist_hint_participant"
+        android:text="@string/no_records_found"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"

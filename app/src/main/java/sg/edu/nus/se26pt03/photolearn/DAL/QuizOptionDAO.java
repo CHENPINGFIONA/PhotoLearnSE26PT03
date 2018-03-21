@@ -2,6 +2,8 @@ package sg.edu.nus.se26pt03.photolearn.DAL;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.Date;
+
 /**
  * Created by chen ping on 11/3/2018.
  * Restructured by MyatMin on 12/3/2018.
@@ -38,13 +40,13 @@ public class QuizOptionDAO extends BaseDAO {
 
     @Override
     @Exclude
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return super.getTimestamp();
     }
 
     @Override
     @Exclude
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         super.setTimestamp(timestamp);
     }
 
