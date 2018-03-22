@@ -56,7 +56,14 @@ public class LearningSessionListFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        setupData();
+        setupViews();
+        setupControls();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         setupData();
         setupViews();
         setupControls();
@@ -77,7 +84,6 @@ public class LearningSessionListFragment extends BaseFragment {
     }
 
     private void setupViews() {
-
         if (learningSessionListAdapter.learningSessionList.size() > 0)
             getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
         switch (App.currentAppMode) {
