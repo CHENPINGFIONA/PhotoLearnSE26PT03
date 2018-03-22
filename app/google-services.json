@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "714384080260-ce74gc3pi42m2heu9c5vlanvd1ed0m7p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.edu.nus.se26pt03.photolearn",
+            "certificate_hash": "23f511f31bbb2bf57e390796b7f49ea17746745b"
+          }
+        },
+        {
           "client_id": "714384080260-965f0q60nmcnc1i5qrc3d0hp5c6v4pec.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
