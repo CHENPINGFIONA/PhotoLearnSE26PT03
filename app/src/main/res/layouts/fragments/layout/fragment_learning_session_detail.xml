@@ -21,20 +21,6 @@
         tools:hint="Course Code" />
 
     <EditText
-        android:id="@+id/edt_coursename"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Course Name (eg: Internet of Things)"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_coursecode"
-        tools:hint="Course Name" />
-
-    <EditText
         android:id="@+id/edt_modulecode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +33,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_coursename"
         tools:hint="Module Code" />
+
+    <EditText
+        android:id="@+id/edt_coursename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="Course Name (eg: Internet of Things)"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_coursecode"
+        tools:hint="Course Name" />
 
     <EditText
         android:id="@+id/edt_modulename"
@@ -62,15 +62,19 @@
         app:layout_constraintTop_toBottomOf="@+id/edt_modulecode"
         tools:hint="Module Name" />
 
-
-    <CalendarView
-        android:id="@+id/cv_moduledate"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <EditText
+        android:id="@+id/edt_moduledate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:focusableInTouchMode="true"
+        android:inputType="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edt_modulename" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_modulename"
+        tools:hint="Module Date" />
 
     <Button
         android:id="@+id/btn_save"
@@ -85,5 +89,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
