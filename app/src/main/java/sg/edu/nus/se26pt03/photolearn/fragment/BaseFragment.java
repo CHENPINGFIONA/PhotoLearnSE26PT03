@@ -48,7 +48,7 @@ public class BaseFragment extends Fragment implements UserActionListener {
                 relatives.add((UserActionListener) getActivity());
         }
         for(Fragment fragment: getChildFragmentManager().getFragments()) {
-            if (fragment instanceof UserActionListener) relatives.add((UserActionListener) fragment);
+            if (fragment instanceof UserActionListener && fragment.isVisible()) relatives.add((UserActionListener) fragment);
         }
         return  relatives;
     }
@@ -97,6 +97,7 @@ public class BaseFragment extends Fragment implements UserActionListener {
     public final void onBackstack(Object object, UserActionCallback callback, UserActionListener source) {
         userActionEmitter.dynamicEmit( Event.BACKSTACK, false, object, callback, source);
     }
+
     @Override
     public void onBefore(Event event, UserActionCallback callback) {
         userActionEmitter.dynamicEmit(Event.BEFORE, true, event, callback, null  );

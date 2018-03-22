@@ -3,36 +3,50 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
-import sg.edu.nus.se26pt03.photolearn.DAL.QuizTitleDAO;
-import sg.edu.nus.se26pt03.photolearn.database.FireBaseCallback;
-import sg.edu.nus.se26pt03.photolearn.database.LearningTitleRepo;
-import sg.edu.nus.se26pt03.photolearn.database.QuizTitleRepo;
-import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
-import sg.edu.nus.se26pt03.photolearn.utility.ConvertHelper;
 
 /**
  * Created by chen ping on 7/3/2018.
  */
 
-public class LearningSession implements ICallback {
-    private int id;
+public class LearningSession {
+    private String id;
     private Date courseDate;
     private String courseName;
     private String courseCode;
     private int moduleNumber;
     private String moduleName;
-    private int createdBy;
+
+    private String createdBy;
     private Date timestamp;
 
     private List<LearningTitle> learningTitles;
     private List<QuizTitle> quizTitles;
-    private LearningTitleRepo learningTitleRepo;
-    private QuizTitleRepo quizTitleRepo;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public Date getCourseDate() {
         return courseDate;
@@ -75,10 +89,13 @@ public class LearningSession implements ICallback {
     }
 
     public LearningSession() {
-        learningTitleRepo = new LearningTitleRepo();
-        quizTitleRepo = new QuizTitleRepo();
         learningTitles = new ArrayList<LearningTitle>();
         quizTitles = new ArrayList<QuizTitle>();
+    }
+
+    public LearningSession(String id) {
+        this();
+        this.id = id;
     }
 
     public String getLearningSessionId() {
@@ -86,83 +103,56 @@ public class LearningSession implements ICallback {
         return String.format("{0}-{1}-M{2}", df.format(courseDate), courseCode, moduleNumber);
     }
 
-    public void createLearningTitle(LearningTitle title) {
-        learningTitleRepo.save(ConvertHelper.toLearningTitleDao(title));
-    }
-
-    public void updateLearningTitle(LearningTitle title) {
-        learningTitleRepo.update(ConvertHelper.toLearningTitleDao(title));
-    }
-
-    public void deleteLearningTitle(LearningTitle title) {
-        learningTitleRepo.delete(ConvertHelper.toLearningTitleDao(title));
-    }
-
-    private List<LearningTitle> processLearningTitles(List<LearningTitleDAO> daos) {
-        List<LearningTitle> titles = new ArrayList<LearningTitle>();
-
-        for (LearningTitleDAO learningTitleDAO : daos) {
-            titles.add(ConvertHelper.fromLearningTitle(learningTitleDAO));
+    public boolean addLearningTitle(List<LearningTitle> learningTitles) {
+        for (LearningTitle learningTitle: learningTitles) {
+            if (!addLearningTitle(learningTitle)) {
+                return false;
+            }
         }
-
-        return titles;
+        return true;
     }
 
-    public List<LearningTitle> getLearningTitles(String learningSessionId, String userId, int mode, String text) {
-        List<LearningTitleDAO> learningTitleDAOs;
-        if (mode == AccessMode.toInt(AccessMode.EDIT)) {
-            learningTitleRepo.getAllByCreator(learningSessionId, userId, new FireBaseCallback<LearningTitleDAO>() {
-                @Override
-                public void onCallback(List<LearningTitleDAO> itemList) {
-                    learningTitles = processLearningTitles(itemList);
-                }
-            });
-        } else {
-            learningTitleRepo.getAllByLearningSessionID(learningSessionId, text, new FireBaseCallback<LearningTitleDAO>() {
-                @Override
-                public void onCallback(List<LearningTitleDAO> itemList) {
-                    learningTitles = processLearningTitles(itemList);
-                }
-            });
-        }
+    public boolean addLearningTitle(LearningTitle learningTitle) {
+        learningTitle.setLearningSession(this);
+        return learningTitles.add(learningTitle);
+    }
 
+    public boolean removeLearningTitle(List<LearningTitle> learningTitles) {
+        for (LearningTitle learningTitle: learningTitles) {
+            if (!removeLearningTitle(learningTitle)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean removeLearningTitle(LearningTitle learningTitle) {
+        return learningTitles.remove(learningTitle);
+    }
+
+    public List<LearningTitle> getLearningTitles() {
         return learningTitles;
     }
 
-    public LearningTitle getLearningTitle(int learningTitleId) {
-        return new LearningTitle();
+    public LearningTitle getLearningTitle(int index) {
+        return learningTitles.get(index);
     }
 
-    public void createQuizTitle(QuizTitle title) {
-        QuizTitleRepo repo = new QuizTitleRepo();
-        repo.save(ConvertHelper.toQuizTitleDao(title));
+    public boolean addQuizTitle(QuizTitle quizTitle) {
+        quizTitle.setLearningSession(this);
+        return quizTitles.add(quizTitle);
     }
 
-    public void updateQuizTitle(QuizTitle title) {
-        quizTitleRepo.update(ConvertHelper.toQuizTitleDao(title));
+    public boolean removeQuizTitle(QuizTitle quizTitle) {
+        return quizTitles.remove(quizTitle);
     }
 
-    public void deleteQuizTitle(QuizTitle title) {
-        quizTitleRepo.delete(ConvertHelper.toQuizTitleDao(title));
-    }
-
-    public List<QuizTitle> getQuizTitles(String learningSessionId) {
-//        Collection<QuizTitleDAO> quizTitleDAOs = quizTitleRepo.getAllByLearningSessionID(learningSessionId);
-//
-//        for (QuizTitleDAO quizTitleDAO : quizTitleDAOs) {
-//            quizTitles.clear();
-//            quizTitles.add(ConvertHelper.fromQuizTitle(quizTitleDAO));
-//        }
-
+    public List<QuizTitle> getQuizTitles() {
         return quizTitles;
     }
 
-    public QuizTitle getQuizTitle(int quizTitleId) {
-        return new QuizTitle();
+    public QuizTitle getQuizTitle(int index) {
+        return quizTitles.get(index);
     }
 
-    @Override
-    public void callback() {
-
-    }
 }

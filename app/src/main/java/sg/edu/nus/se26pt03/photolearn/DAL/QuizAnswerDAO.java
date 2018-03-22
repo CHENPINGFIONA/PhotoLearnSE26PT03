@@ -1,6 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.DAL;
 
 import java.util.Date;
+import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
@@ -11,8 +12,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 public class QuizAnswerDAO extends BaseDAO {
     private String QuizItemId;
-    private String CreatedBy;
-    private String Timestamp;
+    private List<QuizOptionDAO> SelectedQuizOptions;
 
     public String getQuizItemId() {
         return QuizItemId;
@@ -22,29 +22,11 @@ public class QuizAnswerDAO extends BaseDAO {
         QuizItemId = quizItemId;
     }
 
-    public String getCreatedBy() {
-        return CreatedBy;
+    public List<QuizOptionDAO> getSelectedQuizOptions() {
+        return SelectedQuizOptions;
     }
 
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
-    }
-
-    public Date getTimestamp() {
-        if (Timestamp == null) {
-            return null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            return dateConversionHelper.convertStringToDate(Timestamp);
-        }
-    }
-
-    public void setTimestamp(Date timestamp) {
-        if (timestamp == null) {
-            Timestamp = null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            Timestamp = dateConversionHelper.convertDateToString(timestamp);
-        }
+    public void setSelectedQuizOptions(List<QuizOptionDAO> selectedQuizOptions) {
+        SelectedQuizOptions = selectedQuizOptions;
     }
 }

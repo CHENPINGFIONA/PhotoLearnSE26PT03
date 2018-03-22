@@ -1,35 +1,43 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="sg.edu.nus.se26pt03.photolearn.fragment.QuizTitleListFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_quiz_title"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
-
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add"
+        android:id="@+id/fab_quiztitlelist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="20dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
         android:src="@android:drawable/ic_input_add"
         android:tint="@android:color/white"
-        app:backgroundTint="@color/primaryColor" />
+        app:backgroundTint="@color/primaryColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_quiz_title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </android.support.v7.widget.RecyclerView>
+
     <TextView
+        android:id="@+id/tv_empty_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_empty_value"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:text="@string/no_records_found"
-        />
-</RelativeLayout>
+        android:textSize="20sp"
+        android:textStyle="bold" />
+</android.support.constraint.ConstraintLayout>
+

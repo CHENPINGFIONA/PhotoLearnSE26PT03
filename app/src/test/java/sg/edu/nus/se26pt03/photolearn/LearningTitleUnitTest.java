@@ -29,7 +29,7 @@ public class LearningTitleUnitTest {
 
     private int TitleID=1;
     private String TitleName="Test Title";
-    private int createdBy=12121;
+    private String createdBy="12121";
     LearningTitle title=null;
     private Collection<Item> learningItems=null;
     public LearningTitleUnitTest() {
@@ -39,14 +39,14 @@ public class LearningTitleUnitTest {
     private void SetInitialValues() {
         learningItems = new ArrayList<Item>();
         LearningItem item1=new LearningItem();
-        item1.setTitleId(this.TitleID);
+        //item1.setTitleId(this.TitleID);
         item1.setContent("How old are you ?");
         Date d= new Date();
         item1.setTimestamp(d);
         item1.setCreatedBy(this.createdBy);
 
         QuizItem item2=new QuizItem();
-        item2.setTitleId(this.TitleID);
+        //item2.setTitleId(this.TitleID);
         item2.setContent("Where are you from ?");
         Date d2= new Date();
         item2.setTimestamp(d2);
@@ -65,18 +65,20 @@ public class LearningTitleUnitTest {
     public void Assert_CreateLearningItem() throws Exception {
 
         LearningItem item1=new LearningItem();
-        item1.setTitleId(this.TitleID);
+        //item1.setTitleId(this.TitleID);
         item1.setContent("How old are you ?");
         Date d= new Date();
         item1.setTimestamp(d);
         item1.setCreatedBy(this.createdBy);
         //title.createItem(item1);
     }
+
     @Test
     public void Assert_CreateQuizItem() throws Exception {
 
 
     }
+
     @Test
     public void Assert_UpdateItem() throws Exception {
 

@@ -1,121 +1,80 @@
 package sg.edu.nus.se26pt03.photolearn.adapter;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
-import sg.edu.nus.se26pt03.photolearn.application.App;
+
 
 /**
  * Created by chen ping on 11/3/2018.
  */
 
 public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdapter.QuizTitleViewHolder> {
-    private Context context;
-    private Dialog dialog;
+    public List<QuizTitle> quizTitleList;
+    public QuizTitleViewHolderClick quizTitleViewHolderClick;
 
-    private List<QuizTitle> titles;
-    private String sessionId;
-
-    public class QuizTitleViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvTitle;
-        public Button btnEdit;
-        public Button btnDelete;
-
-        public QuizTitleViewHolder(View view) {
-            super(view);
-            tvTitle = (TextView) view.findViewById(R.id.tv_title);
-            btnEdit = (Button) view.findViewById(R.id.btn_edit);
-            btnDelete = (Button) view.findViewById(R.id.btn_delete);
-        }
-    }
-
-    public QuizTitleListAdapter(List<QuizTitle> titles, String sessionId) {
-        this.titles = titles;
-        this.sessionId = sessionId;
-    }
-
-    public void refreshQuizTitles() {
-        titles.clear();
-        titles.addAll(App.session.getQuizTitles(this.sessionId));
-        notifyDataSetChanged();
+    public QuizTitleListAdapter(List<QuizTitle> quizTitleList, QuizTitleViewHolderClick quizTitleViewHolderClick) {
+        this.quizTitleList = quizTitleList;
+        this.quizTitleViewHolderClick = quizTitleViewHolderClick;
     }
 
     @Override
     public QuizTitleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.title_row_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quiz_title, parent, false);
+        final QuizTitleViewHolder quizTitleViewHolder = new QuizTitleViewHolder(itemView);
+        itemView.setOnTouchListener(new View.OnTouchListener() {
+            int MAX_CLICK_DURATION = 200;
+            long startClickTime;
 
-        return new QuizTitleViewHolder(itemView);
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startClickTime = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        long clickDuration = System.currentTimeMillis() - startClickTime;
+                        if (clickDuration < MAX_CLICK_DURATION) {
+                            if (quizTitleViewHolder.itemView.isClickable())
+                                quizTitleViewHolderClick.onItemClick(quizTitleViewHolder);
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
+        return quizTitleViewHolder;
     }
 
     @Override
     public void onBindViewHolder(QuizTitleViewHolder holder, int position) {
-        final QuizTitle title = titles.get(position);
-        holder.tvTitle.setText(title.title);
-        //SET EDIT & DELETE BUTTON EVENT
-        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(context, title.title + "edit clicked", Toast.LENGTH_SHORT).show();
-                showDialogue(title);
-            }
-        });
-
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                App.session.deleteQuizTitle(title);
-            }
-        });
+        QuizTitle quizTitle = quizTitleList.get(position);
+        holder.tvTitle.setText(quizTitle.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return titles.size();
+        return quizTitleList.size();
     }
 
-    private void showDialogue(final QuizTitle title) {
-        dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_title);
-        dialog.show();
+    public interface QuizTitleViewHolderClick {
+        void onItemClick(QuizTitleViewHolder viewHolder);
+    }
 
-        TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
-        tvTitle.setText(R.string.quiz_title);
+    public class QuizTitleViewHolder extends RecyclerView.ViewHolder {
+        private TextView tvTitle;
 
-        final EditText etContent = (EditText) dialog.findViewById(R.id.et_content);
-        etContent.setHint(R.string.enter_title);
-        etContent.setText(title.title);
-
-        Button btnSave = (Button) dialog.findViewById(R.id.btn_save);
-        Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                title.title = etContent.getText().toString();
-                App.session.updateQuizTitle(title);
-
-                refreshQuizTitles();
-                dialog.dismiss();
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        public QuizTitleViewHolder(final View itemView) {
+            super(itemView);
+            tvTitle = itemView.findViewById(R.id.tv_quizTitle_title);
+        }
     }
 }

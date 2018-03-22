@@ -35,7 +35,7 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     public final List<UserActionListener> getRelatives() {
         List<UserActionListener> relatives = new ArrayList<UserActionListener>();
         for(Fragment fragment: getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof UserActionListener) relatives.add((UserActionListener) fragment);
+            if (fragment instanceof UserActionListener && fragment.isVisible()) relatives.add((UserActionListener) fragment);
         }
         return  relatives;
     }
@@ -84,6 +84,7 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     public final void onBackstack(Object object, UserActionCallback callback, UserActionListener source) {
         userActionEmitter.dynamicEmit( Event.BACKSTACK, false, object, callback, source);
     }
+
     @Override
     public void onBefore(Event event, UserActionCallback callback) {
         userActionEmitter.dynamicEmit(Event.BEFORE, true, event, callback, null  );

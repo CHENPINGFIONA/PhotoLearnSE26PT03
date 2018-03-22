@@ -9,10 +9,10 @@ import java.util.List;
  */
 
 public class QuizItem extends Item{
-    private List<QuizOption> options;
+    private List<QuizOption> quizOptions;
 
     public QuizItem() {
-        options = new ArrayList<QuizOption>();
+        quizOptions = new ArrayList<QuizOption>();
     }
 
     public boolean checkAnswer(int selectedOptionId) {

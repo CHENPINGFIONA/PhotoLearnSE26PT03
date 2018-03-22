@@ -1,28 +1,30 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.Date;
 
 /**
  * Created by chen ping on 3/10/2018.
  */
 
-public class Item  implements Serializable {
-    public int getId() {
-        return id;
+public class Item implements Serializable {
+    private String photoURL;
+    private String id;
+
+    public Title getTitle() {
+        return title;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTitle(Title title) {
+        this.title = title;
     }
 
-    public int getTitleId() {
-        return titleId;
-    }
-
-    public void setTitleId(int titleId) {
-        this.titleId = titleId;
-    }
+    private Title title;
+    private String content;
+    private Coordinate coordinate;
+    private String createdBy;
+    private Date timestamp;
 
     public String getPhotoURL() {
         return photoURL;
@@ -33,59 +35,42 @@ public class Item  implements Serializable {
     }
 
     public String getContent() {
-        return content;
+        return content ==null?"":content ;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
 
-    public int getCreatedBy() {
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
     public Date getTimestamp() {
-        return timestamp;
+        return timestamp==null?new Date():timestamp;
     }
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-    public double getLatitude() {
-        return Latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        Latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return Longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        Longitude = longitude;
-    }
-
-    private double Latitude;
-    private double Longitude;
-    public void playAudio() {
-        //read content
-    }
-
-    public  void displayPhoto(){
-
-    }
-
-    private int id;
-    private int titleId;
-    private String photoURL;
-    private String content;
-
-    private int createdBy;
-    private Date timestamp;
 }

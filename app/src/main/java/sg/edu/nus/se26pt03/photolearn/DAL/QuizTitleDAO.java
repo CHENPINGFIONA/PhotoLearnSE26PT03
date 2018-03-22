@@ -12,8 +12,6 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 public class QuizTitleDAO extends BaseDAO {
     private String Title;
     private String LearningSessionId;
-    private String CreatedBy;
-    private String Timestamp;
 
     public String getTitle() {
         return Title;
@@ -29,31 +27,5 @@ public class QuizTitleDAO extends BaseDAO {
 
     public void setLearningSessionId(String learningSessionId) {
         LearningSessionId = learningSessionId;
-    }
-
-    public String getCreatedBy() {
-        return CreatedBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
-    }
-
-    public Date getTimestamp() {
-        if (Timestamp == null) {
-            return null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            return dateConversionHelper.convertStringToDate(Timestamp);
-        }
-    }
-
-    public void setTimestamp(Date timestamp) {
-        if (timestamp == null) {
-            Timestamp = null;
-        } else {
-            DateConversionHelper dateConversionHelper = new DateConversionHelper();
-            Timestamp = dateConversionHelper.convertDateToString(timestamp);
-        }
     }
 }

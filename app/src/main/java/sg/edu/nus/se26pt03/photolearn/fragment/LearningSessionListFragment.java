@@ -6,14 +6,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,19 +30,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
-import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
+import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningSessionListAdapter;
+import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
 
 /**
  * Created by MyatMin on 08/3/18.
  */
 public class LearningSessionListFragment extends BaseFragment {
     private LearningSessionListAdapter learningSessionListAdapter;
+    private LearningSessionService learningSessionService;
+    private List<LearningSession> learningSessions;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,39 +56,36 @@ public class LearningSessionListFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        loadLearingSessionList();
+        setupData();
         setupViews();
         setupControls();
     }
-    private  void loadLearingSessionList() {
-        final List<LearningSession> learningSessionList = new ArrayList<LearningSession>();
-        if (App.currentAppMode == AppMode.TRAINER)
-            try {
-                for(int i=1; i <= 100; i++) {
-                    LearningSession ls = new LearningSession();
-                    ls.setCourseCode("IOT");
-                    ls.setCourseName("Internet of Things");
-                    ls.setModuleName("Overview");
-                    ls.setModuleNumber(i);
 
-                    ls.setCourseDate(new SimpleDateFormat("yyyy-MM-dd").parse("2018-04-01"));
-                    learningSessionList.add(ls);
-                }
-            }
-            catch (ParseException e) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupData();
+        setupViews();
+        setupControls();
+    }
 
-            }
-        learningSessionListAdapter = new LearningSessionListAdapter(learningSessionList, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
+    private void setupData() {
+        learningSessionService = new LearningSessionService();
+        if (App.currentAppMode == AppMode.TRAINER) {
+            learningSessions = ((Trainer) App.currentUser).getLearningSessions();
+        }
+
+        learningSessionListAdapter = new LearningSessionListAdapter(learningSessions, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
             @Override
             public void onItemClick(LearningSessionListAdapter.LearningSessionViewHolder viewHolder) {
-                onLoad(learningSessionList.get(viewHolder.getAdapterPosition()), null);
+                onLoad(learningSessions.get(viewHolder.getAdapterPosition()), null);
             }
         });
     }
 
     private void setupViews() {
-        if (learningSessionListAdapter.learningSessionList.size() >0) getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
+        if (learningSessionListAdapter.learningSessionList.size() > 0)
+            getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
         switch (App.currentAppMode) {
             case TRAINER:
                 getView().findViewById(R.id.sv_learningsessionlist).setVisibility(View.GONE);
@@ -99,16 +109,16 @@ public class LearningSessionListFragment extends BaseFragment {
 
             @Override
             public void onClicked(Object tag, int position) {
-                    switch (tag.toString()) {
-                        case "delete":
-                            learningSessionListAdapter.learningSessionList.remove(position);
-                            learningSessionListAdapter.notifyItemRemoved(position);
-                            learningSessionListAdapter.notifyItemRangeChanged(position, learningSessionListAdapter.getItemCount());
-                            break;
-                        case "edit":
-                            onEdit(learningSessionListAdapter.learningSessionList.get(position), null);
-                            break;
-                    }
+                switch (tag.toString()) {
+                    case "delete":
+                        learningSessionListAdapter.learningSessionList.remove(position);
+                        learningSessionListAdapter.notifyItemRemoved(position);
+                        learningSessionListAdapter.notifyItemRangeChanged(position, learningSessionListAdapter.getItemCount());
+                        break;
+                    case "edit":
+                        onEdit(learningSessionListAdapter.learningSessionList.get(position), null);
+                        break;
+                }
             }
         };
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
@@ -121,6 +131,7 @@ public class LearningSessionListFragment extends BaseFragment {
         });
 
     }
+
     private void setupControls() {
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningsessionlist);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

@@ -12,13 +12,8 @@ public class QuizTitle extends Title {
     private List<QuizItem> quizItems;
 
     public QuizTitle() {
+        setLearningSession(new LearningSession());
         quizItems = new ArrayList<QuizItem>();
-    }
-
-    public QuizTitle(String sessionId, String title, String createdBy) {
-        this.sessionId = sessionId;
-        this.title = title;
-        this.createdBy = createdBy;
     }
 
     public int getQuizScore(int userId) {
