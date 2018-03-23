@@ -40,7 +40,8 @@ public class LearningSessionDetailFragment extends BaseFragment {
     private LearningSession learningSessionCopy;
     private LearningSession learningSession;
     private LearningSessionService learningSessionService;
-    private Boolean updateMode;
+    private boolean updateMode;
+    private boolean emitter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -56,7 +57,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
     }
     @Override
     public void onBefore(Event event, final UserActionCallback callback) {
-        if (!learningSessionCopy.equals(App.session)) {
+        if (!emitter && !learningSessionCopy.equals(App.session)) {
             new AlertDialog.Builder(getContext())
                     .setTitle("Confirmation")
                     .setMessage("Unsaved data will be lost.\nAre you sure you wanted to continue?")
@@ -73,6 +74,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
                             callback.onReject();
                         }
                     }).show();
+            emitter = false;
         }
         else {
             callback.onPass();
@@ -123,6 +125,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
                         public void onComplete(LearningSession data) {
                             learningSession.copy(data);
                             displayInfoMessage("Learning session saved successfully!");
+                            emitter = true;
                             if (getStackBack()) getActivity().onBackPressed();
                         }
 
@@ -136,6 +139,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
                         @Override
                         public void onComplete(Boolean data) {
                             displayInfoMessage("Learning session updated successfully!");
+                            emitter = true;
                             if (getStackBack()) getActivity().onBackPressed();
                         }
 

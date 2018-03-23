@@ -70,7 +70,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
             databaseReference.setValue(t, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                    if (databaseError != null) {
+                    if (databaseError == null) {
                         callback.onComplete(false);
                     } else {
                         callback.onError(databaseError);
@@ -95,7 +95,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
         databaseReference.removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
+                if (databaseError == null) {
                     callback.onComplete(true);
                 } else {
                     callback.onError(databaseError);
