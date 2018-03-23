@@ -38,6 +38,7 @@ import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningSessionListAdapter;
 import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
  * Created by MyatMin on 08/3/18.
@@ -61,18 +62,24 @@ public class LearningSessionListFragment extends BaseFragment {
         setupControls();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        setupData();
-        setupViews();
-        setupControls();
-    }
-
     private void setupData() {
         learningSessionService = new LearningSessionService();
         if (App.currentAppMode == AppMode.TRAINER) {
             learningSessions = ((Trainer) App.currentUser).getLearningSessions();
+            learningSessionService.getAll(new ServiceCallback<List<LearningSession>>() {
+                @Override
+                public void onComplete(List<LearningSession> data) {
+                    ((Trainer) App.currentUser).removeAllLearningSesson();
+                    ((Trainer) App.currentUser).addLearningSession(data);
+                    learningSessions = ((Trainer) App.currentUser).getLearningSessions();
+                    refreshData();
+                }
+
+                @Override
+                public void onError(int code, String message, String details) {
+                    displayErrorMessage(message);
+                }
+            });
         }
 
         learningSessionListAdapter = new LearningSessionListAdapter(learningSessions, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
@@ -83,17 +90,22 @@ public class LearningSessionListFragment extends BaseFragment {
         });
     }
 
+    private void refreshData() {
+        learningSessionListAdapter.notifyDataSetChanged();
+        if (learningSessionListAdapter.learningSessionList.size() == 0)
+            getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.VISIBLE);
+
+    }
+
     private void setupViews() {
-        if (learningSessionListAdapter.learningSessionList.size() > 0)
-            getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
         switch (App.currentAppMode) {
-            case TRAINER:
-                getView().findViewById(R.id.sv_learningsessionlist).setVisibility(View.GONE);
-                break;
-            case PARTICIPENT:
-                getView().findViewById(R.id.fab_learningsessionlist).setVisibility(View.GONE);
-                break;
-        }
+        case TRAINER:
+            getView().findViewById(R.id.sv_learningsessionlist).setVisibility(View.GONE);
+            break;
+        case PARTICIPENT:
+            getView().findViewById(R.id.fab_learningsessionlist).setVisibility(View.GONE);
+            break;
+    }
         final RecyclerView recyclerView = getView().findViewById(R.id.rv_learningsessionlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(learningSessionListAdapter);

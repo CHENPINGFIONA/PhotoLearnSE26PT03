@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.Participant;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.R;
@@ -26,11 +27,20 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button button = view.findViewById(R.id.btn_facebook);
-        button.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btn_facebook).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onLogIn(new Trainer(), null);
+                Trainer trainer = new Trainer();
+                trainer.setId("facebook_user1");
+                onLogIn(trainer, null);
+            }
+        });
+        view.findViewById(R.id.btn_google).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Participant participant = new Participant();
+                participant.setId("google_user1");
+                onLogIn(participant, null);
             }
         });
     }

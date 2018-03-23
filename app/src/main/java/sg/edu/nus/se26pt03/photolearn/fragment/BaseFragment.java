@@ -3,6 +3,7 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -276,4 +277,11 @@ public class BaseFragment extends Fragment implements UserActionListener {
 
     }
 
+    protected void displayInfoMessage(String message) {
+        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    protected void displayErrorMessage(String message) {
+        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
+    }
 }

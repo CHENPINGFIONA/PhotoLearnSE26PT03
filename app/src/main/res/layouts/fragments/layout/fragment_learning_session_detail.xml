@@ -1,94 +1,161 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionDetailFragment">
+    <data>
+        <import type="sg.edu.nus.se26pt03.photolearn.utility.BindingHelper"/>
+        <variable
+            name="learningSession"
+            type="sg.edu.nus.se26pt03.photolearn.BAL.LearningSession"/>
+    </data>
+<android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionDetailFragment">
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edt_coursecode"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_coursecode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Course Code (eg: iot)"
-        android:inputType="text"
+        app:error="@{learningSession.courseCodeError}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:hint="Course Code" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/edt_modulecode"
+        <EditText
+            android:id="@+id/edt_coursecode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:hint="Course Code (eg: iot)"
+            android:inputType="text"
+            android:maxLength="3"
+            android:text="@={learningSession.courseCode}"
+            tools:hint="Course Code" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_coursename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Module Number (eg: 123)"
-        android:inputType="number"
+        app:error="@{learningSession.courseNameError}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_coursename"
-        tools:hint="Module Code" />
+        app:layout_constraintTop_toBottomOf="@+id/til_coursecode">
 
-    <EditText
-        android:id="@+id/edt_coursename"
+        <EditText
+            android:id="@+id/edt_coursename"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Course Name (eg: Internet of Things)"
+            android:inputType="text"
+            android:text="@={learningSession.courseName}"
+            tools:hint="Course Name" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_modulenumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Course Name (eg: Internet of Things)"
-        android:inputType="text"
+        app:error="@{learningSession.moduleNumberError}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_coursecode"
-        tools:hint="Course Name" />
+        app:layout_constraintTop_toBottomOf="@+id/til_coursename">
 
-    <EditText
-        android:id="@+id/edt_modulename"
+        <EditText
+            android:id="@+id/edt_modulenumber"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Module Number (eg: 123)"
+            android:inputType="number"
+            android:maxLength="3"
+            android:text="@={BindingHelper.fromModuleNumber(learningSession.moduleNumber)}"
+            tools:hint="Module Number" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_modulename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="Module Name (eg: Overview)"
-        android:inputType="text"
+        app:error="@{learningSession.moduleNameError}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_modulecode"
-        tools:hint="Module Name" />
+        app:layout_constraintTop_toBottomOf="@+id/til_modulenumber">
 
-    <EditText
-        android:id="@+id/edt_moduledate"
+        <EditText
+            android:id="@+id/edt_modulename"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Module Name (eg: Overview)"
+            android:inputType="text"
+            android:text="@={learningSession.moduleName}"
+            tools:hint="Module Name" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_coursedate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:focusableInTouchMode="true"
-        android:inputType="none"
+        app:error="@{learningSession.courseDateError}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_modulename"
-        tools:hint="Module Date" />
+        app:layout_constraintTop_toBottomOf="@+id/til_modulename">
+
+        <EditText
+            android:id="@+id/edt_coursedate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:inputType="none"
+            android:text="@={BindingHelper.fromCourseDate(learningSession.courseDate)}"
+            tools:hint="Course Date" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_validity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/all_fields_are_mandatory"
+        android:visibility="@{BindingHelper.toVisibility(!learningSession.validity)}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_coursedate" />
 
     <Button
         android:id="@+id/btn_save"
         style="@style/AppTheme.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:enabled="@{learningSession.validity}"
         android:inputType="datetime"
         android:text="@string/button_save"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_validity" />
 
 
 </android.support.constraint.ConstraintLayout>
+</layout>

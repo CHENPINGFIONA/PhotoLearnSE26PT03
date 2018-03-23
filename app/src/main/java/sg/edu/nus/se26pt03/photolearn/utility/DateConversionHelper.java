@@ -29,4 +29,13 @@ public class DateConversionHelper {
     public static String convertDateToString(Date date) {
         return yymmddFormat.format(date);
     }
+
+    public static Date stripDate(Date date, String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        try {
+            return dateFormat.parse(dateFormat.format(date));
+        } catch (ParseException e) {
+            return null;
+        }
+    }
 }

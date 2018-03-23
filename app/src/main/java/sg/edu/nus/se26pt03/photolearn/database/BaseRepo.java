@@ -16,6 +16,7 @@ import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
+import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.fragment.LoginFragment;
 
 /**
@@ -45,6 +46,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
         t.setId(key);
         mDatabaseRef.child(key).setValue(t);
         mDatabaseRef.child(key).child("timestamp").setValue(ServerValue.TIMESTAMP);
+        mDatabaseRef.child(key).child("createdBy").setValue(App.currentUser.getId());
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -20,4 +20,9 @@
     <string name="enter_title">Enter title</string>
 
     <string name="facebook_application_id" translatable="false">1929382460709589</string>
+    <string name="format_coursedate_display">dd / MM / yyyy (EEEE)</string>
+    <string name="format_coursedate_code">ddMMyyyy</string>
+    <string name="format_modulenumber_code">%03d</string>
+    <string name="format_modulenumber_display">%03d</string>
+    <string name="all_fields_are_mandatory">*All fields are mandatory</string>
 </resources>

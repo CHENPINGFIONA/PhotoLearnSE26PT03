@@ -23,7 +23,7 @@
         <item name="android:background">@color/primaryDarkColor</item>
         <item name="titleTextColor">@color/primaryTextColor</item>
     </style>
-    <style name="AppTheme.Button">
+    <style name="AppTheme.Button" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@color/secondaryColor</item>
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:textAllCaps">true</item>

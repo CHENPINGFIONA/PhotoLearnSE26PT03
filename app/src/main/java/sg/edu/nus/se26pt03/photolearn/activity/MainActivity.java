@@ -43,19 +43,6 @@ public class MainActivity extends BaseActivity{
             public void onPass() {
                 App.currentUser = user;
                 App.currentAppMode = AppMode.TRAINER;
-                if (App.currentUser instanceof Trainer) {
-                    learningSessionService.getAll(new ServiceCallback<List<LearningSession>>() {
-                        @Override
-                        public void onComplete(List<LearningSession> data) {
-                            ((Trainer) App.currentUser).addLearningSession(data);
-                        }
-
-                        @Override
-                        public void onError(int code, String message, String details) {
-
-                        }
-                    });
-                }
                 Intent intent = new Intent(context, LearningActivity.class);
                 startActivity(intent);
                 callback.onPass();
