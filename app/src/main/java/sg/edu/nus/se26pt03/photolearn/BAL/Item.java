@@ -12,6 +12,10 @@ public class Item implements Serializable {
     private String photoURL;
     private String id;
 
+    public Item(Title title) {
+        this.title = title;
+    }
+
     public Title getTitle() {
         return title;
     }

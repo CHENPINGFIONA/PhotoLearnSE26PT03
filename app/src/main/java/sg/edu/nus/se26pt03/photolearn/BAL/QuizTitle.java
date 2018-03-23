@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
+
 /**
  * Created by chen ping on 7/3/2018.
  */
@@ -35,23 +37,25 @@ public class QuizTitle extends Title {
 
     }
 
+
+
     @Override
-    public void createItem(Item item) {
+    public void createItem(Item item, ServiceCallback<Item> callback) {
 
     }
 
     @Override
-    public void updateItem(Item item) {
+    public void updateItem(Item item, ServiceCallback<Boolean> callback) {
 
     }
 
     @Override
-    public void deleteItem(int itemId) {
+    public void deleteItem(String itemId, ServiceCallback<Boolean> callback) {
 
     }
 
     @Override
-    public List<Item> getItems() {
-        return null;
+    public void getItems(ServiceCallback<List<Item>> callback) {
+
     }
 }

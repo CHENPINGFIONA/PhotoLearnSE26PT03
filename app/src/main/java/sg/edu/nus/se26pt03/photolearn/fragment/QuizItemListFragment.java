@@ -20,6 +20,10 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.Title;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizItemFragmentPageAdapter;
@@ -43,7 +47,7 @@ public class QuizItemListFragment extends BaseFragment {
     private int role;
     private int mode;
     private String sessionId;
-    private String titleId;
+    private QuizTitle quizTitle;
     private String userId;
     private ImageView popupimagebutton;
 
@@ -61,8 +65,8 @@ public class QuizItemListFragment extends BaseFragment {
        View view= inflater.inflate(R.layout.fragment_learning_item_list, container, false);
       //  super.onCreateView(inflater, container, savedInstanceState);
         //setContentView(R.layout.activity_view_page_with_fragment);
+        quizTitle = (QuizTitle) getArguments().getSerializable(ConstHelper.REF_QUIZ_TITLES);
         sessionId = "1";
-        titleId="1";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
@@ -84,7 +88,7 @@ public class QuizItemListFragment extends BaseFragment {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCreate(new LearningItem(),    null);
+                onCreate(new QuizItem(quizTitle),    null);
             }
         });
         popupimagebutton.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +110,7 @@ public class QuizItemListFragment extends BaseFragment {
 
 
         mPager = (ViewPager) getView().findViewById(R.id.vp_quizitemlistt);
-        mPagerAdapter = new QuizItemFragmentPageAdapter(getFragmentManager(), "1");
+        mPagerAdapter = new QuizItemFragmentPageAdapter(getFragmentManager(), quizTitle);
         mPager.setAdapter(mPagerAdapter);
     }
 

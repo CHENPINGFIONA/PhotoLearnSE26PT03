@@ -11,7 +11,9 @@ import java.util.List;
 public class QuizItem extends Item{
     private List<QuizOption> quizOptions;
 
-    public QuizItem() {
+    public QuizItem(Title title) {
+
+        super(title);
         quizOptions = new ArrayList<QuizOption>();
     }
 

@@ -4,6 +4,7 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.preference.PreferenceManager;
@@ -25,7 +26,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.Title;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
@@ -42,7 +46,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
  */
 public class LearningItemListFragment extends BaseFragment {
 
-    public static String SharedPreferences_Access_Mode= "ACCESSMODE";
+    public static String SharedPreferences_Access_Mode = "ACCESSMODE";
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
 
@@ -52,10 +56,10 @@ public class LearningItemListFragment extends BaseFragment {
     private int role;
     private int mode;
     private String sessionId;
-    private String titleId;
     private String userId;
     private ImageView popupimagebutton;
-    private List<LearningItem> learningItemList=null;
+    private LearningTitle learningTitle;
+    private List<Item> learningItemList = null;
     private LearningItemService learningItemService = new LearningItemService();
 
 
@@ -70,34 +74,19 @@ public class LearningItemListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View view= inflater.inflate(R.layout.fragment_learning_item_list, container, false);
-      //  super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_learning_item_list, container, false);
+        //  super.onCreateView(inflater, container, savedInstanceState);
         //setContentView(R.layout.activity_view_page_with_fragment);
+        learningTitle = (LearningTitle) getArguments().getSerializable(ConstHelper.REF_LEARNING_TITLES);
         sessionId = "1";
-        titleId="-L88Kii8Oc5tSrTBxNaW";
+        //titleId="-L88Kii8Oc5tSrTBxNaW";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
         return view;
     }
- /*   void loadList(String titleId){
-        this.learningItemList.clear();
-        learningItemService.getAllByLearningTitleId(titleId, new ServiceCallback<List<LearningItem>>() {
-            @Override
-            public void onComplete(List<LearningItem> data) {
-                if(data!=null)
-                    LearningItemListFragment.this.learningItemList=data;
-            }
 
-
-            @Override
-            public void onError(int code, String message, String details) {
-                Log.w("ERROR",code+"-"+message+"-"+details);
-
-            }
-        });
-    }*/
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -109,16 +98,17 @@ public class LearningItemListFragment extends BaseFragment {
     private void setupControls() {
         popupimagebutton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
         Add.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
+
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCreate(new LearningItem(),    null);
+                onCreate(new LearningItem(learningTitle), null);
             }
         });
         popupimagebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu= popupSetup(popupimagebutton);
+                PopupMenu popupMenu = popupSetup(popupimagebutton);
                 popupMenu.show();
             }
         });
@@ -134,20 +124,23 @@ public class LearningItemListFragment extends BaseFragment {
 
 
         mPager = (ViewPager) getView().findViewById(R.id.vp_learningitem);
-        mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), this.titleId);
+
+        mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), learningTitle,this.learningItemList);
+
         mPager.setAdapter(mPagerAdapter);
+
+        loadList();
     }
 
-    public  PopupMenu popupSetup(ImageView imageView)
-    {
-        PopupMenu popupMenu=new PopupMenu(getContext(),imageView);
-        MenuInflater menuInflater=popupMenu.getMenuInflater();
-        menuInflater.inflate(R.menu.menu_learning_item,popupMenu.getMenu());
+    public PopupMenu popupSetup(ImageView imageView) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), imageView);
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.menu_learning_item, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                boolean result=false;
-                switch (menuItem.getItemId()){
+                boolean result = false;
+                switch (menuItem.getItemId()) {
                     case R.id.menu_delete:
                         new AlertDialog.Builder(getContext())
                                 .setTitle("Title")
@@ -155,33 +148,61 @@ public class LearningItemListFragment extends BaseFragment {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int whichButton) {
-                                       return;
-                                    }})
+                                        return;
+                                    }
+                                })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                       return;
+                                        return;
                                     }
                                 }).show();
-                        result=true;
+                        result = true;
                         break;
                     case R.id.menu_edit:
-                        onEdit(((ItemFragmentPageAdapter)mPagerAdapter).getLearningItemByPosition(mPager.getCurrentItem()), null);
-                        result=true;
+                        onEdit(((ItemFragmentPageAdapter) mPagerAdapter).getLearningItemByPosition(mPager.getCurrentItem()), null);
+                        result = true;
                         break;
                 }
                 return result;
             }
         });
-        return  popupMenu;
+        return popupMenu;
 
     }
+
     @Override
     public void onResume() {
         super.onResume();
+        loadList();
         tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
-       // Delete.setVisibility(mPagerAdapter.getCount() == 0 ? View.INVISIBLE : View.VISIBLE);
-       // Edit.setVisibility(mPagerAdapter.getCount() == 0 ? View.INVISIBLE : View.VISIBLE);
+        popupimagebutton.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+    }
+
+
+    private void loadList() {
+
+        this.learningTitle.getItems(new ServiceCallback<List<Item>>() {
+
+            @Override
+            public void onComplete(List<Item> data) {
+
+                if (data != null) {
+                    if(learningItemList !=null )
+                        learningItemList.clear();
+                    LearningItemListFragment.this.learningItemList = data;
+                    ((ItemFragmentPageAdapter)mPagerAdapter).setLearningItemList(data);
+                    mPagerAdapter.notifyDataSetChanged();
+                   tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+                    //popupimagebutton.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+                }
+            }
+            @Override
+            public void onError(int code, String message, String details) {
+                Log.w("ERROR", code + "-" + message + "-" + details);
+
+            }
+        });
     }
 
 

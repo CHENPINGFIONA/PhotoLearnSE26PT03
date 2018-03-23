@@ -84,7 +84,7 @@ public class LearningItemFragment extends BaseFragment {
         ttsHelper.setTexttoSpeak(learningItem.getContent());
         try {
             AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView);
-            loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, learningItem.getPhotoURL());
+            loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, learningItem.getPhotoURL());//"http://i63.tinypic.com/2yjzcrr.jpg");
 
         } catch (Exception ex) {
             Log.w("adapter", "error");
