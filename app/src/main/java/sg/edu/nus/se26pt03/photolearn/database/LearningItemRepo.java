@@ -73,16 +73,16 @@ public class LearningItemRepo extends BaseRepo<LearningItemDAO> {
     }
 
     public void getAllByLearningTitleID(final String learningTitleId, final RepoCallback<List<LearningItemDAO>> callback) {
-        mDatabaseRef.addListenerForSingleValueEvent(
+        mDatabaseRef.orderByChild("learningTitleId").equalTo(learningTitleId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List<LearningItemDAO> result = new ArrayList<>();
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+
                             LearningItemDAO learningItemDAO = getValue(childDataSnapshot);
-                            if (learningItemDAO.getLearningTitleId().equals(learningTitleId)) {
-                                result.add(learningItemDAO);
-                            }
+                            result.add(learningItemDAO);
+
                         }
                         callback.onComplete(result);
                     }

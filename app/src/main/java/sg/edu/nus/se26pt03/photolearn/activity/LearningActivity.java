@@ -39,7 +39,9 @@ public class LearningActivity extends BaseActivity{
                 if (App.currentAppMode == AppMode.TRAINER) App.currentAppMode = AppMode.PARTICIPENT;
                 else if (App.currentAppMode == AppMode.PARTICIPENT) App.currentAppMode = AppMode.TRAINER;
                 //onModeChange(App.currentAppMode, null);
-                onLoad(new LearningTitle(), null);
+                LearningTitle learningTitle= new LearningTitle();
+                learningTitle.setId("-L88Kii8Oc5tSrTBxNaW");
+                onLoad(learningTitle, null);
                 //onLoad(new LearningSession(), null);
             }
         });
@@ -97,12 +99,14 @@ public class LearningActivity extends BaseActivity{
     *
     * */
     @Override
-    public void onLoad(LearningTitle learningTitle, UserActionCallback callback) {
+    public void onLoad(final LearningTitle learningTitle, UserActionCallback callback) {
         super.onLoad(learningTitle, new UserActionCallback(){
             @Override
-            public void onPass() {
 
-                setFragment(R.id.fl_main, new LearningItemListFragment(),"Learning Title 1", true, null, null);
+            public void onPass() {
+                Bundle bundle=new Bundle();
+                bundle.putSerializable(ConstHelper.REF_LEARNING_TITLES,learningTitle);
+                setFragment(R.id.fl_main, new LearningItemListFragment(),"Learning Title 1", true, "TitleFragment", bundle);
             }
         });
     }

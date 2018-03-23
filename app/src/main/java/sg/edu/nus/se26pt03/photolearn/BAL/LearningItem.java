@@ -7,4 +7,7 @@ import java.util.Date;
  */
 
 public class LearningItem extends Item {
+    public LearningItem(Title title) {
+        super(title);
+    }
 }
