@@ -16,17 +16,17 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
  */
 @IgnoreExtraProperties
 public class LearningSessionDAO extends BaseDAO{
-    private String CourseDate;
+    private long CourseDate;
     private String CourseName;
     private String CourseCode;
     private int ModuleNumber;
     private  String ModuleName;
 
-    public String getCourseDate() {
+    public long getCourseDate() {
         return CourseDate;
     }
 
-    public void setCourseDate(String courseDate) {
+    public void setCourseDate(long courseDate) {
         CourseDate = courseDate;
     }
 

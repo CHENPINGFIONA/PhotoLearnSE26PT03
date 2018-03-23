@@ -41,8 +41,7 @@ public class MainActivity extends BaseActivity{
         super.onLogIn(user, new UserActionCallback() {
             @Override
             public void onPass() {
-                App.currentUser = user;
-                App.currentAppMode = AppMode.TRAINER;
+                App.setCurrentUser(user);
                 Intent intent = new Intent(context, LearningActivity.class);
                 startActivity(intent);
                 callback.onPass();

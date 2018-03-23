@@ -1,5 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.service;
 
+import java.util.Date;
+
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningSessionDAO;
 import sg.edu.nus.se26pt03.photolearn.database.LearningSessionRepo;
@@ -20,11 +22,13 @@ public class LearningSessionService extends BaseService<LearningSession, Learnin
             public LearningSession convertFromDAO(LearningSessionDAO value) {
                 LearningSession learningSession = new LearningSession();
                 learningSession.setId(value.getId());
-                learningSession.setCourseDate(DateConversionHelper.convertStringToDate(value.getCourseDate()));
+                learningSession.setCourseDate(new Date(value.getCourseDate()));
                 learningSession.setCourseCode(value.getCourseCode());
                 learningSession.setCourseName(value.getCourseName());
                 learningSession.setModuleNumber(value.getModuleNumber());
                 learningSession.setModuleName(value.getModuleName());
+                learningSession.setCreatedBy(value.getCreatedBy());
+                learningSession.setTimestamp(new Date(value.getTimestamp()));
                 return learningSession;
             }
 
@@ -32,11 +36,13 @@ public class LearningSessionService extends BaseService<LearningSession, Learnin
             public LearningSessionDAO convertToDAO(LearningSession value) {
                 LearningSessionDAO learningSessionDAO = new LearningSessionDAO();
                 learningSessionDAO.setId(value.getId());
-                learningSessionDAO.setCourseDate(DateConversionHelper.convertDateToString(value.getCourseDate()));
+                learningSessionDAO.setCourseDate(value.getCourseDate().getTime());
                 learningSessionDAO.setCourseCode(value.getCourseCode());
                 learningSessionDAO.setCourseName(value.getCourseName());
                 learningSessionDAO.setModuleNumber(value.getModuleNumber());
                 learningSessionDAO.setModuleName(value.getModuleName());
+                learningSessionDAO.setCreatedBy(value.getCreatedBy());
+                learningSessionDAO.setCreatedBy(value.getCreatedBy());
                 return learningSessionDAO;
             }
         });

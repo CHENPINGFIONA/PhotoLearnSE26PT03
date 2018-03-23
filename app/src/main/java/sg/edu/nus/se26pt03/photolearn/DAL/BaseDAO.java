@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class BaseDAO {
     private String Id;
-    private Long Timestamp;
+    private long Timestamp;
     private String CreatedBy;
     @Exclude
     public String getId() {
@@ -21,11 +21,11 @@ public class BaseDAO {
         Id = id;
     }
 
-    public Long getTimestamp() {
+    public long getTimestamp() {
         return Timestamp;
     }
 
-    public void setTimestamp(Long timestamp) {
+    public void setTimestamp(long timestamp) {
         Timestamp = timestamp;
     }
 

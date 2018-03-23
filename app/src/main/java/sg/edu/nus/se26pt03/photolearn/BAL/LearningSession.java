@@ -216,6 +216,8 @@ public class LearningSession extends BaseObservable implements Cloneable {
         this.setModuleNumber(value.getModuleNumber());
         this.setModuleName(value.getModuleName());
         this.setCourseDate(value.getCourseDate());
+        this.setCreatedBy(value.getCreatedBy());
+        this.setTimestamp(value.getTimestamp());
     }
     @Override
     public LearningSession clone() throws CloneNotSupportedException {
