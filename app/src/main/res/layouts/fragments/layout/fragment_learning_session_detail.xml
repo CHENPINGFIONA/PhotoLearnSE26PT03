@@ -8,154 +8,161 @@
             name="learningSession"
             type="sg.edu.nus.se26pt03.photolearn.BAL.LearningSession"/>
     </data>
-<android.support.constraint.ConstraintLayout
+    <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_coursecode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:error="@{learningSession.courseCodeError}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/edt_coursecode"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
-            android:hint="Course Code (eg: iot)"
-            android:inputType="text"
-            android:maxLength="3"
-            android:text="@={learningSession.courseCode}"
-            tools:hint="Course Code" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_coursename"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:error="@{learningSession.courseNameError}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_coursecode">
-
-        <EditText
-            android:id="@+id/edt_coursename"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Course Name (eg: Internet of Things)"
-            android:inputType="text"
-            android:text="@={learningSession.courseName}"
-            tools:hint="Course Name" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_modulenumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:error="@{learningSession.moduleNumberError}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_coursename">
-
-        <EditText
-            android:id="@+id/edt_modulenumber"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Module Number (eg: 123)"
-            android:inputType="number"
-            android:maxLength="3"
-            android:text="@={BindingHelper.fromModuleNumber(learningSession.moduleNumber)}"
-            tools:hint="Module Number" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_modulename"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:error="@{learningSession.moduleNameError}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_modulenumber">
-
-        <EditText
-            android:id="@+id/edt_modulename"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Module Name (eg: Overview)"
-            android:inputType="text"
-            android:text="@={learningSession.moduleName}"
-            tools:hint="Module Name" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_coursedate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:error="@{learningSession.courseDateError}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_modulename">
-
-        <EditText
-            android:id="@+id/edt_coursedate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusableInTouchMode="true"
-            android:inputType="none"
-            android:text="@={BindingHelper.fromCourseDate(learningSession.courseDate)}"
-            tools:hint="Course Date" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <TextView
-        android:id="@+id/tv_validity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/all_fields_are_mandatory"
-        android:visibility="@{BindingHelper.toVisibility(!learningSession.validity)}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_coursedate" />
-
-    <Button
-        android:id="@+id/btn_save"
-        style="@style/AppTheme.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:enabled="@{learningSession.validity}"
-        android:inputType="datetime"
-        android:text="@string/button_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_validity" />
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
 
 
-</android.support.constraint.ConstraintLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_coursecode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:error="@{learningSession.courseCodeError}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/edt_coursecode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusable="true"
+                    android:hint="Course Code (eg: iot)"
+                    android:inputType="text"
+                    android:maxLength="3"
+                    android:text="@={learningSession.courseCode}"
+                    tools:hint="Course Code" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_coursename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:error="@{learningSession.courseNameError}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_coursecode">
+
+                <EditText
+                    android:id="@+id/edt_coursename"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Course Name (eg: Internet of Things)"
+                    android:inputType="text"
+                    android:text="@={learningSession.courseName}"
+                    tools:hint="Course Name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_modulenumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:error="@{learningSession.moduleNumberError}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_coursename">
+
+                <EditText
+                    android:id="@+id/edt_modulenumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Module Number (eg: 123)"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:text="@={BindingHelper.fromModuleNumber(learningSession.moduleNumber)}"
+                    tools:hint="Module Number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_modulename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:error="@{learningSession.moduleNameError}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_modulenumber">
+
+                <EditText
+                    android:id="@+id/edt_modulename"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Module Name (eg: Overview)"
+                    android:inputType="text"
+                    android:text="@={learningSession.moduleName}"
+                    tools:hint="Module Name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_coursedate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:error="@{learningSession.courseDateError}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_modulename">
+
+                <EditText
+                    android:id="@+id/edt_coursedate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusableInTouchMode="true"
+                    android:inputType="none"
+                    android:text="@={BindingHelper.fromCourseDate(learningSession.courseDate)}"
+                    tools:hint="Course Date" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_validity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/all_fields_are_mandatory"
+                android:visibility="@{BindingHelper.toVisibility(!learningSession.validity)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_coursedate" />
+
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/AppTheme.Button"
+                android:layout_width="match_parent"
+                android:layout_height="51dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:enabled="@{learningSession.validity}"
+                android:inputType="datetime"
+                android:text="@string/button_save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_validity" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 </layout>

@@ -2,7 +2,6 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,9 +9,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.lang.Cloneable;
+import java.util.Observable;
 
 import sg.edu.nus.se26pt03.photolearn.BR;
-import sg.edu.nus.se26pt03.photolearn.databinding.FragmentLearningSessionDetailBinding;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 /**

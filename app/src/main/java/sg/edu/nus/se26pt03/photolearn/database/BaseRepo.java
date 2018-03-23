@@ -164,7 +164,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
             query = query.equalTo((Boolean) value);
         }
 
-        query.addListenerForSingleValueEvent(
+        query.addValueEventListener(
             new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

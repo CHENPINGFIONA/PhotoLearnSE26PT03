@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -44,15 +45,15 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 /**
  * Created by MyatMin on 08/3/18.
  */
-public class LearningSessionListFragment extends BaseFragment {
+public class LearningSessionListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private LearningSessionListAdapter learningSessionListAdapter;
     private LearningSessionService learningSessionService;
     private List<LearningSession> learningSessions;
 
+    private SwipeRefreshLayout srf_learningsessionlist;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_learning_session_list, container, false);
     }
 
@@ -63,24 +64,15 @@ public class LearningSessionListFragment extends BaseFragment {
         setupControls();
     }
 
+    @Override
+    public void onRefresh() {
+        refreshData();
+    }
+
     private void setupData() {
         learningSessionService = new LearningSessionService();
         if (App.currentAppMode == AppMode.TRAINER) {
             learningSessions = ((Trainer) App.currentUser).getLearningSessions();
-            learningSessionService.getAllByKeyValue("createdBy", App.currentUser.getId() ,new ServiceCallback<List<LearningSession>>() {
-                @Override
-                public void onComplete(List<LearningSession> data) {
-                    ((Trainer) App.currentUser).removeAllLearningSesson();
-                    ((Trainer) App.currentUser).addLearningSession(data);
-                    learningSessions = ((Trainer) App.currentUser).getLearningSessions();
-                    refreshData();
-                }
-
-                @Override
-                public void onError(int code, String message, String details) {
-                    displayErrorMessage(message);
-                }
-            });
         }
 
         learningSessionListAdapter = new LearningSessionListAdapter(learningSessions, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
@@ -92,6 +84,25 @@ public class LearningSessionListFragment extends BaseFragment {
     }
 
     private void refreshData() {
+        srf_learningsessionlist.setRefreshing(true);
+        learningSessionService.getAllByKeyValue("createdBy", App.currentUser.getId() ,new ServiceCallback<List<LearningSession>>() {
+            @Override
+            public void onComplete(List<LearningSession> data) {
+                ((Trainer) App.currentUser).removeAllLearningSesson();
+                ((Trainer) App.currentUser).addLearningSession(data);
+                learningSessions = ((Trainer) App.currentUser).getLearningSessions();
+                refreshViews();
+                srf_learningsessionlist.setRefreshing(false);
+            }
+
+            @Override
+            public void onError(int code, String message, String details) {
+                srf_learningsessionlist.setRefreshing(false);
+                displayErrorMessage(message);
+            }
+        });
+    }
+    private void refreshViews() {
         learningSessionListAdapter.notifyDataSetChanged();
         if (learningSessionListAdapter.learningSessionList.size() == 0)
             getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.VISIBLE);
@@ -108,6 +119,11 @@ public class LearningSessionListFragment extends BaseFragment {
                 getView().findViewById(R.id.fab_learningsessionlist).setVisibility(View.GONE);
                 break;
         }
+
+
+    }
+
+    private void setupControls() {
         final RecyclerView recyclerView = getView().findViewById(R.id.rv_learningsessionlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(learningSessionListAdapter);
@@ -135,6 +151,7 @@ public class LearningSessionListFragment extends BaseFragment {
                 }
             }
         };
+
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         itemTouchhelper.attachToRecyclerView(recyclerView);
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -144,9 +161,16 @@ public class LearningSessionListFragment extends BaseFragment {
             }
         });
 
-    }
+        srf_learningsessionlist =  getView().findViewById(R.id.srf_learningsesionlist);
+        srf_learningsessionlist.setOnRefreshListener(this);
+        srf_learningsessionlist.post(new Runnable() {
+            @Override
+            public void run() {
+                srf_learningsessionlist.setRefreshing(true);
+                refreshData();
+            }
+        });
 
-    private void setupControls() {
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningsessionlist);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
