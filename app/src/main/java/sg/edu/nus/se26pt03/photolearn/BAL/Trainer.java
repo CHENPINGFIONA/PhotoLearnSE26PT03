@@ -26,8 +26,13 @@ public class Trainer extends User{
         return learningSessions.remove(learningSession);
     }
 
+    public boolean removeAllLearningSesson() {
+        return learningSessions.removeAll(learningSessions);
+    }
+
+
     public List<LearningSession> getLearningSessions() {
-        return (new ArrayList<LearningSession>(learningSessions));
+        return learningSessions;
     }
 
     public LearningSession getLearningSession(int index) {

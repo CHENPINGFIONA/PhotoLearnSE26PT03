@@ -1,6 +1,8 @@
 package sg.edu.nus.se26pt03.photolearn.application;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.design.widget.Snackbar;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
@@ -16,14 +18,19 @@ public class App extends Application {
     public static User currentUser;
     public static AccessMode currentAccessMode;
     public static AppMode currentAppMode;
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
         session = new LearningSession();
         currentUser = new Trainer();
         currentAccessMode = AccessMode.EDIT;
-        currentAppMode = AppMode.PARTICIPENT;
+        currentAppMode = AppMode.TRAINER;
+    }
+    public static Context getContext(){
+        return context;
     }
 }
 

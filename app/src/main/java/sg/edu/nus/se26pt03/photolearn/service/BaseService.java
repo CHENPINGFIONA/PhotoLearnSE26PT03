@@ -49,7 +49,7 @@ public class BaseService<T, V extends BaseDAO> {
         baseRepo.update(daoConversion.convertToDAO(t), new RepoCallback<Boolean>() {
             @Override
             public void onComplete(Boolean data) {
-                callback.onComplete(data);
+                if (callback != null) callback.onComplete(data);
             }
 
             @Override
