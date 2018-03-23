@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.Participant;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
@@ -31,6 +32,19 @@ public class App extends Application {
     }
     public static Context getContext(){
         return context;
+    }
+
+    public static void setCurrentUser(User user) {
+        currentUser = user;
+        refreshCurrentAppMode();
+    }
+    private static void refreshCurrentAppMode() {
+        if (currentUser instanceof Trainer){
+            currentAppMode = AppMode.TRAINER;
+        }
+        else {
+            currentAppMode = AppMode.PARTICIPENT;
+        }
     }
 }
 

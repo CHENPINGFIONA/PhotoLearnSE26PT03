@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 
@@ -66,7 +67,7 @@ public class LearningSessionListFragment extends BaseFragment {
         learningSessionService = new LearningSessionService();
         if (App.currentAppMode == AppMode.TRAINER) {
             learningSessions = ((Trainer) App.currentUser).getLearningSessions();
-            learningSessionService.getAll(new ServiceCallback<List<LearningSession>>() {
+            learningSessionService.getAllByKeyValue("createdBy", App.currentUser.getId() ,new ServiceCallback<List<LearningSession>>() {
                 @Override
                 public void onComplete(List<LearningSession> data) {
                     ((Trainer) App.currentUser).removeAllLearningSesson();
@@ -98,14 +99,15 @@ public class LearningSessionListFragment extends BaseFragment {
     }
 
     private void setupViews() {
+        SearchView sv_learningsessionlist =  getView().findViewById(R.id.sv_learningsessionlist);
         switch (App.currentAppMode) {
-        case TRAINER:
-            getView().findViewById(R.id.sv_learningsessionlist).setVisibility(View.GONE);
-            break;
-        case PARTICIPENT:
-            getView().findViewById(R.id.fab_learningsessionlist).setVisibility(View.GONE);
-            break;
-    }
+            case TRAINER:
+                //sv_learningsessionlist.setVisibility(View.GONE);
+                break;
+            case PARTICIPENT:
+                getView().findViewById(R.id.fab_learningsessionlist).setVisibility(View.GONE);
+                break;
+        }
         final RecyclerView recyclerView = getView().findViewById(R.id.rv_learningsessionlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(learningSessionListAdapter);
