@@ -57,7 +57,7 @@ public class User {
 
     }
 
-    public void SingOut() {
+    public void SignOut() {
 
     }
 
