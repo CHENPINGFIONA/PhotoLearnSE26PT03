@@ -4,6 +4,7 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 import android.app.FragmentManager;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -86,6 +87,8 @@ public class LearningItemFragment extends BaseFragment {
 
         ttsHelper.setTexttoSpeak(learningItem.getContent());
         try {
+
+
             AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView,getContext(),progressBar);
             loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, learningItem.getPhotoURL());//"http://i63.tinypic.com/2yjzcrr.jpg");
 
