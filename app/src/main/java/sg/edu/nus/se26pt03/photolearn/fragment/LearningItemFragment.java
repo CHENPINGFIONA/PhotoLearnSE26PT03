@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
@@ -38,7 +39,7 @@ public class LearningItemFragment extends BaseFragment {
     }*/
     public static final String ARG_ITEM_COUNT = "ITEM_COUNT";
     public static final String ARG_ITEM = "ITEM";
-
+    private ProgressBar progressBar;
     private int itemPosition;
     private LearningItem learningItem;
     private TTSHelper ttsHelper;
@@ -76,14 +77,16 @@ public class LearningItemFragment extends BaseFragment {
         txtContentView.setMovementMethod(new ScrollingMovementMethod());
         TextView txtViewLocation = rootView.findViewById(R.id.txtViewLocation);
         ImageButton btnTTS = rootView.findViewById(R.id.TTSImageButton);
+        ProgressBar progressBar =rootView.findViewById(R.id.itemListprogressBarSmall);
         if (learningItem.getCoordinate() != null) {
             String location = gpsHelper.GetLocationByLatandLongitudeAsString(Double.valueOf(learningItem.getCoordinate().getLatitude()), Double.valueOf(learningItem.getCoordinate().getLongitude()));
             txtViewLocation.setText(location);
         }
         ttsHelper.setTtsButton(btnTTS);
+
         ttsHelper.setTexttoSpeak(learningItem.getContent());
         try {
-            AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView);
+            AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView,getContext(),progressBar);
             loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, learningItem.getPhotoURL());//"http://i63.tinypic.com/2yjzcrr.jpg");
 
         } catch (Exception ex) {
@@ -131,6 +134,7 @@ public class LearningItemFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         ttsHelper.stopTalking();
+        ttsHelper=null;
         super.onDestroy();
     }
 

@@ -1,5 +1,8 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import android.databinding.BaseObservable;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +13,7 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  * Created by chen ping on 3/10/2018.
  */
 
-public abstract class Title {
+public abstract class Title extends BaseObservable implements Serializable {
     private String id;
     private LearningSession learningSession;
     private String title;

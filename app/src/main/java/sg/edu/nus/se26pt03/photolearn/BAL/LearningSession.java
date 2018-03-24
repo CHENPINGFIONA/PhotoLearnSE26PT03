@@ -2,6 +2,7 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -12,13 +13,14 @@ import java.util.List;
 import java.lang.Cloneable;
 
 import sg.edu.nus.se26pt03.photolearn.BR;
+import sg.edu.nus.se26pt03.photolearn.databinding.FragmentLearningSessionDetailBinding;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 /**
  * Created by chen ping on 7/3/2018.
  */
 
-public class LearningSession extends BaseObservable implements Cloneable, Serializable {
+public class LearningSession extends BaseObservable implements Cloneable ,Serializable {
     private String id;
     private Date courseDate;
     private String courseName;
