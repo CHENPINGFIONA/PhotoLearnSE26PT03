@@ -49,17 +49,20 @@ public abstract class Title {
         this.createdBy = createdBy;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
-    public abstract void createItem(Item item, ServiceCallback<Item> callback) ;
-    public abstract void updateItem(Item item,ServiceCallback<Boolean> callback);
-    public abstract void deleteItem(String itemId,ServiceCallback<Boolean> callback) ;
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public abstract void createItem(Item item, ServiceCallback<Item> callback);
+
+    public abstract void updateItem(Item item, ServiceCallback<Boolean> callback);
+
+    public abstract void deleteItem(String itemId, ServiceCallback<Boolean> callback);
+
     public abstract void getItems(ServiceCallback<List<Item>> callback);
 
 }

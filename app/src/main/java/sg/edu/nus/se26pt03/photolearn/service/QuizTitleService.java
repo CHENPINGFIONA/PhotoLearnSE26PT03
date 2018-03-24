@@ -28,7 +28,6 @@ public class QuizTitleService extends BaseService<QuizTitle, QuizTitleDAO> {
                 quizTitle.getLearningSession().setId(value.getLearningSessionId());
                 quizTitle.setTitle(value.getTitle());
                 quizTitle.setCreatedBy(value.getCreatedBy());
-                quizTitle.setTimestamp(new Date(value.getTimestamp()));
                 return quizTitle;
             }
 

@@ -173,7 +173,6 @@ public class QuizTitleListFragment extends BaseFragment {
                 newTitle.setLearningSession(App.session);
                 newTitle.setTitle(etContent.getText().toString());
                 newTitle.setCreatedBy(userId);
-                newTitle.setTimestamp(new Date());
 
                 App.session.addQuizTitle(newTitle);
                 quizTitleService.save(newTitle,null);

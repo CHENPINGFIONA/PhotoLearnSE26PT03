@@ -24,6 +24,12 @@ public class LearningTitle extends Title implements Serializable {
         learningItems = new ArrayList<LearningItem>();
     }
 
+    public void copy(LearningTitle value) {
+        //set learning session Id
+        this.setId(value.getId());
+        this.setTitle(value.getTitle());
+        this.setCreatedBy(value.getCreatedBy());
+    }
 
     @Override
     public void createItem(Item item, ServiceCallback<Item> callback) {
@@ -57,7 +63,7 @@ public class LearningTitle extends Title implements Serializable {
     @Override
     public void getItems(ServiceCallback<List<Item>> callback) {
         try {
-            learningItemService.getAllByLearningTitleId(this.getId(),callback);
+            learningItemService.getAllByLearningTitleId(this.getId(), callback);
         } catch (Exception ex) {
             throw ex;
         }

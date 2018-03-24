@@ -27,40 +27,41 @@ public class LearningItemService extends BaseService<Item, LearningItemDAO> {
         setDAOConversion(new DAOConversion<Item, LearningItemDAO>() {
             @Override
             public LearningItem convertFromDAO(LearningItemDAO value) {
-                LearningTitle title =new LearningTitle();
+                LearningTitle title = new LearningTitle();
                 title.setId(value.getLearningTitleId());
-                LearningItem result=new LearningItem(title);
+                LearningItem result = new LearningItem(title);
                 result.setContent(value.getContent());
-                result.setCoordinate(new Coordinate(value.getLatitude()==null?0:value.getLatitude(),value.getLongitude()==null?0:value.getLongitude()));
+                result.setCoordinate(new Coordinate(value.getLatitude() == null ? 0 : value.getLatitude(), value.getLongitude() == null ? 0 : value.getLongitude()));
                 result.setPhotoURL(value.getPhotoURL());
                 result.setCreatedBy(value.getCreatedBy());
                 result.setId(value.getId());
-               // result.setTimestamp(new Date(value.getTimestamp()));
+                result.setTimestamp(new Date(value.getTimestamp()));
                 return result;
 
             }
 
             @Override
             public LearningItemDAO convertToDAO(Item value) {
-                LearningItemDAO result=new LearningItemDAO();
-                LearningItem source =(LearningItem)value;
+                LearningItemDAO result = new LearningItemDAO();
+                LearningItem source = (LearningItem) value;
                 result.setContent(source.getContent());
-                result.setLatitude(source.getCoordinate()==null?0:source.getCoordinate().getLatitude());
-                result.setLongitude(source.getCoordinate()==null?0:source.getCoordinate().getLongitude());
-                result.setPhotoURL(source.getPhotoURL()==null?"":source.getPhotoURL());
-                result.setCreatedBy(source.getCreatedBy()==null?"":source.getCreatedBy());
+                result.setLatitude(source.getCoordinate() == null ? 0 : source.getCoordinate().getLatitude());
+                result.setLongitude(source.getCoordinate() == null ? 0 : source.getCoordinate().getLongitude());
+                result.setPhotoURL(source.getPhotoURL() == null ? "" : source.getPhotoURL());
+                result.setCreatedBy(source.getCreatedBy() == null ? "" : source.getCreatedBy());
                 result.setLearningTitleId(value.getTitle().getId());
-                result.setId(source.getId()==null?"":source.getId());
+                result.setId(source.getId() == null ? "" : source.getId());
                 result.setTimestamp(source.getTimestamp().getTime());
                 return result;
             }
         });
     }
+
     public void getAllByLearningTitleId(String id, final ServiceCallback<List<Item>> callback) {
         learningItemRepo.getAllByLearningTitleID(id, new RepoCallback<List<LearningItemDAO>>() {
             @Override
             public void onComplete(List<LearningItemDAO> data) {
-                callback.onComplete(getDAOConversion().convertFromDAO( data));
+                callback.onComplete(getDAOConversion().convertFromDAO(data));
             }
 
             @Override

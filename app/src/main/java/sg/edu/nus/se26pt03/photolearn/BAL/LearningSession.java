@@ -12,6 +12,8 @@ import java.util.List;
 import java.lang.Cloneable;
 
 import sg.edu.nus.se26pt03.photolearn.BR;
+import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 /**
@@ -31,6 +33,9 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
 
     private transient List<LearningTitle> learningTitles;
     private transient List<QuizTitle> quizTitles;
+
+    private LearningTitleService learningTitleService = new LearningTitleService();
+    //private QuizTitleService quizTitleService = new QuizTitleService();
 
     public String getId() {
         return id;
@@ -78,6 +83,7 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
             notifyValidity();
         }
     }
+
     @Bindable
     public String getCourseCode() {
         return courseCode;
@@ -123,7 +129,7 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
     }
 
     public boolean addLearningTitle(List<LearningTitle> learningTitles) {
-        for (LearningTitle learningTitle: learningTitles) {
+        for (LearningTitle learningTitle : learningTitles) {
             if (!addLearningTitle(learningTitle)) {
                 return false;
             }
@@ -137,7 +143,7 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
     }
 
     public boolean removeLearningTitle(List<LearningTitle> learningTitles) {
-        for (LearningTitle learningTitle: learningTitles) {
+        for (LearningTitle learningTitle : learningTitles) {
             if (!removeLearningTitle(learningTitle)) {
                 return false;
             }
@@ -147,6 +153,10 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
 
     public boolean removeLearningTitle(LearningTitle learningTitle) {
         return learningTitles.remove(learningTitle);
+    }
+
+    public boolean removeAllLearningTitle() {
+        return learningTitles.removeAll(learningTitles);
     }
 
     public List<LearningTitle> getLearningTitles() {
@@ -218,6 +228,7 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
         this.setCreatedBy(value.getCreatedBy());
         this.setTimestamp(value.getTimestamp());
     }
+
     @Override
     public LearningSession clone() throws CloneNotSupportedException {
         return (LearningSession) super.clone();
@@ -285,5 +296,31 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
         notifyPropertyChanged(BR.moduleNumberError);
         notifyPropertyChanged(BR.moduleNameError);
         notifyPropertyChanged(BR.courseDateError);
+    }
+
+    public void createLearningTitle(LearningTitle title, ServiceCallback<LearningTitle> callback) {
+        try {
+            learningTitleService.save((LearningTitle) title, callback);
+
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void updateLearningTitle(LearningTitle title, ServiceCallback<Boolean> callback) {
+        try {
+            learningTitleService.update((LearningTitle) title, callback);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void deleteLearningTitle(String itemId, ServiceCallback<Boolean> callback) {
+        try {
+
+            learningTitleService.deleteById(itemId, callback);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 }
