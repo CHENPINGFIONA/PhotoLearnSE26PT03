@@ -54,7 +54,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_learning_title_list, container, false);
+        return inflater.inflate(R.layout.fragment_title_list, container, false);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
             @Override
             public void onComplete(List<LearningTitle> data) {
                 learningSession.removeAllLearningTitle();
-                learningSession.addLearningTitle(data);
+                learningSession.addLearningTitles(data);
 
                 learningTitles = learningSession.getLearningTitles();
                 refreshViews();
@@ -240,7 +240,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
                         @Override
                         public void onComplete(LearningTitle data) {
                             title.copy(data);
-                            displayInfoMessage("Learning session saved successfully!");
+                            displayInfoMessage("Learning title saved successfully!");
                             dialog.dismiss();
                         }
 
@@ -254,7 +254,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
                     learningSession.updateLearningTitle(title, new ServiceCallback<Boolean>() {
                         @Override
                         public void onComplete(Boolean data) {
-                            displayInfoMessage("Learning session updated successfully!");
+                            displayInfoMessage("Learning title updated successfully!");
                             dialog.dismiss();
                         }
 

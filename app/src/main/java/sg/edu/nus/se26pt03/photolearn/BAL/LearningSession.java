@@ -14,6 +14,7 @@ import java.lang.Cloneable;
 
 import sg.edu.nus.se26pt03.photolearn.BR;
 import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
+import sg.edu.nus.se26pt03.photolearn.service.QuizTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
@@ -36,7 +37,7 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
     private transient List<QuizTitle> quizTitles;
 
     private LearningTitleService learningTitleService = new LearningTitleService();
-    //private QuizTitleService quizTitleService = new QuizTitleService();
+    private QuizTitleService quizTitleService = new QuizTitleService();
 
     public String getId() {
         return id;
@@ -129,7 +130,7 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
         return String.format("{0}-{1}-M{2}", df.format(courseDate), courseCode, moduleNumber);
     }
 
-    public boolean addLearningTitle(List<LearningTitle> learningTitles) {
+    public boolean addLearningTitles(List<LearningTitle> learningTitles) {
         for (LearningTitle learningTitle : learningTitles) {
             if (!addLearningTitle(learningTitle)) {
                 return false;
@@ -173,8 +174,21 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
         return quizTitles.add(quizTitle);
     }
 
+    public boolean addQuizTitles(List<QuizTitle> quizTitles) {
+        for (QuizTitle quizTitle : quizTitles) {
+            if (!addQuizTitle(quizTitle)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean removeQuizTitle(QuizTitle quizTitle) {
         return quizTitles.remove(quizTitle);
+    }
+
+    public boolean removeAllQuizTitle() {
+        return quizTitles.removeAll(quizTitles);
     }
 
     public List<QuizTitle> getQuizTitles() {
@@ -320,6 +334,32 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
         try {
 
             learningTitleService.deleteById(titleId, null);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void createQuizTitle(QuizTitle title, ServiceCallback<QuizTitle> callback) {
+        try {
+            quizTitleService.save((QuizTitle) title, callback);
+
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void updateQuizTitle(QuizTitle title, ServiceCallback<Boolean> callback) {
+        try {
+            quizTitleService.update((QuizTitle) title, callback);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void deleteQuizTitle(String titleId) {
+        try {
+
+            quizTitleService.deleteById(titleId, null);
         } catch (Exception ex) {
             throw ex;
         }

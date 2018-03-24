@@ -1,10 +1,13 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -15,140 +18,178 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
-import java.util.Date;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
-import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.service.QuizTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
-import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
-public class QuizTitleListFragment extends BaseFragment {
+public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private QuizTitleListAdapter quizTitleListAdapter;
-    private int role;
-    private String sessionId;
-    private int mode;
-    private String userId;
+    private QuizTitleService quizTitleService;
+    private List<QuizTitle> quizTitles = null;
 
-    private QuizTitleService quizTitleService = new QuizTitleService();
+    private SwipeRefreshLayout srf_learningtitlelist;
+
+    private LearningSession learningSession;
+    private boolean updateMode;
+
+    public static QuizTitleListFragment newInstance(LearningSession learningSession) {
+        QuizTitleListFragment quizTitleListFragment = new QuizTitleListFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("learningSession", learningSession);
+        quizTitleListFragment.setArguments(args);
+        return quizTitleListFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // View fragmentView = inflater.inflate(R.layout.fragment_quiz_title_list, container, false);
-        //  sessionId = this.getArguments().getString("sessionId");
-        sessionId = "1";
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
-        role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.TRAINER));
-        userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
-
-        return inflater.inflate(R.layout.fragment_quiz_title_list, container, false);
+        return inflater.inflate(R.layout.fragment_title_list, container, false);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        loadQuizTitleList();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        setupData();
+        setupViews();
+        setupControls();
     }
 
-    private void loadQuizTitleList() {
-        quizTitleService.getAllByKeyValue("learningSessionId", App.session.getId(), new ServiceCallback<List<QuizTitle>>() {
-            @Override
-            public void onComplete(List<QuizTitle> data) {
-                final List<QuizTitle> quizTitleList = data;
-                quizTitleListAdapter = new QuizTitleListAdapter(quizTitleList, new QuizTitleListAdapter.QuizTitleViewHolderClick() {
-                    @Override
-                    public void onItemClick(QuizTitleListAdapter.QuizTitleViewHolder viewHolder) {
-                        onLoad(quizTitleList.get(viewHolder.getAdapterPosition()), null);
-                    }
-                });
-                setupViews();
-                setupControls();
-            }
+    @Override
+    public void onRefresh() {
+        refreshData();
+    }
 
+    private void setupData() {
+        learningSession = (LearningSession) getArguments().getSerializable("learningSession");
+        quizTitleService = new QuizTitleService();
+        quizTitles = learningSession.getQuizTitles();
+        quizTitleListAdapter = new QuizTitleListAdapter(quizTitles, new QuizTitleListAdapter.QuizTitleViewHolderClick() {
             @Override
-            public void onError(int code, String message, String details) {
-
+            public void onItemClick(QuizTitleListAdapter.QuizTitleViewHolder viewHolder) {
+                onLoad(quizTitles.get(viewHolder.getAdapterPosition()), null);
             }
         });
     }
 
+    private void refreshData() {
+        srf_learningtitlelist.setRefreshing(true);
+        quizTitleService.getAllByKeyValue("learningSessionId", learningSession.getId(), new ServiceCallback<List<QuizTitle>>() {
+            @Override
+            public void onComplete(List<QuizTitle> data) {
+                learningSession.removeAllQuizTitle();
+                learningSession.addQuizTitles(data);
+
+                quizTitles = learningSession.getQuizTitles();
+                refreshViews();
+                srf_learningtitlelist.setRefreshing(false);
+            }
+
+            @Override
+            public void onError(int code, String message, String details) {
+                srf_learningtitlelist.setRefreshing(false);
+                displayErrorMessage(message);
+            }
+        });
+    }
+
+    private void refreshViews() {
+        quizTitleListAdapter.notifyDataSetChanged();
+        if (quizTitleListAdapter.quizTitleList.size() == 0)
+            getView().findViewById(R.id.tv_learningtitlelist_hint).setVisibility(View.VISIBLE);
+
+    }
+
     private void setupViews() {
-        // View fragmentView = inflater.inflate(R.layout.fragment_quiz_title_list, container, false);
-        RecyclerView rvQuizTitle = getView().findViewById(R.id.rv_quiz_title);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        rvQuizTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvQuizTitle.setAdapter(quizTitleListAdapter);
+        SearchView svSearchView = getView().findViewById(R.id.sv_learningtitle);
+        svSearchView.setVisibility(View.GONE);
+    }
 
-        TextView tvEmpty = getView().findViewById(R.id.tv_empty_value);
-        tvEmpty.setVisibility(quizTitleListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
-
+    private void setupControls() {
+        RecyclerView recyclerView = getView().findViewById(R.id.rv_learning_title);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(quizTitleListAdapter);
         final SwipeController swipeController = new SwipeController(0, (App.currentAccessMode == AccessMode.EDIT ? R.layout.partial_swipe_item : 0)) {
             @Override
             public void onRevealInflated(View view, int position) {
                 if (view instanceof LinearLayout) {
                     LinearLayout linearLayout = (LinearLayout) ((LinearLayout) view).getChildAt(0);
-                    // linearLayout.findViewWithTag("edit").setVisibility(View.GONE);
-                    // inearLayout.findViewWithTag("delete").setVisibility(View.GONE);
-                    linearLayout.findViewWithTag("edit").setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            // showDialogue(title);
-                        }
-                    });
                 }
             }
 
             @Override
-            public void onClicked(Object tag, int position) {
+            public void onClicked(Object tag, final int position) {
+                final QuizTitle title = quizTitleListAdapter.quizTitleList.get(position);
                 switch (tag.toString()) {
                     case "delete":
-                        quizTitleService.deleteById(quizTitleListAdapter.quizTitleList.get(position).getId(), null);
-                        App.session.removeQuizTitle(quizTitleListAdapter.quizTitleList.get(position));
-                        quizTitleListAdapter.notifyItemRemoved(position);
-                        quizTitleListAdapter.notifyItemRangeChanged(position, quizTitleListAdapter.getItemCount());
-//                        App.session.deleteQuizTitle(quizTitleListAdapter.quizTitleList.get(position), new ICallback<Boolean>() {
-//                            @Override
-//                            public void onCallback(Boolean item) {
-//                                loadQuizTitleList();
-//                            }
-//                        });
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Title")
+                                .setMessage("Are you sure you wanted to delete this learning title?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        learningSession.deleteQuizTitle(title.getId());
+                                        return;
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        return;
+                                    }
+                                }).show();
+
                         break;
                     case "edit":
-                        //onEdit(quizSessionListAdapter.quizSessionList.get(position), null);
+                        showDialogue(title);
                         break;
                 }
             }
         };
+
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(rvQuizTitle);
-        rvQuizTitle.addItemDecoration(new RecyclerView.ItemDecoration() {
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration()
+
+        {
             @Override
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
                 swipeController.onDraw(c);
             }
         });
-    }
 
-    private void setupControls() {
-        FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_quiztitlelist);
-        //floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        srf_learningtitlelist = getView().findViewById(R.id.srf_learningtitlelist);
+        srf_learningtitlelist.setOnRefreshListener(this);
+        srf_learningtitlelist.post(new Runnable() {
+            @Override
+            public void run() {
+                srf_learningtitlelist.setRefreshing(true);
+                refreshData();
+            }
+        });
+
+        FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningtitlelist);
+        // floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
-                showDialogue(null);
+                showDialogue(new QuizTitle());
             }
         });
     }
 
-    private void showDialogue(QuizTitle title) {
+    private void showDialogue(final QuizTitle title) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_title);
@@ -159,25 +200,52 @@ public class QuizTitleListFragment extends BaseFragment {
 
         final EditText etContent = (EditText) dialog.findViewById(R.id.et_content);
         etContent.setHint(R.string.enter_title);
-        if (title != null) {
-            etContent.setText(title.getTitle());
-        }
 
         Button btnSave = (Button) dialog.findViewById(R.id.btn_save);
         Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
 
+        if (title.getId() != null) {
+            updateMode = true;
+            etContent.setText(title.getTitle());
+            btnSave.setText("Update");
+        }
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QuizTitle newTitle = new QuizTitle();
-                newTitle.setLearningSession(App.session);
-                newTitle.setTitle(etContent.getText().toString());
-                newTitle.setCreatedBy(userId);
+                if (!updateMode) {
+                    title.setTitle(etContent.getText().toString());
+                    title.setLearningSession(learningSession);
+                    title.setCreatedBy(App.getCurrentUser().getId());
 
-                App.session.addQuizTitle(newTitle);
-                quizTitleService.save(newTitle,null);
-                loadQuizTitleList();
-                dialog.dismiss();
+                    learningSession.createQuizTitle(title, new ServiceCallback<QuizTitle>() {
+                        @Override
+                        public void onComplete(QuizTitle data) {
+                            title.copy(data);
+                            displayInfoMessage("Quiz title saved successfully!");
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onError(int code, String message, String details) {
+                            displayErrorMessage(message);
+                        }
+                    });
+                } else {
+                    title.setTitle(etContent.getText().toString());
+                    learningSession.updateQuizTitle(title, new ServiceCallback<Boolean>() {
+                        @Override
+                        public void onComplete(Boolean data) {
+                            displayInfoMessage("Quiz title updated successfully!");
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onError(int code, String message, String details) {
+                            displayErrorMessage(message);
+                        }
+                    });
+                }
             }
         });
 
