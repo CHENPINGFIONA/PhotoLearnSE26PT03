@@ -65,7 +65,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
     }
     @Override
     public void onBefore(Event event, final UserActionCallback callback) {
-        if (!emitter && !learningSessionCopy.equals(App.session)) {
+        if (!emitter && !learningSessionCopy.equals(learningSession)) {
             new AlertDialog.Builder(getContext())
                     .setTitle("Confirmation")
                     .setMessage("Unsaved data will be lost.\nAre you sure you wanted to continue?")

@@ -4,6 +4,7 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.design.widget.Snackbar;
@@ -30,6 +31,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
@@ -49,8 +52,10 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
     private LearningSessionListAdapter learningSessionListAdapter;
     private LearningSessionService learningSessionService;
     private List<LearningSession> learningSessions;
+    private List<LearningSession> learningSessionsOrigianl;
 
     private SwipeRefreshLayout srf_learningsessionlist;
+    private SearchView sv_learningsessionlist;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,19 +73,32 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
     public void onRefresh() {
         refreshData();
     }
-
     private void setupData() {
         learningSessionService = new LearningSessionService();
+        learningSessions = new ArrayList<LearningSession>();
         if (App.currentAppMode == AppMode.TRAINER) {
-            learningSessions = ((Trainer) App.currentUser).getLearningSessions();
+            learningSessionsOrigianl = ((Trainer) App.currentUser).getLearningSessions();
+            applyFilter();
         }
 
         learningSessionListAdapter = new LearningSessionListAdapter(learningSessions, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
             @Override
             public void onItemClick(LearningSessionListAdapter.LearningSessionViewHolder viewHolder) {
+                if (!dismissSoftInput()) {
                 onLoad(learningSessions.get(viewHolder.getAdapterPosition()), null);
+                }
             }
         });
+    }
+
+    private void applyFilter() {
+        Stream<LearningSession> learningSessionStream = learningSessionsOrigianl.stream();
+        final String query = (sv_learningsessionlist == null ? "" : sv_learningsessionlist.getQuery().toString().toUpperCase());
+        if (!query.isEmpty()) {
+            learningSessionStream = learningSessionStream.filter(s -> (s.getCourseCode() + s.getCourseName() + s.getModuleNumber() + s.getModuleName()).toUpperCase().contains(query));
+        }
+            learningSessions.clear();
+            learningSessions.addAll(learningSessionStream.collect(Collectors.toList()));
     }
 
     private void refreshData() {
@@ -90,7 +108,7 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
             public void onComplete(List<LearningSession> data) {
                 ((Trainer) App.currentUser).removeAllLearningSesson();
                 ((Trainer) App.currentUser).addLearningSession(data);
-                learningSessions = ((Trainer) App.currentUser).getLearningSessions();
+                applyFilter();
                 refreshViews();
                 srf_learningsessionlist.setRefreshing(false);
             }
@@ -102,15 +120,19 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
             }
         });
     }
+
     private void refreshViews() {
         learningSessionListAdapter.notifyDataSetChanged();
-        if (learningSessionListAdapter.learningSessionList.size() == 0)
+        if (learningSessionListAdapter.learningSessionList.size() == 0) {
             getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.VISIBLE);
+        }
+        else {
+            getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
+        }
 
     }
 
     private void setupViews() {
-        SearchView sv_learningsessionlist =  getView().findViewById(R.id.sv_learningsessionlist);
         switch (App.currentAppMode) {
             case TRAINER:
                 //sv_learningsessionlist.setVisibility(View.GONE);
@@ -127,6 +149,7 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
         final RecyclerView recyclerView = getView().findViewById(R.id.rv_learningsessionlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(learningSessionListAdapter);
+
         final SwipeController swipeController = new SwipeController(0, (App.currentAccessMode == AccessMode.EDIT ? R.layout.partial_swipe_item : 0)) {
             @Override
             public void onRevealInflated(View view, int position) {
@@ -171,6 +194,31 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
             }
         });
 
+        sv_learningsessionlist = getView().findViewById(R.id.sv_learningsessionlist);
+
+        SearchView sv_learningsessionlist =  getView().findViewById(R.id.sv_learningsessionlist);
+        sv_learningsessionlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((SearchView) view).setIconified(false);
+            }
+        });
+        sv_learningsessionlist.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                applyFilter();
+                refreshViews();
+                return false;
+            }
+        });
+        ((RecyclerView) getView().findViewById(R.id.rv_learningsessionlist)).setOnTouchListener((v, event) -> {
+            return dismissSoftInput();
+        });
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningsessionlist);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,5 +231,14 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
                 }
             }
         });
+    }
+
+    private boolean dismissSoftInput() {
+     if (sv_learningsessionlist.hasFocus()) {
+         sv_learningsessionlist.clearFocus();
+//         hideSoftInput(sv_learningsessionlist.getWindowToken());
+        return true;
+     }
+     return false;
     }
 }
