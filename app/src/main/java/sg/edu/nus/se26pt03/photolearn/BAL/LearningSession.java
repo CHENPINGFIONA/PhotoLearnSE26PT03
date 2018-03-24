@@ -316,10 +316,10 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
         }
     }
 
-    public void deleteLearningTitle(String itemId, ServiceCallback<Boolean> callback) {
+    public void deleteLearningTitle(String titleId) {
         try {
 
-            learningTitleService.deleteById(itemId, callback);
+            learningTitleService.deleteById(titleId, null);
         } catch (Exception ex) {
             throw ex;
         }

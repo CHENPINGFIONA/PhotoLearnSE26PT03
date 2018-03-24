@@ -1,12 +1,13 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -20,25 +21,17 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
-import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.R;
-import sg.edu.nus.se26pt03.photolearn.adapter.LearningSessionListAdapter;
 import sg.edu.nus.se26pt03.photolearn.adapter.LearningTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
-import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
-import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
-import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
 import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
-import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 public class LearningTitleListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private LearningTitleListAdapter learningTitleListAdapter;
@@ -93,7 +86,6 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
         learningTitleService.getAllByKeyValue("learningSessionId", learningSession.getId(), new ServiceCallback<List<LearningTitle>>() {
             @Override
             public void onComplete(List<LearningTitle> data) {
-                // ((Trainer) App.currentUser).removeAllLearningSesson();
                 learningSession.removeAllLearningTitle();
                 learningSession.addLearningTitle(data);
 
@@ -119,7 +111,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
 
     private void setupViews() {
         SearchView svSearchView = getView().findViewById(R.id.sv_learningtitle);
-        svSearchView.setVisibility(App.getCurrentAccessMode() == AccessMode.VIEW ? View.VISIBLE : View.GONE);
+        //svSearchView.setVisibility(App.getCurrentAccessMode() == AccessMode.VIEW ? View.VISIBLE : View.GONE);
         svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -135,7 +127,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
             }
 
             private void callSearch(String text) {
-                //loadLearningTitleList(text);
+                //learningTitles.
             }
         });
     }
@@ -149,21 +141,34 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
             public void onRevealInflated(View view, int position) {
                 if (view instanceof LinearLayout) {
                     LinearLayout linearLayout = (LinearLayout) ((LinearLayout) view).getChildAt(0);
-//                        linearLayout.findViewWithTag("edit").setVisibility(View.GONE);
-//                        linearLayout.findViewWithTag("delete").setVisibility(View.GONE);
                 }
             }
 
             @Override
-            public void onClicked(Object tag, int position) {
+            public void onClicked(Object tag, final int position) {
+                final LearningTitle title = learningTitleListAdapter.learningTitleList.get(position);
                 switch (tag.toString()) {
                     case "delete":
-                        learningTitleListAdapter.learningTitleList.remove(position);
-                        learningTitleListAdapter.notifyItemRemoved(position);
-                        learningTitleListAdapter.notifyItemRangeChanged(position, learningTitleListAdapter.getItemCount());
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Title")
+                                .setMessage("Are you sure you wanted to delete this learning title?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        learningSession.deleteLearningTitle(title.getId());
+                                        return;
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        return;
+                                    }
+                                }).show();
+
                         break;
                     case "edit":
-                        onEdit(learningTitleListAdapter.learningTitleList.get(position), null);
+                        showDialogue(title);
                         break;
                 }
             }
@@ -171,7 +176,9 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         itemTouchhelper.attachToRecyclerView(recyclerView);
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration()
+
+        {
             @Override
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
                 swipeController.onDraw(c);
@@ -188,10 +195,11 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
             }
         });
 
-
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningtitlelist);
         // floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 showDialogue(new LearningTitle());
