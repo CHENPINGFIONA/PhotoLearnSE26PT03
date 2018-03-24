@@ -23,9 +23,9 @@ public class LearningItemRepo extends BaseRepo<LearningItemDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_LEARNING_ITEMS);
     }
 
-    public Collection<LearningItemDAO> getAllByLearningTitleID(final String learningTitleId) {
+    /*public Collection<LearningItemDAO> getAllByLearningTitleID(final String learningTitleId) {
         final List<LearningItemDAO> result = new ArrayList<>();
-        mDatabaseRef.addListenerForSingleValueEvent(
+        mDatabaseRef.addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -45,11 +45,11 @@ public class LearningItemRepo extends BaseRepo<LearningItemDAO> {
                     }
                 });
         return result;
-    }
+    }*/
 
-    public Collection<LearningItemDAO> getAllByLearningTitleIdandCreator(final String learningTitleId, final String uid) {
+   /* public Collection<LearningItemDAO> getAllByLearningTitleIdandCreator(final String learningTitleId, final String uid) {
         final List<LearningItemDAO> result = new ArrayList<>();
-        mDatabaseRef.addListenerForSingleValueEvent(
+        mDatabaseRef.addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,10 +70,10 @@ public class LearningItemRepo extends BaseRepo<LearningItemDAO> {
                     }
                 });
         return result;
-    }
+    }*/
 
     public void getAllByLearningTitleID(final String learningTitleId, final RepoCallback<List<LearningItemDAO>> callback) {
-        mDatabaseRef.orderByChild("learningTitleId").equalTo(learningTitleId).addListenerForSingleValueEvent(
+        mDatabaseRef.orderByChild("learningTitleId").equalTo(learningTitleId).addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

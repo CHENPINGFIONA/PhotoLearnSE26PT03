@@ -2,10 +2,13 @@ package sg.edu.nus.se26pt03.photolearn.service;
 
 import com.google.firebase.database.DatabaseError;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.DAL.LearningItemDAO;
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.database.LearningTitleRepo;
 import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
@@ -39,8 +42,27 @@ public class LearningTitleService extends BaseService<LearningTitle, LearningTit
                 learningTitleDAO.setLearningSessionId(value.getLearningSession().getId());
                 learningTitleDAO.setTitle(value.getTitle());
                 learningTitleDAO.setCreatedBy(value.getCreatedBy());
-                learningTitleDAO.setTimestamp(value.getTimestamp().getTime());
                 return learningTitleDAO;
+            }
+        });
+    }
+
+    public void getAllByLearningSessionId(String id, final String text, final ServiceCallback<List<LearningTitle>> callback) {
+        learningTitleRepo.getAllByKeyValue("learningSessionId", id, new RepoCallback<List<LearningTitleDAO>>() {
+            @Override
+            public void onComplete(List<LearningTitleDAO> data) {
+                List<LearningTitleDAO> daos = new ArrayList<>();
+                for (LearningTitleDAO titleDao : data) {
+                    if (titleDao.getTitle().contains(text)) {
+                        daos.add(titleDao);
+                    }
+                }
+                callback.onComplete(getDAOConversion().convertFromDAO(data));
+            }
+
+            @Override
+            public void onError(DatabaseError databaseError) {
+                callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
             }
         });
     }

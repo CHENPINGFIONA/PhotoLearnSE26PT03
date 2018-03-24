@@ -64,7 +64,7 @@ public class LearningActivity extends BaseActivity{
             @Override
             public void onPass() {
                 App.session = learningSession;
-                setFragment(R.id.fl_main, LearningSessionDetailFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
+                setFragment(R.id.fl_main, LearningSessionFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
             }
         });
     }

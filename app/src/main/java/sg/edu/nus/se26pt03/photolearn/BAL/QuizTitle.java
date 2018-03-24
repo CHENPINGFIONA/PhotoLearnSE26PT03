@@ -18,6 +18,13 @@ public class QuizTitle extends Title {
         quizItems = new ArrayList<QuizItem>();
     }
 
+    public void copy(QuizTitle value) {
+        //set learning session Id
+        this.setId(value.getId());
+        this.setTitle(value.getTitle());
+        this.setCreatedBy(value.getCreatedBy());
+    }
+
     public int getQuizScore(int userId) {
         return 0;
     }

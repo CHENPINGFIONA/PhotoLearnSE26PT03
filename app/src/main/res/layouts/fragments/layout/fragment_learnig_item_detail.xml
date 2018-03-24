@@ -4,15 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="sg.edu.nus.se26pt03.photolearn.fragment.LearnigItemDetailFragment">
-
-    <ImageView
-        android:id="@+id/img_photo"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:alpha="0.5"
+        android:id="@+id/imageFrameLayout"
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_upload_image_foreground"
         android:background="@drawable/border"
@@ -20,7 +19,22 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center">
+
+        </ImageView>
+        <ProgressBar
+            android:id="@+id/itemDetailprogressBarSmall"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_gravity="center" />
+    </FrameLayout>
+
 
     <ImageButton
         android:id="@+id/CaptureImageButton"
@@ -41,7 +55,7 @@
         android:tint="@color/primaryDarkColor"
         android:tintMode="multiply"
         android:tooltipText="Add/Change Image"
-        app:layout_constraintBottom_toBottomOf="@+id/img_photo"
+        app:layout_constraintBottom_toBottomOf="@+id/imageFrameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

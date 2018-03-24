@@ -2,9 +2,11 @@ package sg.edu.nus.se26pt03.photolearn.utility;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -17,6 +19,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
+
 /**
  * Created by pradeep on 17/3/18.
  */
@@ -26,6 +30,7 @@ public class FileStorageHelper {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private String imageFilePath = "";
+    private Uri imageUrl=null;
 
     public FileStorageHelper()
     {
@@ -34,7 +39,7 @@ public class FileStorageHelper {
 
     }
 
-    public String uploadFile(Uri uri) {
+    public String uploadFile(Uri uri, final ServiceCallback<String> serviceCallback) {
 
         String fileName=null;
         if(uri != null)
@@ -45,7 +50,8 @@ public class FileStorageHelper {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // Get a URL to the uploaded content
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    imageUrl = taskSnapshot.getDownloadUrl();
+                    serviceCallback.onComplete(imageUrl.toString());
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
@@ -53,6 +59,7 @@ public class FileStorageHelper {
                         public void onFailure(@NonNull Exception exception) {
                             // Handle unsuccessful uploads
                             // ...
+                            Log.e("Camera",exception.getStackTrace().toString());
                         }
                     });
 
@@ -84,6 +91,30 @@ public class FileStorageHelper {
         }
         return  tempImg;
     }
+    public Task<Uri> GetdownloadFileUrl(String fileName) throws IOException{
+
+        Task<Uri> ref=null;
+
+        if(fileName != null)
+        {
+             ref = storageReference.child("images/"+ fileName).getDownloadUrl();
+           /* ref.getFile(tempImg).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Successfully downloaded data to local file
+                    // ...
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle failed download
+                    // ...
+                }
+            });*/
+
+        }
+        return  ref;
+    }
 
     public File createImageFile(File storageDir) throws IOException{
 
@@ -97,4 +128,7 @@ public class FileStorageHelper {
     }
 
 
+    public Uri getImageUrl() {
+        return imageUrl;
+    }
 }

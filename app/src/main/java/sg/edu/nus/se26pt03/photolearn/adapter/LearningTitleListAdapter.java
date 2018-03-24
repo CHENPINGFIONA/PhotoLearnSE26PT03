@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
@@ -27,7 +28,7 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
 
     @Override
     public LearningTitleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_learning_title, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_title, parent, false);
         final LearningTitleViewHolder learningTitleViewHolder = new LearningTitleViewHolder(itemView);
         itemView.setOnTouchListener(new View.OnTouchListener() {
             int MAX_CLICK_DURATION = 200;
@@ -57,6 +58,8 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
     public void onBindViewHolder(LearningTitleViewHolder holder, int position) {
         LearningTitle learningTitle = learningTitleList.get(position);
         holder.tvTitle.setText(learningTitle.getTitle());
+        holder.tvCreatedBy.setText(learningTitle.getCreatedBy());
+        holder.tvCreatedOn.setText(new SimpleDateFormat("dd-MMM-yyyy").format(learningTitle.getTimestamp()).toString());
     }
 
     @Override
@@ -70,10 +73,14 @@ public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitle
 
     public class LearningTitleViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle;
+        private TextView tvCreatedBy;
+        private TextView tvCreatedOn;
 
         public LearningTitleViewHolder(final View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tv_learningTitle_title);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvCreatedBy = itemView.findViewById(R.id.tv_createdBy);
+            tvCreatedOn = itemView.findViewById(R.id.tv_createOn);
         }
     }
 }

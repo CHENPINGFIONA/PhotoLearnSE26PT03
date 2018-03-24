@@ -2,6 +2,7 @@ package sg.edu.nus.se26pt03.photolearn.service;
 
 import com.google.firebase.database.DatabaseError;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,8 +40,27 @@ public class QuizTitleService extends BaseService<QuizTitle, QuizTitleDAO> {
                 quizTitleDAO.setLearningSessionId(value.getLearningSession().getId());
                 quizTitleDAO.setTitle(value.getTitle());
                 quizTitleDAO.setCreatedBy(value.getCreatedBy());
-                quizTitleDAO.setTimestamp(value.getTimestamp().getTime());
                 return quizTitleDAO;
+            }
+        });
+    }
+
+    public void getAllByLearningSessionId(String id, final String text, final ServiceCallback<List<QuizTitle>> callback) {
+        quizTitleRepo.getAllByKeyValue("learningSessionId", id, new RepoCallback<List<QuizTitleDAO>>() {
+            @Override
+            public void onComplete(List<QuizTitleDAO> data) {
+                List<QuizTitleDAO> daos = new ArrayList<>();
+                for (QuizTitleDAO titleDao : data) {
+                    if (titleDao.getTitle().contains(text)) {
+                        daos.add(titleDao);
+                    }
+                }
+                callback.onComplete(getDAOConversion().convertFromDAO(data));
+            }
+
+            @Override
+            public void onError(DatabaseError databaseError) {
+                callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
             }
         });
     }
