@@ -12,7 +12,8 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 public class QuizAnswerDAO extends BaseDAO {
     private String QuizItemId;
-    private List<QuizOptionDAO> SelectedQuizOptions;
+
+    private transient List<QuizOptionDAO> SelectedQuizOptions;
 
     public String getQuizItemId() {
         return QuizItemId;
