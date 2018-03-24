@@ -34,10 +34,27 @@ public class App extends Application {
         return context;
     }
 
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
     public static void setCurrentUser(User user) {
         currentUser = user;
         refreshCurrentAppMode();
     }
+
+    public static AccessMode getCurrentAccessMode() {
+        return currentAccessMode;
+    }
+
+    public static void setCurrentAccessMode(AccessMode currentAccessMode) {
+        App.currentAccessMode = currentAccessMode;
+    }
+
+    public static AppMode getCurrentAppMode() {
+        return currentAppMode;
+    }
+
     private static void refreshCurrentAppMode() {
         if (currentUser instanceof Trainer){
             currentAppMode = AppMode.TRAINER;

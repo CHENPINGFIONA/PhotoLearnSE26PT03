@@ -221,6 +221,9 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
         if (bundle == null) {
             bundle = new Bundle();
         }
+        if (fragment.getArguments() != null) {
+            bundle.putAll(fragment.getArguments());
+        }
         bundle.putString(fragment.ARG_TITLE, title);
         bundle.putBoolean(fragment.ARG_STACKBACK, stackback);
         fragment.setArguments(bundle);

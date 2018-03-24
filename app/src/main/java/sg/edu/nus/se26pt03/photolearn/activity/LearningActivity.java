@@ -64,7 +64,7 @@ public class LearningActivity extends BaseActivity{
             @Override
             public void onPass() {
                 App.session = learningSession;
-                setFragment(R.id.fl_main, new LearningSessionFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
+                setFragment(R.id.fl_main, LearningSessionDetailFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
             }
         });
     }
@@ -74,14 +74,10 @@ public class LearningActivity extends BaseActivity{
         super.onCreate(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                App.session = learningSession;
-                setFragment(R.id.fl_main, new LearningSessionDetailFragment(), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
+                setFragment(R.id.fl_main,  LearningSessionDetailFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
             }
         });
     }
-
-
-
 
     @Override
     public void onCreate(final LearningSession learningSession, UserActionCallback callback) {
@@ -89,7 +85,7 @@ public class LearningActivity extends BaseActivity{
             @Override
             public void onPass() {
                 App.session = learningSession;
-                setFragment(R.id.fl_main, new LearningSessionDetailFragment(), "New Learning Session",true, null, null);
+                setFragment(R.id.fl_main, LearningSessionDetailFragment.newInstance(learningSession), "New Learning Session",true, null, null);
             }
         });
     }

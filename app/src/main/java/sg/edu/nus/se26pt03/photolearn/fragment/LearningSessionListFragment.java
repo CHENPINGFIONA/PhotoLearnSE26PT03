@@ -175,7 +175,12 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCreate(new LearningSession(), null);
+                if (App.getCurrentAppMode() == AppMode.PARTICIPENT) {
+
+                }
+                else {
+                    onCreate(new LearningSession(), null);
+                }
             }
         });
     }

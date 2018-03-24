@@ -3,13 +3,13 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.lang.Cloneable;
-import java.util.Observable;
 
 import sg.edu.nus.se26pt03.photolearn.BR;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
@@ -18,7 +18,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
  * Created by chen ping on 7/3/2018.
  */
 
-public class LearningSession extends BaseObservable implements Cloneable {
+public class LearningSession extends BaseObservable implements Cloneable, Serializable {
     private String id;
     private Date courseDate;
     private String courseName;
@@ -29,8 +29,8 @@ public class LearningSession extends BaseObservable implements Cloneable {
     private String createdBy;
     private Date timestamp;
 
-    private List<LearningTitle> learningTitles;
-    private List<QuizTitle> quizTitles;
+    private transient List<LearningTitle> learningTitles;
+    private transient List<QuizTitle> quizTitles;
 
     public String getId() {
         return id;

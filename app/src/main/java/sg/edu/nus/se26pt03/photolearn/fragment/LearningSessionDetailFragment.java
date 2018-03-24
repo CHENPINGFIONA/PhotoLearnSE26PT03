@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -42,6 +41,15 @@ public class LearningSessionDetailFragment extends BaseFragment {
     private LearningSessionService learningSessionService;
     private boolean updateMode;
     private boolean emitter;
+
+    public static LearningSessionDetailFragment newInstance(LearningSession learningSession) {
+        LearningSessionDetailFragment learningSessionDetailFragment = new LearningSessionDetailFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("learningSession", learningSession);
+        learningSessionDetailFragment.setArguments(args);
+        return learningSessionDetailFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -84,7 +92,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
 
     private void setupData(FragmentLearningSessionDetailBinding binding) {
         try {
-            learningSession = App.session;
+            learningSession = (LearningSession) getArguments().getSerializable("learningSession");
             learningSessionCopy = learningSession.clone();
         }
         catch (CloneNotSupportedException e) {
