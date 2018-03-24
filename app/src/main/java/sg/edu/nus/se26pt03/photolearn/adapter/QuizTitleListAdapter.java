@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
@@ -28,7 +29,7 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
 
     @Override
     public QuizTitleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quiz_title, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_title, parent, false);
         final QuizTitleViewHolder quizTitleViewHolder = new QuizTitleViewHolder(itemView);
         itemView.setOnTouchListener(new View.OnTouchListener() {
             int MAX_CLICK_DURATION = 200;
@@ -58,6 +59,8 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
     public void onBindViewHolder(QuizTitleViewHolder holder, int position) {
         QuizTitle quizTitle = quizTitleList.get(position);
         holder.tvTitle.setText(quizTitle.getTitle());
+        holder.tvCreatedBy.setText(quizTitle.getCreatedBy());
+        //holder.tvCreatedOn.setText(new SimpleDateFormat("dd-MMM-yyyy").format(quizTitle.getTimestamp()).toString());
     }
 
     @Override
@@ -71,10 +74,14 @@ public class QuizTitleListAdapter extends RecyclerView.Adapter<QuizTitleListAdap
 
     public class QuizTitleViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle;
+        private TextView tvCreatedBy;
+        private TextView tvCreatedOn;
 
         public QuizTitleViewHolder(final View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tv_quizTitle_title);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvCreatedBy = itemView.findViewById(R.id.tv_createdBy);
+            tvCreatedOn = itemView.findViewById(R.id.tv_createOn);
         }
     }
 }
