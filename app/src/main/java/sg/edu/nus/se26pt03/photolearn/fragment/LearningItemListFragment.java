@@ -36,8 +36,6 @@ import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
-import sg.edu.nus.se26pt03.photolearn.service.LearningItemService;
-import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
@@ -61,7 +59,6 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
     private ImageView popupimagebutton;
     private LearningTitle learningTitle;
     private List<Item> learningItemList = null;
-    private LearningItemService learningItemService = new LearningItemService();
     private SwipeRefreshLayout srf_learningItemList;
 
 
@@ -134,7 +131,8 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
 
     private void setupViews() {
         tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
-        popupimagebutton.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        popupimagebutton.setVisibility(mPagerAdapter.getCount() > 0 ? View.VISIBLE : View.GONE);
+        Add.setVisibility(UserRole.PARTICIPENT.equals(this.role)? View.VISIBLE : View.GONE);
 
 /*
         mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), learningTitle,this.learningItemList);
@@ -160,7 +158,17 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int whichButton) {
-                                        return;
+                                        learningTitle.deleteItem(((ItemFragmentPageAdapter) mPagerAdapter).getLearningItemByPosition(mPager.getCurrentItem()).getId(), new ServiceCallback<Boolean>() {
+                                            @Override
+                                            public void onComplete(Boolean data) {
+                                                mPagerAdapter.notifyDataSetChanged();
+                                            }
+
+                                            @Override
+                                            public void onError(int code, String message, String details) {
+
+                                            }
+                                        });
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

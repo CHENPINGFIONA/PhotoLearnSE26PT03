@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import com.google.android.gms.tasks.Task;
 import java.io.File;
 import java.io.IOException;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.Coordinate;
 import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
@@ -44,11 +46,11 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
-import sg.edu.nus.se26pt03.photolearn.service.LearningItemService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.FileStorageHelper;
+import sg.edu.nus.se26pt03.photolearn.utility.GPSTracker;
 
 /**
  * Created by MyatMin on 08/3/18.
@@ -116,7 +118,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
                 LearnigItemDetailFragment.this.src.setContent(editContentTxtView.getText().toString());
                 ServiceCallback<Item> itemServiceCallback= new SaveServiceCallback();
                 ServiceCallback<Boolean> booleanServiceCallback= new UpdateServiceCallback();
-                if(src.getId() == null || src.getId() =="" ) {
+                if(src.getId() == null || src.getId().equals("") ) {
                     title.createItem(src, itemServiceCallback);
                 }else {
                     title.updateItem(src    ,booleanServiceCallback );
@@ -126,7 +128,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
         mStorageHelper = new FileStorageHelper();
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                PackageManager.PERMISSION_GRANTED) {
+                PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_PERMISSION);
         }
@@ -142,7 +144,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
     public class SaveServiceCallback implements ServiceCallback<Item> {
         @Override
         public void onComplete(Item data) {
-            LearningItem source= (LearningItem) data;
+           // LearningItem source= (LearningItem) data;
             //Toast.makeText(getContext(),"Save succesfull "+source.getId(),Toast.LENGTH_LONG).show();
             getFragmentManager().popBackStackImmediate("TitleFragment",0);
         }
@@ -247,6 +249,16 @@ public class LearnigItemDetailFragment extends BaseFragment {
             if (resultCode == Activity.RESULT_OK) {
                 imgPhotView.setImageURI(Uri.parse(imageFilePath));
                 Toast.makeText(getContext(), "Uploading..", Toast.LENGTH_SHORT).show();
+                GPSTracker gpsTracker =new GPSTracker(getContext());
+                if(!gpsTracker.canGetLocation()){
+                    gpsTracker.showSettingsAlert();
+                }
+                if(gpsTracker.canGetLocation()){
+                    Location location= gpsTracker.getLocation();
+                    Coordinate coordinate=new Coordinate(location.getLatitude(),location.getLongitude());
+
+                    src.setCoordinate(coordinate);
+                }
             }
             else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getContext(), "You cancelled the operation", Toast.LENGTH_SHORT).show();

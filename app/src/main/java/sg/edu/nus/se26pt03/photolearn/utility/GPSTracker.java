@@ -61,6 +61,7 @@ public class GPSTracker extends Service implements LocationListener {
 
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // No network provider is enabled
+                showSettingsAlert();
             } else {
                 this.canGetLocation = true;
                 if (isNetworkEnabled) {
@@ -140,6 +141,11 @@ public class GPSTracker extends Service implements LocationListener {
      */
     public boolean canGetLocation() {
         return this.canGetLocation;
+    }
+
+    public boolean isLocationEnabled(){
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
 

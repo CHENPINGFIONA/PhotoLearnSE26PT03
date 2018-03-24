@@ -36,8 +36,8 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
     private transient List<LearningTitle> learningTitles;
     private transient List<QuizTitle> quizTitles;
 
-    private LearningTitleService learningTitleService = new LearningTitleService();
-    private QuizTitleService quizTitleService = new QuizTitleService();
+    private transient LearningTitleService learningTitleService = new LearningTitleService();
+    private transient QuizTitleService quizTitleService = new QuizTitleService();
 
     public String getId() {
         return id;
