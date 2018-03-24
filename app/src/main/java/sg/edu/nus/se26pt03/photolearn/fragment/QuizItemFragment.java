@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
@@ -65,6 +66,7 @@ public class QuizItemFragment extends BaseFragment {
         txtContentView.setMovementMethod(new ScrollingMovementMethod());
         TextView txtViewLocation = rootView.findViewById(R.id.txtViewLocation);
         ImageButton btnTTS = rootView.findViewById(R.id.TTSImageButton);
+        ProgressBar progressBar =rootView.findViewById(R.id.quizitemListprogressBarSmall);
         if (quizItem.getCoordinate() != null) {
             String location = gpsHelper.GetLocationByLatandLongitudeAsString(Double.valueOf(quizItem.getCoordinate().getLatitude()), Double.valueOf(quizItem.getCoordinate().getLongitude()));
             txtViewLocation.setText(location);
@@ -72,7 +74,7 @@ public class QuizItemFragment extends BaseFragment {
         ttsHelper.setTtsButton(btnTTS);
         ttsHelper.setTexttoSpeak(quizItem.getContent());
         try {
-            AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView);
+            AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView,getContext(),progressBar);
             loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, quizItem.getPhotoURL());
 
         } catch (Exception ex) {

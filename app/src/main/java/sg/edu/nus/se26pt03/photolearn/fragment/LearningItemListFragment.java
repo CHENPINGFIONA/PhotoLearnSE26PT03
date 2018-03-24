@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 /**
  * Created by MyatMin on 08/3/18.
  */
-public class LearningItemListFragment extends BaseFragment {
+public class LearningItemListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public static String SharedPreferences_Access_Mode = "ACCESSMODE";
     private ViewPager mPager;
@@ -61,6 +62,7 @@ public class LearningItemListFragment extends BaseFragment {
     private LearningTitle learningTitle;
     private List<Item> learningItemList = null;
     private LearningItemService learningItemService = new LearningItemService();
+    private SwipeRefreshLayout srf_learningItemList;
 
 
 //
@@ -90,15 +92,18 @@ public class LearningItemListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupViews();
         setupControls();
+        //setupViews();
+
 
     }
 
     private void setupControls() {
-        popupimagebutton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
-        Add.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
 
+
+        tvEmpty = (TextView) getView().findViewById(R.id.tv_itemempty_value);
+        Add = (FloatingActionButton) getView().findViewById(R.id.fab_addlearningitem);
+        popupimagebutton = (ImageView) getView().findViewById(R.id.img_popupmenu);
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,24 +117,31 @@ public class LearningItemListFragment extends BaseFragment {
                 popupMenu.show();
             }
         });
+        mPager = (ViewPager) getView().findViewById(R.id.vp_learningitem);
+        mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), learningTitle,this.learningItemList);
+        mPager.setAdapter(mPagerAdapter);
+
+        srf_learningItemList =  getView().findViewById(R.id.srf_learningItemList);
+        srf_learningItemList.setOnRefreshListener(this);
+        srf_learningItemList.post(new Runnable() {
+            @Override
+            public void run() {
+                srf_learningItemList.setRefreshing(true);
+                loadList();
+            }
+        });
     }
 
     private void setupViews() {
-        tvEmpty = (TextView) getView().findViewById(R.id.tv_itemempty_value);
-        Add = (FloatingActionButton) getView().findViewById(R.id.fab_addlearningitem);
-        // Delete= (FloatingActionButton) findViewById(R.id.DeleteItemfloatingActionButton);
-        // Edit=(FloatingActionButton) findViewById(R.id.EditItemfloatingActionButton);
+        tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        popupimagebutton.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
 
-        popupimagebutton = (ImageView) getView().findViewById(R.id.img_popupmenu);
-
-
-        mPager = (ViewPager) getView().findViewById(R.id.vp_learningitem);
-
+/*
         mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), learningTitle,this.learningItemList);
 
         mPager.setAdapter(mPagerAdapter);
 
-        loadList();
+        loadList();*/
     }
 
     public PopupMenu popupSetup(ImageView imageView) {
@@ -174,14 +186,13 @@ public class LearningItemListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadList();
-        tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
-        popupimagebutton.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+       // loadList();
+       // setupViews();
     }
 
 
     private void loadList() {
-
+        srf_learningItemList.setRefreshing(true);
         this.learningTitle.getItems(new ServiceCallback<List<Item>>() {
 
             @Override
@@ -193,8 +204,8 @@ public class LearningItemListFragment extends BaseFragment {
                     LearningItemListFragment.this.learningItemList = data;
                     ((ItemFragmentPageAdapter)mPagerAdapter).setLearningItemList(data);
                     mPagerAdapter.notifyDataSetChanged();
-                   tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
-                    //popupimagebutton.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+                    setupViews();
+                    srf_learningItemList.setRefreshing(false);
                 }
             }
             @Override
@@ -203,6 +214,12 @@ public class LearningItemListFragment extends BaseFragment {
 
             }
         });
+    }
+
+
+    @Override
+    public void onRefresh() {
+        loadList();
     }
 
 

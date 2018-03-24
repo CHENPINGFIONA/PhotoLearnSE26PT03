@@ -4,6 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="sg.edu.nus.se26pt03.photolearn.fragment.QuizItemFragment">
+    <FrameLayout
+        android:layout_width="0dp"
+        android:id="@+id/imageFrameLayout"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/ItemImageContentDescription"
+        app:layout_constraintBottom_toTopOf="@+id/txtViewLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/imgItemPhotoUrl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             >
+
+
+        </ImageView>
+        <ProgressBar
+            android:id="@+id/quizitemListprogressBarSmall"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
 
     <TextView
         android:id="@+id/txt_content"
@@ -55,5 +83,23 @@
         android:text="Option Four"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chk_option3" />
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <Button
+        android:id="@+id/btn_prev"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

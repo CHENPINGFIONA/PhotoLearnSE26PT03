@@ -1,10 +1,12 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import java.io.Serializable;
+
 /**
  * Created by Drake on 20/3/18.
  */
 
-public class Coordinate {
+public class Coordinate implements Serializable {
     private double latitude;
     private double longitude;
 

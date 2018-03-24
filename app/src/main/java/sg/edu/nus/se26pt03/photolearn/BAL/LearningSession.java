@@ -2,6 +2,7 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.text.DateFormat;
