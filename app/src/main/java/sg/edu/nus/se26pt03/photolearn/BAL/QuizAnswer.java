@@ -12,6 +12,7 @@ public class QuizAnswer {
     private String quizItemId;
     private String participantId;
     private Date timestamp;
+    private List<String> selectedOptionIds;
 
     private transient List<QuizOption> answerOptions;
 
@@ -53,5 +54,13 @@ public class QuizAnswer {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public List<String> getSelectedOptionIds() {
+        return selectedOptionIds;
+    }
+
+    public void setSelectedOptionIds(List<String> selectedOptionIds) {
+        this.selectedOptionIds = selectedOptionIds;
     }
 }

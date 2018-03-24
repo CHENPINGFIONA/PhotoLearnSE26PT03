@@ -4,7 +4,6 @@ import java.util.Date;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizAnswer;
 import sg.edu.nus.se26pt03.photolearn.DAL.QuizAnswerDAO;
-import sg.edu.nus.se26pt03.photolearn.database.QuizAnswerOptionRepo;
 import sg.edu.nus.se26pt03.photolearn.database.QuizAnswerRepo;
 
 /**
@@ -24,6 +23,7 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
                 quizAnswer.setParticipantId(value.getCreatedBy());
                 quizAnswer.setQuizItemId(value.getQuizItemId());
                 quizAnswer.setTimestamp(new Date(value.getTimestamp()));
+                quizAnswer.setSelectedOptionIds(value.getSelectedQuizOptionIds());
                 return quizAnswer;
             }
 
@@ -34,6 +34,7 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
                 quizAnswerDAO.setQuizItemId(value.getQuizItemId());
                 quizAnswerDAO.setCreatedBy(value.getParticipantId());
                 quizAnswerDAO.setTimestamp(value.getTimestamp().getTime());
+                quizAnswerDAO.setSelectedQuizOptionIds(value.getSelectedOptionIds());
                 return quizAnswerDAO;
             }
         });
