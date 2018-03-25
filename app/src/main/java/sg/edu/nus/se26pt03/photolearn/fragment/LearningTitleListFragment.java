@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -76,7 +77,10 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
     private void setupData() {
         learningSession = (LearningSession) getArguments().getSerializable("learningSession");
         learningTitleService = new LearningTitleService();
-        learningTitles = learningSession.getLearningTitles();
+        learningTitles = new ArrayList<>();
+        learningTitlesOrigianl = learningSession.getLearningTitles();
+        applyFilter();
+
         learningTitleListAdapter = new LearningTitleListAdapter(learningTitles, new LearningTitleListAdapter.LearningTitleViewHolderClick() {
             @Override
             public void onItemClick(LearningTitleListAdapter.LearningTitleViewHolder viewHolder) {
@@ -93,7 +97,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
                 learningSession.removeAllLearningTitle();
                 learningSession.addLearningTitles(data);
 
-                learningTitles = learningSession.getLearningTitles();
+                applyFilter();
                 refreshViews();
                 srf_learningtitlelist.setRefreshing(false);
             }
@@ -114,7 +118,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
     }
 
     private void setupViews() {
-        sv_learningtitlelist = getView().findViewById(R.id.sv_learningtitle);
+        sv_learningtitlelist = getView().findViewById(R.id.sv_title);
         //sv_learningtitlelist.setVisibility(App.getCurrentAccessMode() == AccessMode.VIEW ? View.VISIBLE : View.GONE);
         sv_learningtitlelist.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -110,7 +110,7 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
     }
 
     private void setupViews() {
-        SearchView svSearchView = getView().findViewById(R.id.sv_learningtitle);
+        SearchView svSearchView = getView().findViewById(R.id.sv_title);
         svSearchView.setVisibility(View.GONE);
     }
 
