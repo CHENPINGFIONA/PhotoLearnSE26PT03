@@ -1,8 +1,13 @@
 package sg.edu.nus.se26pt03.photolearn.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
@@ -128,6 +133,22 @@ public class LearningActivity extends BaseActivity{
             }
         });
     }
+    /*
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.btn_logout) {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    //.delete(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finish();
+                }
+            });
+        }
+    }
+    */
+
 
 
 }
