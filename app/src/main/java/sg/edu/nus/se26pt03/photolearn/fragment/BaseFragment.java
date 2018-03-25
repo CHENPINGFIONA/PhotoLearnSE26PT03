@@ -2,12 +2,14 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 
 
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -283,5 +285,10 @@ public class BaseFragment extends Fragment implements UserActionListener {
 
     protected void displayErrorMessage(String message) {
         Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    protected void hideSoftInput (IBinder token) {
+        InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

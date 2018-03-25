@@ -13,7 +13,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 public class QuizAnswerDAO extends BaseDAO {
     private String QuizItemId;
 
-    private transient List<QuizOptionDAO> SelectedQuizOptions;
+    private List<String> SelectedQuizOptionIds;
 
     public String getQuizItemId() {
         return QuizItemId;
@@ -23,11 +23,11 @@ public class QuizAnswerDAO extends BaseDAO {
         QuizItemId = quizItemId;
     }
 
-    public List<QuizOptionDAO> getSelectedQuizOptions() {
-        return SelectedQuizOptions;
+    public List<String> getSelectedQuizOptionIds() {
+        return SelectedQuizOptionIds;
     }
 
-    public void setSelectedQuizOptions(List<QuizOptionDAO> selectedQuizOptions) {
-        SelectedQuizOptions = selectedQuizOptions;
+    public void setSelectedQuizOptionIds(List<String> selectedQuizOptionIds) {
+        SelectedQuizOptionIds = selectedQuizOptionIds;
     }
 }

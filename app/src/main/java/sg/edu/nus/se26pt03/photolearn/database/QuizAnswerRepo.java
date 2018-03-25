@@ -22,9 +22,8 @@ public class QuizAnswerRepo extends BaseRepo<QuizAnswerDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_QUIZ_ANSWERS);
     }
 
-    public QuizAnswerDAO getByQuizItemIDAndParticipantID(final String quizItemId, final String participantId) {
-        final List<QuizAnswerDAO> result = new ArrayList<>();
-        mDatabaseRef.addListenerForSingleValueEvent(
+    public void getByQuizItemIDAndParticipantID(final String quizItemId, final String participantId, final RepoCallback<QuizAnswerDAO> repoCallback) {
+        mDatabaseRef.orderByChild("createdBy").equalTo(participantId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -32,11 +31,13 @@ public class QuizAnswerRepo extends BaseRepo<QuizAnswerDAO> {
                         // Get Post object and use the values to update the UI
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                             QuizAnswerDAO quizAnswerDAO = getValue(childDataSnapshot);
-                            if (quizAnswerDAO.getQuizItemId().equals(quizItemId)
-                                    && quizAnswerDAO.getCreatedBy().equals(participantId)) {
-                                result.add(quizAnswerDAO);
+                            if (quizAnswerDAO.getQuizItemId().equals(quizItemId)) {
+                                repoCallback.onComplete(quizAnswerDAO);
+                                return;
                             }
                         }
+                        //if the loop ends but still can not find the QuizAnswer, that means the user haven't answer this quizItem yet
+                        repoCallback.onComplete(null);
                     }
 
                     @Override
@@ -44,10 +45,6 @@ public class QuizAnswerRepo extends BaseRepo<QuizAnswerDAO> {
                         // Getting Post failed, log a message
                     }
                 });
-        if (result.isEmpty()) {
-            return null;
-        } else {
-            return result.get(0);
-        }
+
     }
 }
