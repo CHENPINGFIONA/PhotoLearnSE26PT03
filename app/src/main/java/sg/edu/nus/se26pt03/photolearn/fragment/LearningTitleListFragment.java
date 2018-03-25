@@ -22,6 +22,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
@@ -36,9 +38,11 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 public class LearningTitleListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private LearningTitleListAdapter learningTitleListAdapter;
     private LearningTitleService learningTitleService;
-    private List<LearningTitle> learningTitles = null;
+    private List<LearningTitle> learningTitles;
+    private List<LearningTitle> learningTitlesOrigianl;
 
     private SwipeRefreshLayout srf_learningtitlelist;
+    private SearchView sv_learningtitlelist;
 
     private LearningSession learningSession;
     private boolean updateMode;
@@ -110,24 +114,25 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
     }
 
     private void setupViews() {
-        SearchView svSearchView = getView().findViewById(R.id.sv_learningtitle);
-        //svSearchView.setVisibility(App.getCurrentAccessMode() == AccessMode.VIEW ? View.VISIBLE : View.GONE);
-        svSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        sv_learningtitlelist = getView().findViewById(R.id.sv_learningtitle);
+        //sv_learningtitlelist.setVisibility(App.getCurrentAccessMode() == AccessMode.VIEW ? View.VISIBLE : View.GONE);
+        sv_learningtitlelist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((SearchView) view).setIconified(false);
+            }
+        });
+        sv_learningtitlelist.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
             @Override
             public boolean onQueryTextChange(String newText) {
-                // your text view here
-                callSearch(newText);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String text) {
-                callSearch(text);
-                return true;
-            }
-
-            private void callSearch(String text) {
-                //learningTitles.
+                applyFilter();
+                refreshViews();
+                return false;
             }
         });
     }
@@ -273,5 +278,15 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
                 dialog.dismiss();
             }
         });
+    }
+
+    private void applyFilter() {
+        Stream<LearningTitle> learningTitleStream = learningTitlesOrigianl.stream();
+        final String query = (sv_learningtitlelist == null ? "" : sv_learningtitlelist.getQuery().toString().toUpperCase());
+        if (!query.isEmpty()) {
+            learningTitleStream = learningTitleStream.filter(s -> (s.getTitle() + s.getCreatedBy()).toUpperCase().contains(query));
+        }
+        learningTitles.clear();
+        learningTitles.addAll(learningTitleStream.collect(Collectors.toList()));
     }
 }
