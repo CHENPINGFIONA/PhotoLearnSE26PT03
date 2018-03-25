@@ -1,17 +1,23 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import java.util.Date;
+import java.util.List;
+
+import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
  * Created by chen ping on 7/3/2018.
  */
 
-public class User {
+public abstract class User {
     private String id;
     private String loginId;
     private String loginSource;
     private Date lastLoginDate;
     private Date timestamp;
+
+    protected transient LearningSessionService learningSessionService = new LearningSessionService();
 
     public String getId() {
         return id;
@@ -61,5 +67,6 @@ public class User {
 
     }
 
+    public abstract void getLearningSessions(ServiceCallback<List<LearningSession>> callback);
 
 }

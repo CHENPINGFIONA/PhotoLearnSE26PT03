@@ -1,20 +1,27 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
 
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.Participant;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.application.App;
@@ -37,9 +45,8 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  */
 public class LearningSessionListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private LearningSessionListAdapter learningSessionListAdapter;
-    private LearningSessionService learningSessionService;
     private List<LearningSession> learningSessions;
-    private List<LearningSession> learningSessionsOrigianl;
+    private List<LearningSession> learningSessionsRaw;
 
     private SwipeRefreshLayout srf_learningsessionlist;
     private SearchView sv_learningsessionlist;
@@ -51,50 +58,33 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        setupData();
-        setupViews();
         setupControls();
     }
 
     @Override
     public void onRefresh() {
-        refreshData();
-    }
-    private void setupData() {
-        learningSessionService = new LearningSessionService();
-        learningSessions = new ArrayList<LearningSession>();
-        if (App.currentAppMode == AppMode.TRAINER) {
-            learningSessionsOrigianl = ((Trainer) App.currentUser).getLearningSessions();
-            applyFilter();
-        }
-
-        learningSessionListAdapter = new LearningSessionListAdapter(learningSessions, new LearningSessionListAdapter.LearningSessionViewHolderClick() {
-            @Override
-            public void onItemClick(LearningSessionListAdapter.LearningSessionViewHolder viewHolder) {
-                if (!dismissSoftInput()) {
-                onLoad(learningSessions.get(viewHolder.getAdapterPosition()), null);
-                }
-            }
-        });
+        loadData();
     }
 
     private void applyFilter() {
-        Stream<LearningSession> learningSessionStream = learningSessionsOrigianl.stream();
+        Stream<LearningSession> learningSessionStream = learningSessionsRaw.stream();
         final String query = (sv_learningsessionlist == null ? "" : sv_learningsessionlist.getQuery().toString().toUpperCase());
         if (!query.isEmpty()) {
             learningSessionStream = learningSessionStream.filter(s -> (s.getCourseCode() + s.getCourseName() + s.getModuleNumber() + s.getModuleName()).toUpperCase().contains(query));
         }
+            if(learningSessions == null) learningSessions = new ArrayList<LearningSession>();
             learningSessions.clear();
             learningSessions.addAll(learningSessionStream.collect(Collectors.toList()));
     }
 
-    private void refreshData() {
+    private void loadData() {
         srf_learningsessionlist.setRefreshing(true);
-        learningSessionService.getAllByKeyValue("createdBy", App.currentUser.getId() ,new ServiceCallback<List<LearningSession>>() {
+        App.currentUser.getLearningSessions(new ServiceCallback<List<LearningSession>>() {
             @Override
             public void onComplete(List<LearningSession> data) {
-                ((Trainer) App.currentUser).removeAllLearningSesson();
-                ((Trainer) App.currentUser).addLearningSession(data);
+                if(learningSessionsRaw == null) learningSessionsRaw = new ArrayList<LearningSession>();
+                learningSessionsRaw.clear();
+                learningSessionsRaw.addAll(data);
                 applyFilter();
                 refreshViews();
                 srf_learningsessionlist.setRefreshing(false);
@@ -109,75 +99,76 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
     }
 
     private void refreshViews() {
+        if(learningSessionListAdapter.getLearningSessions() != learningSessions) {
+            learningSessionListAdapter.setLearningSessions(learningSessions);
+        }
         learningSessionListAdapter.notifyDataSetChanged();
-        if (learningSessionListAdapter.learningSessionList.size() == 0) {
-            getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.VISIBLE);
+        if (getView() != null) {
+            if (learningSessionListAdapter.getLearningSessions().size() == 0) {
+                getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.VISIBLE);
+            } else {
+                getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
+            }
         }
-        else {
-            getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
-        }
-
-    }
-
-    private void setupViews() {
-        switch (App.currentAppMode) {
-            case TRAINER:
-                //sv_learningsessionlist.setVisibility(View.GONE);
-                break;
-            case PARTICIPENT:
-                getView().findViewById(R.id.fab_learningsessionlist).setVisibility(View.GONE);
-                break;
-        }
-
-
     }
 
     private void setupControls() {
+
         final RecyclerView recyclerView = getView().findViewById(R.id.rv_learningsessionlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(learningSessionListAdapter);
-
-        final SwipeController swipeController = new SwipeController(0, (App.currentAccessMode == AccessMode.EDIT ? R.layout.partial_swipe_item : 0)) {
+        learningSessionListAdapter = new LearningSessionListAdapter(learningSessions);
+        learningSessionListAdapter.setLearningSessionViewHolderClick( new LearningSessionListAdapter.LearningSessionViewHolderClick() {
             @Override
-            public void onRevealInflated(View view, int position) {
-                if (view instanceof LinearLayout) {
-                    LinearLayout linearLayout = (LinearLayout) ((LinearLayout) view).getChildAt(0);
-//                        linearLayout.findViewWithTag("edit").setVisibility(View.GONE);
-//                        linearLayout.findViewWithTag("delete").setVisibility(View.GONE);
+            public void onItemClick(LearningSessionListAdapter.LearningSessionViewHolder viewHolder) {
+                if (!dismissSoftInput()) {
+                    onLoad(learningSessions.get(viewHolder.getAdapterPosition()), null);
                 }
-            }
-
-            @Override
-            public void onClicked(Object tag, int position) {
-                switch (tag.toString()) {
-                    case "delete":
-                        learningSessionListAdapter.learningSessionList.remove(position);
-                        learningSessionListAdapter.notifyItemRemoved(position);
-                        learningSessionListAdapter.notifyItemRangeChanged(position, learningSessionListAdapter.getItemCount());
-                        break;
-                    case "edit":
-                        onEdit(learningSessionListAdapter.learningSessionList.get(position), null);
-                        break;
-                }
-            }
-        };
-
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(recyclerView);
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                swipeController.onDraw(c);
             }
         });
+        recyclerView.setAdapter(learningSessionListAdapter);
 
+        if (App.currentAppMode == AppMode.TRAINER) {
+            final SwipeController swipeController = new SwipeController(0, (App.currentAccessMode == AccessMode.EDIT ? R.layout.partial_swipe_item : 0)) {
+                @Override
+                public void onRevealInflated(View view, int position) {
+                    if (view instanceof LinearLayout) {
+                        LinearLayout linearLayout = (LinearLayout) ((LinearLayout) view).getChildAt(0);
+//                        linearLayout.findViewWithTag("edit").setVisibility(View.GONE);
+//                        linearLayout.findViewWithTag("delete").setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onClicked(Object tag, int position) {
+                    switch (tag.toString()) {
+                        case "delete":
+                            learningSessionListAdapter.getLearningSessions().remove(position);
+                            learningSessionListAdapter.notifyItemRemoved(position);
+                            learningSessionListAdapter.notifyItemRangeChanged(position, learningSessionListAdapter.getItemCount());
+                            break;
+                        case "edit":
+                            onEdit(learningSessionListAdapter.getLearningSessions().get(position), null);
+                            break;
+                    }
+                }
+            };
+
+            ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+            itemTouchhelper.attachToRecyclerView(recyclerView);
+            recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+                @Override
+                public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                    swipeController.onDraw(c);
+                }
+            });
+        }
         srf_learningsessionlist =  getView().findViewById(R.id.srf_learningsesionlist);
         srf_learningsessionlist.setOnRefreshListener(this);
         srf_learningsessionlist.post(new Runnable() {
             @Override
             public void run() {
                 srf_learningsessionlist.setRefreshing(true);
-                refreshData();
+                loadData();
             }
         });
 
@@ -206,12 +197,50 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
         ((RecyclerView) getView().findViewById(R.id.rv_learningsessionlist)).setOnTouchListener((v, event) -> {
             return dismissSoftInput();
         });
+
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningsessionlist);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (App.getCurrentAppMode() == AppMode.PARTICIPENT) {
+                    LayoutInflater li = LayoutInflater.from(getContext());
+                    View viewAccessLearningSession = li.inflate(R.layout.dialog_learningsession_access, null);
 
+                    AlertDialog ad_learningsessionaccess = new AlertDialog.Builder(getContext())
+                            .setView(viewAccessLearningSession)
+                            .setTitle("Learning Session Access")
+                            .setPositiveButton("Add",null)
+                            .setNegativeButton("Cancel",null)
+                            .create();
+
+                    EditText et_learningsessionid = (EditText) viewAccessLearningSession.findViewById(R.id.et_learningsessionid);
+                    TextInputLayout til_learingsessionid = (TextInputLayout) viewAccessLearningSession.findViewById(R.id.til_learningsessionid);
+                    ad_learningsessionaccess.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialogInterface) {
+
+                            Button button = ad_learningsessionaccess.getButton(AlertDialog.BUTTON_POSITIVE);
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ((Participant) App.currentUser).accessLearnigSession(et_learningsessionid.getText().toString(), new ServiceCallback<Boolean>() {
+                                        @Override
+                                        public void onComplete(Boolean data) {
+                                            ad_learningsessionaccess.dismiss();
+                                            displayInfoMessage("Access to learning session successfully");
+                                            loadData();
+                                        }
+                                        @Override
+                                        public void onError(int code, String message, String details) {
+                                            til_learingsessionid.setError(message);
+                                            til_learingsessionid.setErrorEnabled(true);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    ad_learningsessionaccess.show();
                 }
                 else {
                     onCreate(new LearningSession(), null);

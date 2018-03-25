@@ -21,6 +21,15 @@ public class LearningSessionDAO extends BaseDAO{
     private String CourseCode;
     private int ModuleNumber;
     private  String ModuleName;
+    private String LearningSessionId;
+
+    public String getLearningSessionId() {
+        return LearningSessionId;
+    }
+
+    public void setLearningSessionId(String learningSessionId) {
+        LearningSessionId = learningSessionId;
+    }
 
     public long getCourseDate() {
         return CourseDate;

@@ -16,6 +16,7 @@ import sg.edu.nus.se26pt03.photolearn.BR;
 import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.QuizTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
+import sg.edu.nus.se26pt03.photolearn.utility.BindingHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 /**
@@ -125,9 +126,9 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
         quizTitles = new ArrayList<QuizTitle>();
     }
 
-    public String getLearningSessionCode() {
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        return String.format("{0}-{1}-M{2}", df.format(courseDate), courseCode, moduleNumber);
+    public String getLearningSessionId() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        return simpleDateFormat.format(courseDate) + "-" + courseCode.toUpperCase() + "-M" + BindingHelper.fromModuleNumber(moduleNumber);
     }
 
     public boolean addLearningTitles(List<LearningTitle> learningTitles) {

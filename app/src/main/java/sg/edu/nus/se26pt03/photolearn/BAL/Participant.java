@@ -1,28 +1,33 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
  * Created by chen ping on 3/8/2018.
  */
 
 public class Participant extends User {
-    public LearningSession getLearningSession(int sessionId) {
-        return new LearningSession();
+    @Override
+    public void getLearningSessions(ServiceCallback<List<LearningSession>> callback) {
+        learningSessionService.getAllByKeyValue("participants."  + this.getId(), true, callback);
     }
 
-//    public LearningSession getLearningSessions(String learningSessionId) {
-//        return new LearningSessionService().getById(ler );
-//    }
-//
-//    public void addLearningTitle(Title title){
-//
-//    }
-//
-//    public void StartQuiz(int QuizId){
-//
-//    }
+    public void accessLearnigSession(String learningSessionId, ServiceCallback<Boolean> callback) {
+        learningSessionService.getAllByKeyValue("learningSessionId", learningSessionId, new ServiceCallback<List<LearningSession>>() {
+            @Override
+            public void onComplete(List<LearningSession> data) {
+                if (data != null && data.size() == 0) {callback.onError(-1, "No learning session found", "");}
+                for (LearningSession learningSession : data) {
+                    learningSessionService.setValueByKey(learningSession.getId() + ".participants." + getId(), true, callback);
+                }
+            }
+
+            @Override
+            public void onError(int code, String message, String details) {
+                callback.onError(code, message, details);
+            }
+        });
+    }
 }

@@ -43,6 +43,7 @@ public class LearningSessionService extends BaseService<LearningSession, Learnin
                 learningSessionDAO.setModuleName(value.getModuleName());
                 learningSessionDAO.setCreatedBy(value.getCreatedBy());
                 learningSessionDAO.setCreatedBy(value.getCreatedBy());
+                learningSessionDAO.setLearningSessionId(value.getLearningSessionId());
                 return learningSessionDAO;
             }
         });

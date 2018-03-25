@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
@@ -19,14 +20,25 @@ import sg.edu.nus.se26pt03.photolearn.R;
  */
 
 public class LearningSessionListAdapter extends RecyclerView.Adapter<LearningSessionListAdapter.LearningSessionViewHolder>  {
-    public List<LearningSession> learningSessionList;
-    public LearningSessionViewHolderClick learningSessionViewHolderClick;
+    private List<LearningSession> learningSessions;
+    private LearningSessionViewHolderClick learningSessionViewHolderClick;
 
-    public LearningSessionListAdapter(List<LearningSession> learningSessionList, LearningSessionViewHolderClick learningSessionViewHolderClick) {
-        this.learningSessionList = learningSessionList;
+    public LearningSessionListAdapter(List<LearningSession> learningSessions) {
+        if (learningSessions == null) learningSessions = new ArrayList<LearningSession>();
+        this.learningSessions = learningSessions;
+    }
+
+    public void setLearningSessionViewHolderClick(LearningSessionViewHolderClick learningSessionViewHolderClick) {
         this.learningSessionViewHolderClick = learningSessionViewHolderClick;
     }
 
+    public List<LearningSession> getLearningSessions() {
+        return learningSessions;
+    }
+
+    public void setLearningSessions(List<LearningSession> learningSessions) {
+        this.learningSessions = learningSessions;
+    }
 
     @Override
     public LearningSessionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,7 +68,7 @@ public class LearningSessionListAdapter extends RecyclerView.Adapter<LearningSes
 
     @Override
     public void onBindViewHolder(LearningSessionViewHolder holder, int position) {
-        LearningSession learningSession = learningSessionList.get(position);
+        LearningSession learningSession = learningSessions.get(position);
         holder.tv_learningsession_course.setText(learningSession.getCourseName() + " (" + learningSession.getCourseCode() + ")");
         holder.tv_learningsession_module.setText(Integer.toString(learningSession.getModuleNumber()) + ". " + learningSession.getModuleName());
         holder.tv_learningsession_date.setText(new SimpleDateFormat("dd-MMM-yyyy").format(learningSession.getCourseDate()).toString());
@@ -65,7 +77,7 @@ public class LearningSessionListAdapter extends RecyclerView.Adapter<LearningSes
 
     @Override
     public int getItemCount() {
-        return learningSessionList.size();
+        return learningSessions.size();
     }
     public interface  LearningSessionViewHolderClick {
         void onItemClick(LearningSessionViewHolder viewHolder);
