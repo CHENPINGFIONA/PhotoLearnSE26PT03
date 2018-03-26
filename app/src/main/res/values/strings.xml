@@ -1,6 +1,6 @@
 <resources>
     <!-- App Name and page names -->
-    <string name="app_name">PhotoLearn.SE26.PT03</string>
+    <string name="app_name">PhotoLearn SE26PT03</string>
     <string name="learning_title">Learning Title</string>
     <string name="quiz_title">Quiz Title</string>
 
@@ -20,9 +20,13 @@
     <string name="enter_title">Enter title</string>
 
     <string name="facebook_application_id" translatable="false">1929382460709589</string>
+    <string name="fb_login_protocol_scheme">fb1929382460709589</string>
     <string name="format_coursedate_display">dd / MM / yyyy (EEEE)</string>
     <string name="format_coursedate_code">ddMMyyyy</string>
-    <string name="format_modulenumber_code">%03d</string>
-    <string name="format_modulenumber_display">%03d</string>
+    <string name="format_modulenumber_code">%02d</string>
+    <string name="format_modulenumber_display">%02d</string>
     <string name="all_fields_are_mandatory">*All fields are mandatory</string>
+    <string name="access_learning_session">Access Learning Session</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer Close</string>
 </resources>

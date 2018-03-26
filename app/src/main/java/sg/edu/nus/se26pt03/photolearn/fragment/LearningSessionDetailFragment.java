@@ -72,7 +72,6 @@ public class LearningSessionDetailFragment extends BaseFragment {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            learningSession.copy(learningSessionCopy);
                             callback.onPass();
                         }
                     })

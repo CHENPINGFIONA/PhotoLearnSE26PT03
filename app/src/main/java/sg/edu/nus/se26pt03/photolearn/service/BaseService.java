@@ -120,4 +120,23 @@ public class BaseService<T, V extends BaseDAO> {
             }
         });
     }
+
+    public void setValueByKey(String key, Object value, final ServiceCallback<Boolean> callback) {
+        if (key.split("\\.").length == 1) {
+            if (callback != null) callback.onError(-1, "Child key must present.", null);
+            return;
+        }
+        baseRepo.setValueByKey(key, value, new RepoCallback<Boolean>() {
+            @Override
+            public void onComplete(Boolean data) {
+                if (callback != null) callback.onComplete(data);
+            }
+
+            @Override
+            public void onError(DatabaseError databaseError) {
+                if (callback != null) callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
+            }
+        });
+    }
+
 }

@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <SearchView
-        android:id="@+id/sv_learningtitle"
+        android:id="@+id/sv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/secondaryLightColor"
@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sv_learningtitle">
+        app:layout_constraintTop_toBottomOf="@id/sv_title">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_learning_title"
@@ -52,7 +52,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sv_learningtitle">
+            app:layout_constraintTop_toBottomOf="@id/sv_title">
 
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>

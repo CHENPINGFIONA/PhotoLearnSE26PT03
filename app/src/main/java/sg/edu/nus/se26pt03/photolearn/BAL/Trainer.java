@@ -1,41 +1,24 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
  * Created by chen ping on 3/8/2018.
  */
 
 public class Trainer extends User{
-    private List<LearningSession> learningSessions = new ArrayList<LearningSession>();
 
-    public boolean addLearningSession(LearningSession learningSession) {
-        return learningSessions.add(learningSession);
+    public Trainer(FirebaseUser firebaseUser) {
+        super(firebaseUser);
     }
 
-    public boolean addLearningSession(List<LearningSession> learningSessions) {
-        for (LearningSession learningSession: learningSessions ) {
-            if (!addLearningSession(learningSession))
-                return false;
-        }
-        return  true;
-    }
-
-    public boolean removeLearningSession(LearningSession learningSession) {
-        return learningSessions.remove(learningSession);
-    }
-
-    public boolean removeAllLearningSesson() {
-        return learningSessions.removeAll(learningSessions);
-    }
-
-
-    public List<LearningSession> getLearningSessions() {
-        return learningSessions;
-    }
-
-    public LearningSession getLearningSession(int index) {
-        return learningSessions.get(index);
+    @Override
+    public void getLearningSessions(ServiceCallback<List<LearningSession>> callback) {
+        learningSessionService.getAllByKeyValue("createdBy", this.getId(), callback);
     }
 }

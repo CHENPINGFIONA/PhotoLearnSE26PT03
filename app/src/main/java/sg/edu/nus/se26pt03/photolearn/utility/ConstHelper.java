@@ -5,6 +5,10 @@ package sg.edu.nus.se26pt03.photolearn.utility;
  */
 
 public class ConstHelper {
+    public static final String REF_APP_PREFERENCES = "APP_PREFERENCES";
+    public static final String REF_APP_PREFERENCES_APPMODE= "APP_MODE";
+    public static final String REF_APP_PREFERENCES_ACCESSMODE= "ACCESS_MODE";
+
     public static String SharedPreferences_User_Id = "USERID";
     public static String SharedPreferences_Access_Mode= "ACCESSMODE";
 

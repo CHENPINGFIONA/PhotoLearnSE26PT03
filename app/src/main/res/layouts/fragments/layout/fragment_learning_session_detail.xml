@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="true"
-                    android:hint="Course Code (eg: iot)"
+                    android:hint="Course Code (i.e. iot)"
                     android:inputType="text"
                     android:maxLength="3"
                     android:text="@={learningSession.courseCode}"
@@ -60,7 +60,7 @@
                     android:id="@+id/edt_coursename"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Course Name (eg: Internet of Things)"
+                    android:hint="Course Name (i.e. Internet of Things)"
                     android:inputType="text"
                     android:text="@={learningSession.courseName}"
                     tools:hint="Course Name" />
@@ -82,9 +82,9 @@
                     android:id="@+id/edt_modulenumber"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Module Number (eg: 123)"
+                    android:hint="Module Number (i.e. 01)"
                     android:inputType="number"
-                    android:maxLength="3"
+                    android:maxLength="2"
                     android:text="@={BindingHelper.fromModuleNumber(learningSession.moduleNumber)}"
                     tools:hint="Module Number" />
             </android.support.design.widget.TextInputLayout>
@@ -105,7 +105,7 @@
                     android:id="@+id/edt_modulename"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Module Name (eg: Overview)"
+                    android:hint="Module Name (i.e. Overview)"
                     android:inputType="text"
                     android:text="@={learningSession.moduleName}"
                     tools:hint="Module Name" />

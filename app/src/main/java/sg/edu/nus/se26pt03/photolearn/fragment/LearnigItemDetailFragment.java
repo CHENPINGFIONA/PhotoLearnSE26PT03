@@ -94,7 +94,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
         title=src.getTitle();
         sessionId = "1";
         //titleId="-L88Kii8Oc5tSrTBxNaW";
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
+        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
         CaptureImageButton=(ImageButton) this.getView().findViewById(R.id.imgbtn_CaptureImage);
