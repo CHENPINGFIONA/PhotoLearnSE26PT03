@@ -1,7 +1,6 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,7 +8,21 @@ import java.util.List;
  */
 
 public class QuizItem extends Item{
+    public List<QuizOption> getQuizOptions() {
+        return quizOptions;
+    }
+
     private List<QuizOption> quizOptions;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    private int position;
 
     public QuizItem(Title title) {
 
@@ -21,20 +34,30 @@ public class QuizItem extends Item{
         return true;
     }
 
-    public  void createQuizOption(QuizOption option){
-
+    public void Add(QuizOption option) {
+        this.quizOptions.add(option);
     }
-    public  void updateQuizOption(QuizOption option){
-
+    public void Update(int position,QuizOption option) {
+        this.quizOptions.add(position,option);
     }
-    public  void deleteQuizOption(int optionId){
-
-    }
-    public List<QuizOption> getOptions(){
-        return  null;
+    public void Delete(QuizOption option) {
+        this.quizOptions.remove(option);
     }
 
-    public void createQuizAnswer(QuizAnswer answer, int userId) {
+/*    public  void createQuizOption(QuizOption option, ServiceCallback<QuizOption> optionServiceCallback){
+        quizOptionService.save(option,optionServiceCallback);
     }
+    public  void updateQuizOption(QuizOption option, ServiceCallback<Boolean> optionServiceCallback){
+        quizOptionService.update(option,optionServiceCallback);
+    }
+    public  void deleteQuizOption(String optionId, ServiceCallback<Boolean> optionServiceCallback){
+        quizOptionService.deleteById(optionId,optionServiceCallback);
+    }*/
+   /* public List<QuizOption> getOptions(ServiceCallback<Boolean> optionServiceCallback){
+
+    }*/
+
+  /*  public void createQuizAnswer(QuizAnswer answer, int userId) {
+    }*/
 
 }
