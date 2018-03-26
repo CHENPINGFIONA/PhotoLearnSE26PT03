@@ -64,6 +64,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
     private int mode;
     private String sessionId;
     private String userId;
+    private GPSTracker gpsTracker;
     private ImageButton CaptureImageButton;
 
     private ImageView imgPhotView;
@@ -79,7 +80,12 @@ public class LearnigItemDetailFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
+        gpsTracker =new GPSTracker(getActivity());
+        if (!gpsTracker.canGetLocation()){
+            gpsTracker.requestpermission();
+        }
         return inflater.inflate(R.layout.fragment_learnig_item_detail, container, false);
+
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -91,8 +97,8 @@ public class LearnigItemDetailFragment extends BaseFragment {
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
-        CaptureImageButton=(ImageButton) this.getView().findViewById(R.id.CaptureImageButton);
-        progressBar=(ProgressBar) this.getView().findViewById(R.id.itemDetailprogressBarSmall);
+        CaptureImageButton=(ImageButton) this.getView().findViewById(R.id.imgbtn_CaptureImage);
+        progressBar=(ProgressBar) this.getView().findViewById(R.id.pb_imgloadprogressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
         editContentTxtView=(EditText)this.getView().findViewById(R.id.edt_content);
@@ -249,10 +255,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
             if (resultCode == Activity.RESULT_OK) {
                 imgPhotView.setImageURI(Uri.parse(imageFilePath));
                 Toast.makeText(getContext(), "Uploading..", Toast.LENGTH_SHORT).show();
-                GPSTracker gpsTracker =new GPSTracker(getContext());
-                if(!gpsTracker.canGetLocation()){
-                    gpsTracker.showSettingsAlert();
-                }
+
                 if(gpsTracker.canGetLocation()){
                     Location location= gpsTracker.getLocation();
                     Coordinate coordinate=new Coordinate(location.getLatitude(),location.getLongitude());
