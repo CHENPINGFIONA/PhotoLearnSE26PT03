@@ -3,32 +3,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbars="vertical"
     tools:context="sg.edu.nus.se26pt03.photolearn.fragment.QuizItemFragment">
+
     <FrameLayout
-        android:layout_width="0dp"
         android:id="@+id/imageFrameLayout"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/ItemImageContentDescription"
-        app:layout_constraintBottom_toTopOf="@+id/txtViewLocation"
+        app:layout_constraintBottom_toTopOf="@+id/txt_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside">
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:gravity="bottom"
+            android:hint="Location"
+            android:text="Location" />
+
         <ImageView
             android:id="@+id/imgItemPhotoUrl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-             >
+            android:layout_height="match_parent">
 
 
         </ImageView>
+
         <ProgressBar
             android:id="@+id/quizitemListprogressBarSmall"
-            style="?android:attr/progressBarStyleSmall"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content" />
     </FrameLayout>
 
@@ -37,50 +51,73 @@
         android:id="@+id/txt_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:maxLines="6"
         android:scrollbars="vertical"
         android:text="Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here Quiz Item Content Here "
+        app:layout_constraintBottom_toTopOf="@+id/chk_option1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageFrameLayout" />
 
     <CheckBox
         android:id="@+id/chk_option1"
-        android:layout_width="wrap_content"
+        style="@android:style/Widget.Material.CompoundButton.CheckBox"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:checked="false"
+        android:duplicateParentState="false"
         android:text="Option One"
+        app:layout_constraintBottom_toTopOf="@+id/chk_option2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_content" />
 
     <CheckBox
         android:id="@+id/chk_option2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Option Two"
+        app:layout_constraintBottom_toTopOf="@+id/chk_option3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chk_option1" />
 
     <CheckBox
         android:id="@+id/chk_option3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Option Three"
+        app:layout_constraintBottom_toTopOf="@+id/chk_option4"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chk_option2" />
 
     <CheckBox
         android:id="@+id/chk_option4"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Option Four"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chk_option3" />
 
