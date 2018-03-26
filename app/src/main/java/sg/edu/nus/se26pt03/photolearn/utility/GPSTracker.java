@@ -1,11 +1,14 @@
 package sg.edu.nus.se26pt03.photolearn.utility;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,13 +17,19 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
+import static android.support.v4.app.ActivityCompat.requestPermissions;
+
 /**
  * Created by c.banisetty on 3/17/2018.
  */
 @SuppressLint("MissingPermission")
 public class GPSTracker extends Service implements LocationListener {
+    private static final String[] INITIAL_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_CONTACTS
+    };
 
-    private final Context mContext;
+    private final Activity mActivity;
 
     // Flag for GPS status
     boolean isGPSEnabled = false;
@@ -44,14 +53,14 @@ public class GPSTracker extends Service implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
-    public GPSTracker(Context context) {
-        this.mContext = context;
-        getLocation();
+    public GPSTracker(Activity activity) {
+        this.mActivity = activity;
+       // getLocation();
     }
     @SuppressLint("MissingPermission")
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) mActivity.getApplicationContext().getSystemService(LOCATION_SERVICE);
 
             // Getting GPS status
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -140,21 +149,29 @@ public class GPSTracker extends Service implements LocationListener {
      * @return boolean
      */
     public boolean canGetLocation() {
-        return this.canGetLocation;
+       if(!canAccessLocation()){
+          return false;
+       }
+       return true;
+
+    }
+    public void requestpermission() {
+        requestPermissions(mActivity, INITIAL_PERMS, 1337);
     }
 
-    public boolean isLocationEnabled(){
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+    private boolean canAccessLocation() {
+        return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
     }
-
-
+    private boolean hasPermission(String perm) {
+        return(PackageManager.PERMISSION_GRANTED==mActivity.checkSelfPermission(perm));
+    }
     /**
      * Function to show settings alert dialog.
      * On pressing the Settings button it will launch Settings Options.
      */
     public void showSettingsAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mActivity.getApplicationContext());
 
         // Setting Dialog Title
         alertDialog.setTitle("GPS is settings");
@@ -166,7 +183,7 @@ public class GPSTracker extends Service implements LocationListener {
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                mContext.startActivity(intent);
+                mActivity.getApplicationContext().startActivity(intent);
             }
         });
 
