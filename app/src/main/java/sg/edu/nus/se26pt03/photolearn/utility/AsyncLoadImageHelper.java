@@ -95,6 +95,7 @@ public class AsyncLoadImageHelper  extends AsyncTask<String, String, Drawable> {
             URL url = new URL(params[0]);
 
             HttpsURLConnection httpConnection=(HttpsURLConnection) url.openConnection();
+
             httpConnection.connect();
 
                         InputStream is = (InputStream) httpConnection.getInputStream();
