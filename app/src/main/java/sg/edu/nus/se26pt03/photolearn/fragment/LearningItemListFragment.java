@@ -46,43 +46,32 @@ import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 public class LearningItemListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public static String SharedPreferences_Access_Mode = "ACCESSMODE";
-    private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
 
-    private TextView tvEmpty;
-    private FloatingActionButton Add;
-    private Dialog dialog;
+
     private int role;
     private int mode;
     private String sessionId;
     private String userId;
+    private List<Item> learningItemList = null;
+
+    private ViewPager mPager;
+    private PagerAdapter mPagerAdapter;
+    private Dialog dialog;
+    private TextView tvEmpty;
+    private FloatingActionButton Add;
     private ImageView popupimagebutton;
     private LearningTitle learningTitle;
-    private List<Item> learningItemList = null;
     private SwipeRefreshLayout srf_learningItemList;
 
-
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_learning_item_list, container, false);
-//    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_learning_item_list, container, false);
-        //  super.onCreateView(inflater, container, savedInstanceState);
-        //setContentView(R.layout.activity_view_page_with_fragment);
         learningTitle = (LearningTitle) getArguments().getSerializable(ConstHelper.REF_LEARNING_TITLES);
-        sessionId = "1";
-        //titleId="-L88Kii8Oc5tSrTBxNaW";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
-
         return view;
     }
 
@@ -90,9 +79,7 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupControls();
-        //setupViews();
-
-
+        setupViews();
     }
 
     private void setupControls() {
@@ -131,15 +118,10 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
 
     private void setupViews() {
         tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
-        popupimagebutton.setVisibility(mPagerAdapter.getCount() > 0 ? View.VISIBLE : View.GONE);
-        Add.setVisibility(UserRole.PARTICIPENT.equals(this.role)? View.VISIBLE : View.GONE);
-
-/*
-        mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), learningTitle,this.learningItemList);
-
-        mPager.setAdapter(mPagerAdapter);
-
-        loadList();*/
+        if(App.currentUser.getId()==this.learningTitle.getCreatedBy()) {
+            popupimagebutton.setVisibility(mPagerAdapter.getCount() > 0 ? View.VISIBLE : View.INVISIBLE);
+            Add.setVisibility(UserRole.PARTICIPENT.equals(this.role) ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
     public PopupMenu popupSetup(ImageView imageView) {
@@ -191,14 +173,6 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-       // loadList();
-       // setupViews();
-    }
-
-
     private void loadList() {
         srf_learningItemList.setRefreshing(true);
         this.learningTitle.getItems(new ServiceCallback<List<Item>>() {
@@ -223,8 +197,6 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
             }
         });
     }
-
-
     @Override
     public void onRefresh() {
         loadList();
