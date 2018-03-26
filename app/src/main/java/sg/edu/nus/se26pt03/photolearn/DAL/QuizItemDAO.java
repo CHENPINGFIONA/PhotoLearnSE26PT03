@@ -1,6 +1,9 @@
 package sg.edu.nus.se26pt03.photolearn.DAL;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
@@ -15,6 +18,20 @@ public class QuizItemDAO extends  BaseDAO {
     private String Content;
     private String Explaination ;
     private int Position;
+
+    public QuizItemDAO() {
+        this.quizOptionDAOS= new ArrayList<>();
+    }
+
+    public List<QuizOptionDAO> getQuizOptionDAOS() {
+        return quizOptionDAOS;
+    }
+
+    public void setQuizOptionDAOS(List<QuizOptionDAO> quizOptionDAOS) {
+        this.quizOptionDAOS = quizOptionDAOS;
+    }
+
+    private List<QuizOptionDAO> quizOptionDAOS;
 
     public String getQuizTitleId() {
         return QuizTitleId;
