@@ -10,6 +10,7 @@ import sg.edu.nus.se26pt03.photolearn.BAL.Coordinate;
 import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.Title;
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningItemDAO;
 import sg.edu.nus.se26pt03.photolearn.database.LearningItemRepo;
 import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
@@ -20,15 +21,15 @@ import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
 
 public class LearningItemService extends BaseService<Item, LearningItemDAO> {
     private LearningItemRepo learningItemRepo = new LearningItemRepo();
+    private Title title;
 
-
-    public LearningItemService() {
+    public LearningItemService(Title title) {
         setBaseRepo(learningItemRepo);
+        this.title=title;
         setDAOConversion(new DAOConversion<Item, LearningItemDAO>() {
             @Override
             public LearningItem convertFromDAO(LearningItemDAO value) {
-                LearningTitle title = new LearningTitle();
-                title.setId(value.getLearningTitleId());
+
                 LearningItem result = new LearningItem(title);
                 result.setContent(value.getContent());
                 result.setCoordinate(new Coordinate(value.getLatitude() == null ? 0 : value.getLatitude(), value.getLongitude() == null ? 0 : value.getLongitude()));
