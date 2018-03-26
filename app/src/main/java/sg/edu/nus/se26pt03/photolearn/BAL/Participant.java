@@ -1,5 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
@@ -9,6 +11,11 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  */
 
 public class Participant extends User {
+    
+    public Participant(FirebaseUser firebaseUser) {
+        super(firebaseUser);
+    }
+
     @Override
     public void getLearningSessions(ServiceCallback<List<LearningSession>> callback) {
         learningSessionService.getAllByKeyValue("participants."  + this.getId(), true, callback);

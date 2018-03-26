@@ -1,5 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,61 +12,25 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  * Created by chen ping on 7/3/2018.
  */
 
-public abstract class User {
-    private String id;
-    private String loginId;
-    private String loginSource;
-    private Date lastLoginDate;
-    private Date timestamp;
+public abstract class User{
+    private FirebaseUser firebaseUser;
 
     protected transient LearningSessionService learningSessionService = new LearningSessionService();
 
+    public User(FirebaseUser firebaseUser) {
+        this.firebaseUser = firebaseUser;
+    }
+
     public String getId() {
-        return id;
+        return firebaseUser.getUid();
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public FirebaseUser getFirebaseUser() {
+        return firebaseUser;
     }
 
-    public String getLoginId() {
-        return loginId;
-    }
-
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
-    }
-
-    public String getLoginSource() {
-        return loginSource;
-    }
-
-    public void setLoginSource(String loginSource) {
-        this.loginSource = loginSource;
-    }
-
-    public Date getLastLoginDate() {
-        return lastLoginDate;
-    }
-
-    public void setLastLoginDate(Date lastLoginDate) {
-        this.lastLoginDate = lastLoginDate;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public void SignIn() {
-
-    }
-
-    public void SignOut() {
-
+    public void setFirebaseUser(FirebaseUser firebaseUser) {
+        this.firebaseUser = firebaseUser;
     }
 
     public abstract void getLearningSessions(ServiceCallback<List<LearningSession>> callback);

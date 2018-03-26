@@ -2,7 +2,12 @@ package sg.edu.nus.se26pt03.photolearn.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
@@ -29,27 +34,7 @@ public class LearningActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learning);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LearningActivity.super.onBackPressed();
-            }
-        });
-        setFragment(R.id.fl_main, new LearningSessionListFragment(),"Welcome " + (App.currentAppMode == AppMode.TRAINER? "Trainer" : "Participant") + "!" ,false,null, null);
-        findViewById(R.id.btn_user).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (App.currentAppMode == AppMode.TRAINER) App.currentAppMode = AppMode.PARTICIPENT;
-                else if (App.currentAppMode == AppMode.PARTICIPENT) App.currentAppMode = AppMode.TRAINER;
-                //onModeChange(App.currentAppMode, null);
-                LearningTitle learningTitle= new LearningTitle();
-                learningTitle.setId("-L88Kii8Oc5tSrTBxNaW");
-                onLoad(learningTitle, null);
-                //onLoad(new LearningSession(), null);
-            }
-        });
+        setupControls();
     }
 
     @Override
@@ -68,7 +53,6 @@ public class LearningActivity extends BaseActivity{
         super.onLoad(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                App.session = learningSession;
                 setFragment(R.id.fl_main, LearningSessionFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
             }
         });
@@ -89,7 +73,6 @@ public class LearningActivity extends BaseActivity{
         super.onEdit(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                App.session = learningSession;
                 setFragment(R.id.fl_main, LearningSessionDetailFragment.newInstance(learningSession), "New Learning Session",true, null, null);
             }
         });
@@ -132,6 +115,73 @@ public class LearningActivity extends BaseActivity{
                 setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2",true, null, bundle);
             }
         });
+    }
+
+    private void setupControls() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LearningActivity.super.onBackPressed();
+            }
+        });
+
+        DrawerLayout drawerLayout = findViewById(R.id.dl_learning);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,R.string.drawer_open,R.string.drawer_close);
+//        drawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+//                    drawerLayout.closeDrawer(Gravity.RIGHT);
+//                } else {
+//                    drawerLayout.openDrawer(Gravity.RIGHT);
+//                }
+//            }
+//        });
+
+        NavigationView navigationView = findViewById(R.id.nav_learning);
+        navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                // set item as selected to persist highlight
+                menuItem.setChecked(true);
+                // close drawer when item is tapped
+                drawerLayout.closeDrawers();
+
+                // Add code here to update the UI based on the item selected
+                // For example, swap UI fragments here
+
+                return true;
+            }
+        });
+
+        setFragment(R.id.fl_main, new LearningSessionListFragment(),"Welcome " + (App.getCurrentAppMode() == AppMode.TRAINER? "Trainer" : "Participant") + "!" ,false,null, null);
+        findViewById(R.id.btn_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                } else {
+                    drawerLayout.openDrawer(Gravity.RIGHT);
+                }
+//                if (App.getCurrentAppMode() == AppMode.TRAINER) App.getCurrentAppMode() == AppMode.PARTICIPENT;
+//                else if (App.getCurrentAppMode() == AppMode.PARTICIPENT) App.getCurrentAppMode() = AppMode.TRAINER;
+                //onModeChange(App.currentAppMode, null);
+//                LearningTitle learningTitle= new LearningTitle();
+//                learningTitle.setId("-L88Kii8Oc5tSrTBxNaW");
+//                onLoad(learningTitle, null);
+                //onLoad(new LearningSession(), null);
+            }
+        });
+
+
     }
     /*
     public void onClick(View v) {

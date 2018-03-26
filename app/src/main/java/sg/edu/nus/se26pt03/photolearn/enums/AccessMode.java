@@ -1,25 +1,23 @@
 package sg.edu.nus.se26pt03.photolearn.enums;
 
+import android.support.annotation.IntDef;
+import android.support.annotation.StringDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Created by chen ping on 11/3/2018.
  */
 
-public enum AccessMode {
-    EDIT,
-    VIEW;
+public class AccessMode {
+    public static final int VIEW = 0;
+    public static final int EDIT = 1;
 
-    public static AccessMode fromInt(int x) {
-        return AccessMode.values()[x];
+    public AccessMode(@Mode int mode) {
     }
 
-    public static int toInt(AccessMode mode) {
-        switch (mode) {
-            case VIEW:
-                return 0;
-            case EDIT:
-                return 1;
-        }
-        return 0;
-    }
+    @IntDef({VIEW, EDIT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Mode {}
 }
-

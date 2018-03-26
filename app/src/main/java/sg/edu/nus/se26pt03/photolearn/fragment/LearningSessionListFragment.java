@@ -79,7 +79,7 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
 
     private void loadData() {
         srf_learningsessionlist.setRefreshing(true);
-        App.currentUser.getLearningSessions(new ServiceCallback<List<LearningSession>>() {
+        App.getCurrentUser().getLearningSessions(new ServiceCallback<List<LearningSession>>() {
             @Override
             public void onComplete(List<LearningSession> data) {
                 if(learningSessionsRaw == null) learningSessionsRaw = new ArrayList<LearningSession>();
@@ -101,13 +101,14 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
     private void refreshViews() {
         if(learningSessionListAdapter.getLearningSessions() != learningSessions) {
             learningSessionListAdapter.setLearningSessions(learningSessions);
+
         }
         learningSessionListAdapter.notifyDataSetChanged();
         if (getView() != null) {
             if (learningSessionListAdapter.getLearningSessions().size() == 0) {
-                getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.tv_learningtitlelist_norecordfound).setVisibility(View.VISIBLE);
             } else {
-                getView().findViewById(R.id.tv_learningsessionlist_hint).setVisibility(View.GONE);
+                getView().findViewById(R.id.tv_learningtitlelist_norecordfound).setVisibility(View.GONE);
             }
         }
     }
@@ -127,8 +128,8 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
         });
         recyclerView.setAdapter(learningSessionListAdapter);
 
-        if (App.currentAppMode == AppMode.TRAINER) {
-            final SwipeController swipeController = new SwipeController(0, (App.currentAccessMode == AccessMode.EDIT ? R.layout.partial_swipe_item : 0)) {
+        if (App.getCurrentAppMode() == AppMode.TRAINER) {
+            final SwipeController swipeController = new SwipeController(0, R.layout.partial_swipe_item) {
                 @Override
                 public void onRevealInflated(View view, int position) {
                     if (view instanceof LinearLayout) {
@@ -223,7 +224,7 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
                             button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    ((Participant) App.currentUser).accessLearnigSession(et_learningsessionid.getText().toString(), new ServiceCallback<Boolean>() {
+                                    ((Participant) App.getCurrentUser()).accessLearnigSession(et_learningsessionid.getText().toString(), new ServiceCallback<Boolean>() {
                                         @Override
                                         public void onComplete(Boolean data) {
                                             ad_learningsessionaccess.dismiss();

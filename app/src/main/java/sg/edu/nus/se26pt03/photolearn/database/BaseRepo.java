@@ -52,7 +52,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
         t.setId(key);
         mDatabaseRef.child(key).setValue(t);
         mDatabaseRef.child(key).child("timestamp").setValue(ServerValue.TIMESTAMP);
-        mDatabaseRef.child(key).child("createdBy").setValue(App.currentUser.getId());
+        mDatabaseRef.child(key).child("createdBy").setValue(App.getCurrentUser().getId());
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

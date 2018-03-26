@@ -1,6 +1,6 @@
 <resources>
     <!-- App Name and page names -->
-    <string name="app_name">PhotoLearn.SE26.PT03</string>
+    <string name="app_name">PhotoLearn SE26PT03</string>
     <string name="learning_title">Learning Title</string>
     <string name="quiz_title">Quiz Title</string>
 
@@ -27,4 +27,6 @@
     <string name="format_modulenumber_display">%02d</string>
     <string name="all_fields_are_mandatory">*All fields are mandatory</string>
     <string name="access_learning_session">Access Learning Session</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer Close</string>
 </resources>

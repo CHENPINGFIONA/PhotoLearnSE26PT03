@@ -67,7 +67,7 @@ public class QuizItemListFragment extends BaseFragment {
         //setContentView(R.layout.activity_view_page_with_fragment);
         quizTitle = (QuizTitle) getArguments().getSerializable(ConstHelper.REF_QUIZ_TITLES);
         sessionId = "1";
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
+        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
@@ -83,8 +83,8 @@ public class QuizItemListFragment extends BaseFragment {
     }
 
     private void setupControls() {
-        popupimagebutton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
-        Add.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
+        popupimagebutton.setVisibility((mode == AccessMode.EDIT && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
+        Add.setVisibility((mode == AccessMode.EDIT && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
