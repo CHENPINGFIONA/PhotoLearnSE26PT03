@@ -118,7 +118,7 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
 
     private void setupViews() {
         tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
-        if(App.currentUser.getId()==this.learningTitle.getCreatedBy()) {
+        if(App.getCurrentUser().getId()==this.learningTitle.getCreatedBy()) {
             popupimagebutton.setVisibility(mPagerAdapter.getCount() > 0 ? View.VISIBLE : View.INVISIBLE);
             Add.setVisibility(UserRole.PARTICIPENT.equals(this.role) ? View.VISIBLE : View.INVISIBLE);
         }
