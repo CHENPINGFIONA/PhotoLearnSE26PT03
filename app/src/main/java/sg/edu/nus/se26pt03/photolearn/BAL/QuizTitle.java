@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.service.QuizItemService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
@@ -12,6 +13,7 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 public class QuizTitle extends Title {
     private List<QuizItem> quizItems;
+    QuizItemService quizItemService = new QuizItemService(this);
 
     public QuizTitle() {
         setLearningSession(new LearningSession());
@@ -48,21 +50,39 @@ public class QuizTitle extends Title {
 
     @Override
     public void createItem(Item item, ServiceCallback<Item> callback) {
+        try {
+            quizItemService.save((QuizItem) item, callback);
 
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     @Override
     public void updateItem(Item item, ServiceCallback<Boolean> callback) {
-
+        try {
+            quizItemService.update((QuizItem) item, callback);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     @Override
     public void deleteItem(String itemId, ServiceCallback<Boolean> callback) {
+        try {
 
+            quizItemService.deleteById(itemId, callback);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     @Override
     public void getItems(ServiceCallback<List<Item>> callback) {
-
+        try {
+            quizItemService.getAllByQuizTitleId(this.getId(), callback);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 }
