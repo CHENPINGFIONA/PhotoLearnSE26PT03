@@ -24,12 +24,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.service.QuizTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
@@ -122,7 +124,10 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
             @Override
             public void onRevealInflated(View view, int position) {
                 if (view instanceof LinearLayout) {
+                    QuizTitle title = quizTitleListAdapter.quizTitleList.get(position);
                     LinearLayout linearLayout = (LinearLayout) ((LinearLayout) view).getChildAt(0);
+                    linearLayout.findViewWithTag("edit").setVisibility(title.getCreatedBy().equals(App.getCurrentUser().getId()) ? View.VISIBLE : View.GONE);
+                    linearLayout.findViewWithTag("delete").setVisibility(title.getCreatedBy().equals(App.getCurrentUser().getId()) ? View.VISIBLE : View.GONE);
                 }
             }
 
@@ -178,7 +183,7 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
         });
 
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningtitlelist);
-        // floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
+        floatingActionButton.setVisibility(App.getCurrentAppMode() == AppMode.TRAINER? View.VISIBLE : View.GONE);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
 
         {
