@@ -17,7 +17,7 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 public class LearningTitle extends Title implements Serializable {
     private List<LearningItem> learningItems;
-    private transient  LearningItemService learningItemService = new LearningItemService();
+    private transient  LearningItemService learningItemService = new LearningItemService(this );
 
     public LearningTitle() {
         setLearningSession(new LearningSession());

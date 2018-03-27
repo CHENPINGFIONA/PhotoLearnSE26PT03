@@ -46,9 +46,11 @@ public class GPSHelper {
         try {
             address = GetLocationByLatandLongitude(lat, log);
             if (address != null) {
-                stringBuilder.append(address.getLocality()).append("\n");
-                stringBuilder.append(address.getPostalCode()).append("\n");
-                stringBuilder.append(address.getCountryName());
+                stringBuilder.append(address.getLocality()==null ? "":address.getLocality()+",");
+                stringBuilder.append(address.getPremises()==null ? "":address.getPremises()+",");
+                stringBuilder.append(address.getSubLocality()==null ? "":address.getSubLocality()+",");
+                stringBuilder.append(address.getAdminArea()==null ? "":address.getAdminArea()+",");
+                stringBuilder.append(address.getCountryName()==null ? "":address.getCountryName()+",");
             }
         } catch (Exception ex) {
             Log.w("", "");

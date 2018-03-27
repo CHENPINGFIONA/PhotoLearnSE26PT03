@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.DAL.LearningItemDAO;
 import sg.edu.nus.se26pt03.photolearn.DAL.QuizItemDAO;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
@@ -23,27 +24,26 @@ public class QuizItemRepo extends BaseRepo<QuizItemDAO> {
         mDatabaseRef = mDatabaseRef.child(ConstHelper.REF_QUIZ_ITEMS);
     }
 
-    public Collection<QuizItemDAO> getAllByQuizTitleID(final String quizTitleId) {
-        final List<QuizItemDAO> result = new ArrayList<>();
-        mDatabaseRef.addListenerForSingleValueEvent(
+    public void getAllByQuizTitleID(final String quizTitleId, final RepoCallback<List<QuizItemDAO>> callback) {
+        mDatabaseRef.orderByChild("quizTitleId").equalTo(quizTitleId).addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //use the onDataChange() method to read a static snapshot of the contents at a given path
-                        // Get Post object and use the values to update the UI
+                        List<QuizItemDAO> result = new ArrayList<>();
                         for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+
                             QuizItemDAO quizItemDAO = getValue(childDataSnapshot);
-                            if (quizItemDAO.getQuizTitleId().equals(quizTitleId)) {
-                                result.add(quizItemDAO);
-                            }
+                            result.add(quizItemDAO);
+
                         }
+                        callback.onComplete(result);
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Getting Post failed, log a message
+                        callback.onError(databaseError);
                     }
                 });
-        return result;
+
     }
 }

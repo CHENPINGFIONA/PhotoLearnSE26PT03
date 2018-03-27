@@ -4,6 +4,7 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 import android.app.FragmentManager;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -31,22 +32,23 @@ import sg.edu.nus.se26pt03.photolearn.utility.TTSHelper;
  * Created by MyatMin on 08/3/18.
  */
 public class LearningItemFragment extends BaseFragment {
-    /*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_learning_item, container, false);
-    }*/
+
     public static final String ARG_ITEM_COUNT = "ITEM_COUNT";
     public static final String ARG_ITEM = "ITEM";
-    private ProgressBar progressBar;
     private int itemPosition;
+    //Data
     private LearningItem learningItem;
+    //helpers
     private TTSHelper ttsHelper;
     private GPSHelper gpsHelper;
+    //controls
+    private TextView txtContentView,txtViewLocation;
+    private ImageButton btnTTS;
+    private ProgressBar progressBar;
+    private ImageView imgPhotView;
+
     public static  LearningItemFragment create(int itemNumber ,LearningItem learningItem) {
         LearningItemFragment learningItemSlideFragment = new LearningItemFragment();
-
         Bundle args = new Bundle();
         args.putInt(ARG_ITEM_COUNT, itemNumber);
         args.putSerializable(ARG_ITEM,learningItem);
@@ -62,8 +64,7 @@ public class LearningItemFragment extends BaseFragment {
         itemPosition=getArguments().getInt(ARG_ITEM_COUNT);
         learningItem=(LearningItem) getArguments().getSerializable(ARG_ITEM);
         ttsHelper = new TTSHelper(getContext());
-       gpsHelper=new GPSHelper(getContext());
-        // this.getActivity().setTitle("Item :"+itemPosition);
+        gpsHelper=new GPSHelper(getContext());
     }
 
     @Nullable
@@ -72,19 +73,43 @@ public class LearningItemFragment extends BaseFragment {
         // return super.onCreateView(inflater, container, savedInstanceState);
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_learning_item, container, false);
-        ImageView imgPhotView = rootView.findViewById(R.id.imgItemPhotoUrl);
-        TextView txtContentView = rootView.findViewById(R.id.txtConntentView);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupView();
+        setupControl();
+    }
+
+    void setupControl(){
+        //Get Controls
+        imgPhotView = getView().findViewById(R.id.img_PhotoUrl);
+        txtContentView = getView().findViewById(R.id.tv_contentview);
         txtContentView.setMovementMethod(new ScrollingMovementMethod());
-        TextView txtViewLocation = rootView.findViewById(R.id.txtViewLocation);
-        ImageButton btnTTS = rootView.findViewById(R.id.TTSImageButton);
-        ProgressBar progressBar =rootView.findViewById(R.id.itemListprogressBarSmall);
+        txtViewLocation = getView().findViewById(R.id.tv_viewitemlocation);
+        btnTTS = getView().findViewById(R.id.img_ttsbutton);
+        progressBar =getView().findViewById(R.id.pb_imgloadprogressBar);
+
+        //adding relavent details to the controls
+        txtContentView.setText(learningItem.getContent());
+        //location setup
         if (learningItem.getCoordinate() != null) {
-            String location = gpsHelper.GetLocationByLatandLongitudeAsString(Double.valueOf(learningItem.getCoordinate().getLatitude()), Double.valueOf(learningItem.getCoordinate().getLongitude()));
+            String location = gpsHelper.GetLocationByLatandLongitudeAsString(learningItem.getCoordinate().getLatitude(), learningItem.getCoordinate().getLongitude());
             txtViewLocation.setText(location);
         }
+        //TTS setup
         ttsHelper.setTtsButton(btnTTS);
-
         ttsHelper.setTexttoSpeak(learningItem.getContent());
+        btnTTS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ttsHelper.startandStopTalking();
+            }
+        });
+
+        //image loading based on Url
         try {
             AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView,getContext(),progressBar);
             loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, learningItem.getPhotoURL());//"http://i63.tinypic.com/2yjzcrr.jpg");
@@ -92,32 +117,14 @@ public class LearningItemFragment extends BaseFragment {
         } catch (Exception ex) {
             Log.w("adapter", "error");
         }
-        btnTTS.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                ttsHelper.startandStopTalking();
-            }
-        });
 
-        txtContentView.setText(learningItem.getContent());
 
-        return rootView;
+
     }
+    void setupView(){
 
-
-//
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//    }
-//
-//    @Override
-//    public boolean onBefore(Event event) {
-//        if (super.onBefore(event)) Log.d("Test", "Stop irriitated TTTTT");
-//        return  true;
-//    }
-//
+    }
 
     @Override
     public void onBackstack(Object object, UserActionCallback callback) {
@@ -138,26 +145,4 @@ public class LearningItemFragment extends BaseFragment {
         super.onDestroy();
     }
 
-    //
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        ttsHelper.StopTalking();
-//    }
-
-    /*  @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        final View view = getView();
-        if (view != null) {
-          //  getView().getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.width);
-        }
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }else{
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
-
-    }*/
 }

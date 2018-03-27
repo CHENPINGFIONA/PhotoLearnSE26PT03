@@ -11,7 +11,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:alpha="0.5"
-        android:id="@+id/imageFrameLayout"
+        android:id="@+id/fl_imageFrameLayout"
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_upload_image_foreground"
         android:background="@drawable/border"
@@ -29,15 +29,15 @@
 
         </ImageView>
         <ProgressBar
-            android:id="@+id/itemDetailprogressBarSmall"
-            style="?android:attr/progressBarStyleSmall"
+            android:id="@+id/pb_imgloadprogressBar"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:layout_gravity="center" />
     </FrameLayout>
 
 
     <ImageButton
-        android:id="@+id/CaptureImageButton"
+        android:id="@+id/imgbtn_CaptureImage"
         style="@android:style/Widget.Material.Light.ImageButton"
 
         android:layout_width="0dp"
@@ -55,7 +55,7 @@
         android:tint="@color/primaryDarkColor"
         android:tintMode="multiply"
         android:tooltipText="Add/Change Image"
-        app:layout_constraintBottom_toBottomOf="@+id/imageFrameLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/fl_imageFrameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,24 +66,32 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
-    <EditText
-        android:id="@+id/edt_content"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_item_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border"
+        android:layout_weight="1">
 
-        android:hint="Add Content here"
-        android:inputType="textMultiLine"
-        android:maxLines="10"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/btn_item_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        <EditText
+            android:id="@+id/edt_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:background="@drawable/border"
+            android:hint="Add Content here"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            />
+    </android.support.design.widget.TextInputLayout>
+
 
     <Button
         android:id="@+id/btn_item_save"
