@@ -20,7 +20,6 @@ import android.widget.EditText;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
@@ -29,7 +28,6 @@ import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.databinding.FragmentLearningSessionDetailBinding;
 import sg.edu.nus.se26pt03.photolearn.enums.EventType;
-import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 
@@ -40,8 +38,6 @@ public class LearningSessionDetailFragment extends BaseFragment {
     private FragmentLearningSessionDetailBinding binding;
     private LearningSession learningSessionCopy;
     private LearningSession learningSession;
-    private LearningSessionService learningSessionService;
-    private boolean updateMode;
     private boolean emitter;
 
     public static LearningSessionDetailFragment newInstance(LearningSession learningSession) {
@@ -100,9 +96,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
         catch (CloneNotSupportedException e) {
             Log.d(this.getClass().getSimpleName(), e.getMessage());
         }
-        updateMode = !learningSession.isEmpty();
         binding.setLearningSession(learningSession);
-        learningSessionService = new LearningSessionService();
     }
 
     private void setupViews() {
@@ -125,11 +119,11 @@ public class LearningSessionDetailFragment extends BaseFragment {
         });
 
         Button btn_save = getView().findViewById(R.id.btn_save);
-        if (updateMode) btn_save.setText("Update");
+        if (!learningSessionCopy.isEmpty()) btn_save.setText("Update");
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!updateMode) {
+                if (learningSessionCopy.isEmpty()) {
                     ((Trainer) App.getCurrentUser()).createLearningSession(learningSession, new ServiceCallback<LearningSession>() {
                         @Override
                         public void onComplete(LearningSession data) {
