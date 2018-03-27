@@ -30,6 +30,7 @@ import sg.edu.nus.se26pt03.photolearn.adapter.QuizTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.service.QuizTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
@@ -178,7 +179,7 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
         });
 
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningtitlelist);
-        // floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
+        floatingActionButton.setVisibility(App.getCurrentAppMode() == AppMode.TRAINER? View.VISIBLE : View.GONE);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
 
         {

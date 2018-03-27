@@ -33,6 +33,7 @@ import sg.edu.nus.se26pt03.photolearn.adapter.LearningTitleListAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.controller.SwipeController;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
@@ -119,7 +120,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
 
     private void setupViews() {
         sv_learningtitlelist = getView().findViewById(R.id.sv_title);
-        //sv_learningtitlelist.setVisibility(App.getCurrentAccessMode() == AccessMode.VIEW ? View.VISIBLE : View.GONE);
+        sv_learningtitlelist.setVisibility(App.getCurrentAccessMode() == AccessMode.VIEW && App.getCurrentAppMode() == AppMode.PARTICIPENT ? View.VISIBLE : View.GONE);
         sv_learningtitlelist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,7 +206,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
         });
 
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningtitlelist);
-        // floatingActionButton.setVisibility((mode == AccessMode.toInt(AccessMode.EDIT) && role == UserRole.toInt(UserRole.PARTICIPENT)) ? View.VISIBLE : View.GONE);
+        floatingActionButton.setVisibility((App.getCurrentAccessMode() == AccessMode.EDIT && App.getCurrentAppMode() == AppMode.PARTICIPENT) ? View.VISIBLE : View.GONE);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
 
         {
