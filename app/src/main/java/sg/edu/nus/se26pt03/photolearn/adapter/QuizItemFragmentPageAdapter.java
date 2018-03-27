@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.test.InstrumentationTestCase;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +55,6 @@ public class QuizItemFragmentPageAdapter extends FragmentStatePagerAdapter {
         }
         return null;
     }
-
     @Override
     public int getCount() {
         return this.quizItemList.size();

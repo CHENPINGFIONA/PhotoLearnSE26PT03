@@ -4,6 +4,7 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -22,6 +23,7 @@ import sg.edu.nus.se26pt03.photolearn.BAL.QuizOption;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.GPSHelper;
@@ -76,6 +78,13 @@ public class QuizItemFragment extends BaseFragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupControl();
+        setupView();
+    }
+
     ImageView imgPhotView;
     TextView txtContentView;
     TextView txtViewLocation;
@@ -84,7 +93,7 @@ public class QuizItemFragment extends BaseFragment {
     private void setupControl() {
 
         imgPhotView = getView().findViewById(R.id.imgItemPhotoUrl);
-        txtContentView = getView().findViewById(R.id.tv_contentview);
+        txtContentView = getView().findViewById(R.id.txt_content);
         txtContentView.setMovementMethod(new ScrollingMovementMethod());
         txtViewLocation = getView().findViewById(R.id.tv_location);
 
@@ -95,6 +104,7 @@ public class QuizItemFragment extends BaseFragment {
             String location = gpsHelper.GetLocationByLatandLongitudeAsString(Double.valueOf(quizItem.getCoordinate().getLatitude()), Double.valueOf(quizItem.getCoordinate().getLongitude()));
             txtViewLocation.setText(location);
         }
+
         try {
             AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView, getContext(), progressBar);
             loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, quizItem.getPhotoURL());
@@ -109,24 +119,30 @@ public class QuizItemFragment extends BaseFragment {
         chk_opt3 = getView().findViewById(R.id.chk_option3);
         chk_opt4 = getView().findViewById(R.id.chk_option4);
         if (quizItem.getQuizOptions() != null && quizItem.getQuizOptions().size() > 0) {
-            QuizOption quizOption1 = quizItem.getQuizOptions().get(1);
+            QuizOption quizOption1 = quizItem.getQuizOptions().get(0);
             chk_opt1.setText(quizOption1.getContent());
-            QuizOption quizOption2 = quizItem.getQuizOptions().get(2);
+            QuizOption quizOption2 = quizItem.getQuizOptions().get(1);
             chk_opt2.setText(quizOption2.getContent());
-            QuizOption quizOption3 = quizItem.getQuizOptions().get(3);
+            QuizOption quizOption3 = quizItem.getQuizOptions().get(2);
             chk_opt3.setText(quizOption3.getContent());
-            QuizOption quizOption4 = quizItem.getQuizOptions().get(4);
+            QuizOption quizOption4 = quizItem.getQuizOptions().get(3);
             chk_opt4.setText(quizOption4.getContent());
         }
 
     }
 
     void setupView() {
-        if (UserRole.TRAINER.equals(App.getCurrentAppMode())) {
+        if (App.getCurrentAppMode() == AppMode.TRAINER) {
             chk_opt1.setEnabled(false);
             chk_opt2.setEnabled(false);
             chk_opt3.setEnabled(false);
             chk_opt4.setEnabled(false);
+        }
+        else {
+            chk_opt1.setEnabled(true);
+            chk_opt2.setEnabled(true);
+            chk_opt3.setEnabled(true);
+            chk_opt4.setEnabled(true);
         }
     }
 }

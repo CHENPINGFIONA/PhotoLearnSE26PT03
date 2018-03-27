@@ -35,6 +35,7 @@ import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
@@ -126,7 +127,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
 
     private void setupViews() {
         tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.INVISIBLE);
-        if (!UserRole.TRAINER.equals(this.role)) {
+        if (App.getCurrentAppMode() == AppMode.TRAINER) {
             popupimagebutton.setVisibility(mPagerAdapter.getCount() > 0 ? View.VISIBLE : View.INVISIBLE);
             Add.setVisibility(View.VISIBLE);
         }
@@ -143,7 +144,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                 switch (menuItem.getItemId()) {
                     case R.id.menu_delete:
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Title")
+                                .setTitle("Quiz Item")
                                 .setMessage("Are you sure you wanted to delete this item?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
@@ -151,7 +152,8 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                                         quizTitle.deleteItem(((QuizItemFragmentPageAdapter) mPagerAdapter).getQuizItemByPosition(mPager.getCurrentItem()).getId(), new ServiceCallback<Boolean>() {
                                             @Override
                                             public void onComplete(Boolean data) {
-                                                mPagerAdapter.notifyDataSetChanged();
+                                                loadList();
+
                                             }
 
                                             @Override
