@@ -27,6 +27,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.databinding.FragmentLearningSessionDetailBinding;
+import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
@@ -64,7 +65,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
         setupViews();
     }
     @Override
-    public void onBefore(Event event, final UserActionCallback callback) {
+    public void onBefore(@EventType.Event int event, final UserActionCallback callback) {
         if (!emitter && !learningSessionCopy.equals(learningSession)) {
             new AlertDialog.Builder(getContext())
                     .setTitle("Confirmation")

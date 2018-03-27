@@ -1,5 +1,9 @@
 package sg.edu.nus.se26pt03.photolearn.application;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
@@ -11,27 +15,29 @@ import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 
 /**
  * Created by MyatMin on 13/3/18.
  */
 
 public interface UserActionListener {
-    enum Event{
-        BEFORE,
-        MODE_CHANGE,
-        LOGIN,
-        LOGOUT,
-        LOAD,
-        CREATE,
-        EDIT,
-        BACKSTACK
-    }
+//    enum Event{
+//        BEFORE,
+//        APPMODE_CHANGE,
+//        ACCESSMODE_CHANGE,
+//        LOGIN,
+//        LOGOUT,
+//        LOAD,
+//        CREATE,
+//        EDIT,
+//        BACKSTACK
+//    }
     List<UserActionListener> getRelatives();
 
-    void onBefore(Event event, UserActionCallback callback, UserActionListener source);
-    void onModeChange(AppMode appMode, UserActionCallback callback, UserActionListener source);
-    void onModeChange(AccessMode accessMode, UserActionCallback callback, UserActionListener source);
+    void onBefore(@EventType.Event int event, UserActionCallback callback, UserActionListener source);
+    void onAppModeChange(@AppMode.Mode int mode, UserActionCallback callback, UserActionListener source);
+    void onAccessModeChange(@AccessMode.Mode int mode, UserActionCallback callback, UserActionListener source);
     void onLogIn(User user, UserActionCallback callback, UserActionListener source);
     void onLogOut(User user, UserActionCallback callback, UserActionListener source);
     void onLoad(Object object, UserActionCallback callback, UserActionListener source);
@@ -39,9 +45,9 @@ public interface UserActionListener {
     void onEdit(Object object, UserActionCallback callback, UserActionListener source);
     void onBackstack(Object object, UserActionCallback callback, UserActionListener source);
 
-    void onBefore(Event event, UserActionCallback callback);
-    void onModeChange(AppMode appMode, UserActionCallback callback);
-    void onModeChange(AccessMode accessMode, UserActionCallback callback);
+    void onBefore(@EventType.Event int event, UserActionCallback callback);
+    void onAppModeChange(@AppMode.Mode int mode, UserActionCallback callback);
+    void onAccessModeChange(@AccessMode.Mode int mode, UserActionCallback callback);
     void onLogIn(User user, UserActionCallback callback);
     void onLogOut(User user, UserActionCallback callback);
 

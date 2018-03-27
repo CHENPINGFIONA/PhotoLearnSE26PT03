@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.Participant;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
@@ -31,10 +33,34 @@ public class App extends Application {
         loadAppPreferences();
     }
 
+    public static User signIn(FirebaseAuth firebaseAuth) {
+        User user;
+        if (App.getCurrentAppMode() == AppMode.TRAINER) {
+            user = new Trainer(firebaseAuth.getInstance().getCurrentUser());
+        }
+        else {
+            user = new Participant(firebaseAuth.getInstance().getCurrentUser());
+        }
+        return user;
+    }
+
+    public static void signOut(FirebaseAuth firebaseAuth) {
+        setCurrentUser(null);
+        firebaseAuth.signOut();
+    }
+
     private void loadAppPreferences() {
         appPreferences = getSharedPreferences(ConstHelper.REF_APP_PREFERENCES, Context.MODE_PRIVATE);
         setCurrentAccessMode(appPreferences.getInt(ConstHelper.REF_APP_PREFERENCES_ACCESSMODE, AccessMode.VIEW));
         setCurrentAppMode(appPreferences.getInt(ConstHelper.REF_APP_PREFERENCES_APPMODE, AppMode.TRAINER));
+    }
+    public static  void changeAppMode(@AppMode.Mode int mode) {
+        if (mode == AppMode.TRAINER) {
+            setCurrentUser(getCurrentUser().toTrainer());
+        }
+        else {
+            setCurrentUser(getCurrentUser().toParticipant());
+        }
     }
     public static Context getContext(){
         return context;
@@ -55,12 +81,16 @@ public class App extends Application {
 
     public static void setCurrentAccessMode(@AccessMode.Mode int mode) {
         App.currentAccessMode = mode;
-        appPreferences.edit().putInt(ConstHelper.REF_APP_PREFERENCES_ACCESSMODE, mode);
+        SharedPreferences.Editor editor =  appPreferences.edit();
+        editor.putInt(ConstHelper.REF_APP_PREFERENCES_ACCESSMODE, mode);
+        editor.commit();
     }
 
     public static void setCurrentAppMode(@AppMode.Mode int mode) {
         App.currentAppMode = mode;
-        appPreferences.edit().putInt(ConstHelper.REF_APP_PREFERENCES_ACCESSMODE, mode);
+        SharedPreferences.Editor editor =  appPreferences.edit();
+        editor.putInt(ConstHelper.REF_APP_PREFERENCES_APPMODE, mode);
+        editor.commit();
     }
 
     public static @AppMode.Mode int getCurrentAppMode() {

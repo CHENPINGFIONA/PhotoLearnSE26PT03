@@ -2,6 +2,7 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -24,7 +25,9 @@ import sg.edu.nus.se26pt03.photolearn.BAL.Participant;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.R;
+import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -36,31 +39,40 @@ public class LoginFragment extends BaseFragment {
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 1;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+                return inflater.inflate(R.layout.fragment_login, container, false);
+    }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-//        if(mAuth.getCurrentUser()!=null){
-//            //user already signed in
-//            //mAuth.signOut();
-//        }else{
+        if(mAuth.getCurrentUser() != null){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onLogIn(App.signIn(mAuth), null);
+                }
+            }, 1000);
+        }else{
             startActivityForResult(
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setIsSmartLockEnabled(false)
-                            .setTheme(R.style.AppTheme)
+                            .setLogo(R.drawable.ic_photolearn_withtext)
+                            .setTheme(R.style.AppThemeFirebaseAuth)
                             .setAvailableProviders(Arrays.asList(
                                     new AuthUI.IdpConfig.FacebookBuilder().build(),
                                     new AuthUI.IdpConfig.GoogleBuilder().build()
                             ))
                             .build(),
                     RC_SIGN_IN);
-//        }
-
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -69,8 +81,7 @@ public class LoginFragment extends BaseFragment {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                Trainer user = new Trainer(FirebaseAuth.getInstance().getCurrentUser());
-                onLogIn(user,null, null);
+                onLogIn(App.signIn(FirebaseAuth.getInstance()),null);
             } else {
 
             }

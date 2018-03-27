@@ -2,6 +2,8 @@ package sg.edu.nus.se26pt03.photolearn.application;
 
 import android.util.Log;
 
+import java.util.List;
+
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
@@ -11,6 +13,7 @@ import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 
 /**
  * Created by MyatMin on 17/3/18.
@@ -25,10 +28,10 @@ public class UserActionEmitter {
     }
     private boolean before = false;
 
-    public final void dynamicEmit(final UserActionListener.Event event, final boolean outbound, final Object object, final UserActionCallback callback, final UserActionListener source) {
+    public final void dynamicEmit(final @EventType.Event int event, final boolean outbound, final Object object, final UserActionCallback callback, final UserActionListener source) {
         final UserActionCallback validatedCallback  = (callback != null ? callback : new UserActionCallback());
         if (outbound) {
-            if (event != UserActionListener.Event.BEFORE && !before) {
+            if (event != EventType.BEFORE && !before) {
                 before = true;
 
                 base.onBefore(event, new UserActionCallback(this) {
@@ -45,7 +48,7 @@ public class UserActionEmitter {
                 });
             }
             else {
-                if (event != UserActionListener.Event.BEFORE ) {
+                if (event != EventType.BEFORE ) {
                     before = false;
                 }
                 dymnamicRoute(event,outbound,object,validatedCallback,source);
@@ -57,42 +60,64 @@ public class UserActionEmitter {
 
     }
 
-    public final void dymnamicRoute(final UserActionListener.Event event, boolean outbound, final Object object, final UserActionCallback callback , final UserActionListener source) {
+    public final void dymnamicRoute(final @EventType.Event int event, boolean outbound, final Object object, final UserActionCallback callback , final UserActionListener source) {
         if (outbound) {
             boolean exist = false;
-            for (UserActionListener userActionListener : base.getRelatives()) {
-                if (userActionListener != sourceOrigin) {
+            List<UserActionListener> outBounds = base.getRelatives();
+            UserActionCallback outboundCallback = new UserActionCallback(){
+                int totalOutBound = outBounds.size();
+                int totalInBound = 0;
+                boolean rejected = false;
+                @Override
+                public void onReject() {
+                    totalInBound = totalInBound + 1;
+                    rejected = true;
+                    callback.onReject();
+                }
+
+                @Override
+                public void onPass() {
+                    totalInBound = totalInBound + 1;
+                    if (!rejected && totalOutBound - (sourceOrigin == null ? 0 : 1) == totalInBound) {
+                        callback.onPass();
+                    }
+                }
+            };
+            for (UserActionListener outBound : outBounds) {
+                if (outBound != sourceOrigin) {
                     exist = true;
                     switch (event) {
-                        case BEFORE:
-                            if (object instanceof UserActionListener.Event)
-                                userActionListener.onBefore((UserActionListener.Event) object, callback, base);
+                        case EventType.BEFORE:
+                            if (object instanceof Integer)
+                                outBound.onBefore((int) object, outboundCallback, base);
                             break;
-                        case MODE_CHANGE:
-                            if (object instanceof AppMode)
-                                userActionListener.onModeChange((AppMode) object, callback, base);
-                            else if (object instanceof AccessMode)
-                                userActionListener.onModeChange((AccessMode) object, callback, base);
+                        case EventType.APPMODE_CHANGE:
+                            if (object instanceof Integer)
+                                outBound.onAppModeChange((int) object, outboundCallback, base);
                             break;
-                        case LOGIN:
+                        case EventType.ACCESSMODE_CHANGE:
+                            if (object instanceof Integer)
+                                outBound.onAccessModeChange((int) object, outboundCallback, base);
+                            break;
+                        case EventType.LOGIN:
                             if (object instanceof User)
-                                userActionListener.onLogIn((User) object, callback, base);
+                                outBound.onLogIn((User) object, outboundCallback, base);
                             break;
-                        case LOGOUT:
+                        case EventType.LOGOUT:
                             if (object instanceof User)
-                                userActionListener.onLogOut((User) object, callback, base);
+                                outBound.onLogOut((User) object, outboundCallback, base);
                             break;
-                        case LOAD:
-                            userActionListener.onLoad(object, callback, base);
+                        case EventType.LOAD:
+                            outBound.onLoad(object, outboundCallback, base);
                             break;
-                        case CREATE:
-                            userActionListener.onCreate(object, callback, base);
+                        case EventType.CREATE:
+                            outBound.onCreate(object, outboundCallback, base);
                             break;
-                        case EDIT:
-                            userActionListener.onEdit(object, callback, base);
+                        case EventType.EDIT:
+                            outBound.onEdit(object, outboundCallback, base);
                             break;
-                        case BACKSTACK:
-                            userActionListener.onBackstack(object, callback, base);
+                        case EventType.BACKSTACK:
+                            outBound.onBackstack(object, outboundCallback, base);
                             break;
                     }
                 }
@@ -102,26 +127,28 @@ public class UserActionEmitter {
         else {
             sourceOrigin = source;
             switch (event) {
-                case BEFORE:
+                case EventType.BEFORE:
                         before = true;
-                    if (object instanceof UserActionListener.Event)
-                        base.onBefore((UserActionListener.Event) object, callback);
+                    if (object instanceof Integer)
+                        base.onBefore((int) object, callback);
                     break;
-                case MODE_CHANGE:
-                    if (object instanceof AppMode)
-                        base.onModeChange((AppMode) object, callback);
-                    else if (object instanceof AccessMode)
-                        base.onModeChange((AccessMode) object, callback);
+                case EventType.APPMODE_CHANGE:
+                    if (object instanceof Integer)
+                        base.onAppModeChange((int) object, callback);
                     break;
-                case LOGIN:
+                case EventType.ACCESSMODE_CHANGE:
+                    if (object instanceof Integer)
+                        base.onAccessModeChange((int) object, callback);
+                    break;
+                case EventType.LOGIN:
                     if (object instanceof User)
                         base.onLogIn((User) object, callback);
                     break;
-                case LOGOUT:
+                case EventType.LOGOUT:
                     if (object instanceof User)
                         base.onLogOut((User) object, callback);
                     break;
-                case LOAD:
+                case EventType.LOAD:
                     if (object instanceof LearningSession)
                         base.onLoad((LearningSession) object, callback);
                     else if (object instanceof LearningTitle)
@@ -135,7 +162,7 @@ public class UserActionEmitter {
                     else if (object instanceof QuizItem)
                         base.onCreate((QuizItem) object, callback);
                     break;
-                case CREATE:
+                case EventType.CREATE:
                     if (object instanceof LearningSession)
                         base.onCreate((LearningSession) object, callback);
                     else if (object instanceof LearningTitle)
@@ -149,7 +176,7 @@ public class UserActionEmitter {
                     else if (object instanceof QuizAnswer)
                         base.onCreate((QuizAnswer) object, callback);
                     break;
-                case EDIT:
+                case EventType.EDIT:
                     if (object instanceof LearningSession)
                         base.onEdit((LearningSession) object, callback);
                     else if (object instanceof LearningTitle)
@@ -163,7 +190,7 @@ public class UserActionEmitter {
                     else if (object instanceof QuizAnswer)
                         base.onEdit((QuizAnswer) object, callback);
                     break;
-                case BACKSTACK:
+                case EventType.BACKSTACK:
                     base.onBackstack(object, callback);
             }
             sourceOrigin = null;

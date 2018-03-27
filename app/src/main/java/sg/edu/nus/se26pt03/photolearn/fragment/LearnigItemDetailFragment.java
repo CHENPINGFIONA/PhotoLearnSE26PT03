@@ -45,6 +45,7 @@ import sg.edu.nus.se26pt03.photolearn.BAL.Title;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
@@ -183,7 +184,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
         //super.onBackstack(object, callback);
     }
     @Override
-    public void onBefore(Event event, final UserActionCallback callback) {
+    public void onBefore(@EventType.Event int event, final UserActionCallback callback) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Title")
                 .setMessage("Your unsaved data will be lost.\n Are you sure you wanted to continue?")

@@ -28,6 +28,7 @@ import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionEmitter;
+import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 
 /**
  * Created by MyatMin on 10/3/18.
@@ -57,168 +58,168 @@ public class BaseFragment extends Fragment implements UserActionListener {
     }
 
     @Override
-    public final void onModeChange(AppMode appMode, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.MODE_CHANGE, false, appMode, callback, source);
+    public final void onAppModeChange(@AppMode.Mode int mode, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( EventType.APPMODE_CHANGE, false, mode, callback, source);
     }
 
     @Override
-    public final void onModeChange(AccessMode accessMode, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.MODE_CHANGE, false, accessMode,callback,  source);
+    public final void onAccessModeChange(@AccessMode.Mode int mode, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( EventType.ACCESSMODE_CHANGE, false, mode,callback,  source);
     }
 
     @Override
     public final void onLogIn(User user, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.LOGIN, false, user,callback,  source);
+        userActionEmitter.dynamicEmit( EventType.LOGIN, false, user,callback,  source);
     }
 
     @Override
     public final void onLogOut(User user, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.LOGOUT, false, user, callback, source);
+        userActionEmitter.dynamicEmit( EventType.LOGOUT, false, user, callback, source);
     }
 
     @Override
-    public final void onBefore(Event event, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.BEFORE, false, event,  callback, source);
+    public final void onBefore(@EventType.Event int event, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( EventType.BEFORE, false, event,  callback, source);
     }
 
     @Override
     public final void onLoad(Object object, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.LOAD, false, object, callback, source);
+        userActionEmitter.dynamicEmit( EventType.LOAD, false, object, callback, source);
     }
 
     @Override
     public final void onCreate(Object object, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.CREATE, false, object, callback, source);
+        userActionEmitter.dynamicEmit( EventType.CREATE, false, object, callback, source);
     }
 
     @Override
     public final void onEdit(Object object, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.EDIT, false, object, callback, source);
+        userActionEmitter.dynamicEmit( EventType.EDIT, false, object, callback, source);
     }
 
     @Override
     public final void onBackstack(Object object, UserActionCallback callback, UserActionListener source) {
-        userActionEmitter.dynamicEmit( Event.BACKSTACK, false, object, callback, source);
+        userActionEmitter.dynamicEmit( EventType.BACKSTACK, false, object, callback, source);
     }
 
     @Override
-    public void onBefore(Event event, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.BEFORE, true, event, callback, null  );
+    public void onBefore(@EventType.Event int event, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(EventType.BEFORE, true, event, callback, null  );
     }
 
     @Override
-    public void onModeChange(AppMode appMode, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.MODE_CHANGE, true, appMode, callback, null);
+    public void onAppModeChange(@AppMode.Mode int mode, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(EventType.APPMODE_CHANGE, true, mode, callback, null);
     }
 
     @Override
-    public void onModeChange(AccessMode accessMode, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.MODE_CHANGE, true, accessMode, callback, null);
+    public void onAccessModeChange(@AccessMode.Mode int mode, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(EventType.ACCESSMODE_CHANGE, true, mode, callback, null);
     }
 
     @Override
     public  void onLogIn(User user, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.LOGIN, true, user, callback, null);
+        userActionEmitter.dynamicEmit(EventType.LOGIN, true, user, callback, null);
     }
 
     @Override
     public void onLogOut(User user, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.LOGOUT, true, user, callback, null);
+        userActionEmitter.dynamicEmit(EventType.LOGOUT, true, user, callback, null);
     }
 
     @Override
     public void onLoad(LearningSession learningSession, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.LOAD, true, learningSession, callback, null);
+        userActionEmitter.dynamicEmit(EventType.LOAD, true, learningSession, callback, null);
     }
 
     @Override
     public void onLoad(LearningTitle learningTitle, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.LOAD, true, learningTitle, callback, null);
+        userActionEmitter.dynamicEmit(EventType.LOAD, true, learningTitle, callback, null);
     }
 
     @Override
     public void onLoad(LearningItem learningItem, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.LOAD, true, learningItem, callback, null);
+        userActionEmitter.dynamicEmit(EventType.LOAD, true, learningItem, callback, null);
     }
 
     @Override
     public void onLoad(QuizTitle quizTitle, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.LOAD, true, quizTitle, callback, null);
+        userActionEmitter.dynamicEmit(EventType.LOAD, true, quizTitle, callback, null);
     }
 
     @Override
     public void onLoad(QuizItem quizItem, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.LOAD, true, quizItem, callback, null);
+        userActionEmitter.dynamicEmit(EventType.LOAD, true, quizItem, callback, null);
     }
 
     @Override
     public void onLoad(QuizAnswer quizAnswer, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.LOAD, true, quizAnswer, callback, null);
+        userActionEmitter.dynamicEmit(EventType.LOAD, true, quizAnswer, callback, null);
     }
 
     @Override
     public void onCreate(LearningSession learningSession, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.CREATE, true, learningSession, callback, null);
+        userActionEmitter.dynamicEmit(EventType.CREATE, true, learningSession, callback, null);
     }
 
     @Override
     public void onCreate(LearningTitle learningTitle, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.CREATE, true, learningTitle, callback, null);
+        userActionEmitter.dynamicEmit(EventType.CREATE, true, learningTitle, callback, null);
     }
 
     @Override
     public void onCreate(LearningItem learningItem, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.CREATE, true, learningItem, callback, null);
+        userActionEmitter.dynamicEmit(EventType.CREATE, true, learningItem, callback, null);
     }
 
     @Override
     public void onCreate(QuizTitle quizTitle, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.CREATE, true, quizTitle, callback, null);
+        userActionEmitter.dynamicEmit(EventType.CREATE, true, quizTitle, callback, null);
     }
 
     @Override
     public void onCreate(QuizItem quizItem, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.CREATE, true, quizItem, callback, null);
+        userActionEmitter.dynamicEmit(EventType.CREATE, true, quizItem, callback, null);
     }
 
     @Override
     public void onCreate(QuizAnswer quizAnswer, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.CREATE, true, quizAnswer, callback, null);
+        userActionEmitter.dynamicEmit(EventType.CREATE, true, quizAnswer, callback, null);
     }
 
     @Override
     public void onEdit(LearningSession learningSession, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.EDIT, true, learningSession, callback, null);
+        userActionEmitter.dynamicEmit(EventType.EDIT, true, learningSession, callback, null);
     }
 
     @Override
     public void onEdit(LearningTitle learningTitle, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.EDIT, true, learningTitle, callback, null);
+        userActionEmitter.dynamicEmit(EventType.EDIT, true, learningTitle, callback, null);
     }
 
     @Override
     public void onEdit(LearningItem learningItem, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.EDIT, true, learningItem, callback, null);
+        userActionEmitter.dynamicEmit(EventType.EDIT, true, learningItem, callback, null);
     }
 
     @Override
     public void onEdit(QuizTitle quizTitle, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.EDIT, true, quizTitle, callback, null);
+        userActionEmitter.dynamicEmit(EventType.EDIT, true, quizTitle, callback, null);
     }
 
     @Override
     public void onEdit(QuizItem quizItem, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.EDIT, true, quizItem, callback, null);
+        userActionEmitter.dynamicEmit(EventType.EDIT, true, quizItem, callback, null);
     }
 
     @Override
     public void onEdit(QuizAnswer quizAnswer, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.EDIT, true, quizAnswer, callback, null);
+        userActionEmitter.dynamicEmit(EventType.EDIT, true, quizAnswer, callback, null);
     }
 
     @Override
     public void onBackstack(Object object, UserActionCallback callback) {
-        userActionEmitter.dynamicEmit(Event.BACKSTACK, true, object, callback, null);
+        userActionEmitter.dynamicEmit(EventType.BACKSTACK, true, object, callback, null);
     }
 
     @Override
@@ -280,11 +281,11 @@ public class BaseFragment extends Fragment implements UserActionListener {
     }
 
     protected void displayInfoMessage(String message) {
-        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG).show();
     }
 
     protected void displayErrorMessage(String message) {
-        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG).show();
     }
 
     protected void hideSoftInput (IBinder token) {

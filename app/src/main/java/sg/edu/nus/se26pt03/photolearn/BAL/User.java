@@ -1,5 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import android.net.Uri;
+
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Date;
@@ -25,13 +27,22 @@ public abstract class User{
         return firebaseUser.getUid();
     }
 
-    public FirebaseUser getFirebaseUser() {
-        return firebaseUser;
+    public String getDisplayName() {
+            return firebaseUser.getDisplayName();
     }
 
-    public void setFirebaseUser(FirebaseUser firebaseUser) {
-        this.firebaseUser = firebaseUser;
+    public Uri getPhotoUrl() {
+        return firebaseUser.getPhotoUrl();
     }
+
+    public Trainer toTrainer() {
+        return new Trainer(firebaseUser);
+    }
+
+    public Participant toParticipant() {
+        return new Participant(firebaseUser);
+    }
+
 
     public abstract void getLearningSessions(ServiceCallback<List<LearningSession>> callback);
 

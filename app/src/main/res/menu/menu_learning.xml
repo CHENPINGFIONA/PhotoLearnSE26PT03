@@ -2,12 +2,21 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item android:title="Switch To Trainer Mode"/>
-        <item android:title="Switch To Participant Mode"
-            android:drawable="@android:color/holo_blue_bright"/>
+        <item android:title="Trainer Mode"
+            android:id="@+id/item_trainermode"
+            android:icon="@drawable/ic_person_black_24dp"/>
+        <item android:title="Participant Mode"
+            android:id="@+id/item_participantmode"
+            android:icon="@drawable/ic_people_black_24dp"/>
         <item
-            android:id="@+id/app_bar_switch"
+            android:id="@+id/item_editmode"
             android:title="Edit Mode"
-            app:actionLayout="@layout/item_editmode_switch" />
+            android:icon="@drawable/ic_assignment_black_24dp"
+            app:actionLayout="@layout/item_editmode_switch"
+            app:showAsAction="always"
+            android:checkable="false"/>
+        <item android:title="Sign out"
+            android:id="@+id/item_signout"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"/>
     </group>
 </menu>
