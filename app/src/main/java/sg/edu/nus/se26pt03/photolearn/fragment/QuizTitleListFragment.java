@@ -24,6 +24,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizTitleListAdapter;
@@ -123,7 +124,10 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
             @Override
             public void onRevealInflated(View view, int position) {
                 if (view instanceof LinearLayout) {
+                    QuizTitle title = quizTitleListAdapter.quizTitleList.get(position);
                     LinearLayout linearLayout = (LinearLayout) ((LinearLayout) view).getChildAt(0);
+                    linearLayout.findViewWithTag("edit").setVisibility(title.getCreatedBy().equals(App.getCurrentUser().getId()) ? View.VISIBLE : View.GONE);
+                    linearLayout.findViewWithTag("delete").setVisibility(title.getCreatedBy().equals(App.getCurrentUser().getId()) ? View.VISIBLE : View.GONE);
                 }
             }
 
