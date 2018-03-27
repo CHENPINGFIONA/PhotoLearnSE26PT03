@@ -122,7 +122,7 @@ public class QuizItemFragment extends BaseFragment {
     }
 
     void setupView() {
-        if (UserRole.TRAINER.equals(App.currentAppMode)) {
+        if (UserRole.TRAINER.equals(App.getCurrentAppMode())) {
             chk_opt1.setEnabled(false);
             chk_opt2.setEnabled(false);
             chk_opt3.setEnabled(false);
