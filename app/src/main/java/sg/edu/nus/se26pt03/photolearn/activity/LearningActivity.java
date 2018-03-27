@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
@@ -36,6 +38,8 @@ import sg.edu.nus.se26pt03.photolearn.fragment.LearningItemListFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionDetailFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionListFragment;
+import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemDetailFragment;
+import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemListFragment;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
@@ -152,6 +156,49 @@ public class LearningActivity extends BaseActivity{
             }
         });
     }
+
+
+
+    /*
+    * Quiz Item Starts Here
+    *
+    * */
+
+    @Override
+    public void onLoad(final QuizTitle quizTitle, UserActionCallback callback) {
+        super.onLoad(quizTitle, new UserActionCallback(){
+            @Override
+
+            public void onPass() {
+                Bundle bundle=new Bundle();
+                bundle.putSerializable(ConstHelper.REF_QUIZ_TITLES,quizTitle);
+                setFragment(R.id.fl_main, new QuizItemListFragment(),quizTitle.getTitle(), true, "QuizFragment", bundle);
+            }
+        });
+    }
+    @Override
+    public void onCreate(final QuizItem quizItem, UserActionCallback callback) {
+        super.onCreate(quizItem, new UserActionCallback() {
+            @Override
+            public void onPass() {
+                Bundle bundle=new Bundle();
+                bundle.putSerializable(ConstHelper.REF_QUIZ_ITEMS,quizItem);
+                setFragment(R.id.fl_main, new QuizItemDetailFragment(), quizItem.getTitle().getTitle()+"/ Add New Item",true, "", bundle);
+            }
+        });
+    }
+    @Override
+    public void onEdit(final QuizItem quizItem, UserActionCallback callback) {
+        super.onEdit(quizItem, new UserActionCallback() {
+            @Override
+            public void onPass() {
+                Bundle bundle=new Bundle();
+                bundle.putSerializable(ConstHelper.REF_QUIZ_ITEMS,quizItem);
+                setFragment(R.id.fl_main, new QuizItemDetailFragment(), quizItem.getTitle().getTitle()+"/ Change Item",true, null, bundle);
+            }
+        });
+    }
+
 
     private void setupControls() {
         Toolbar toolbar = findViewById(R.id.toolbar);
