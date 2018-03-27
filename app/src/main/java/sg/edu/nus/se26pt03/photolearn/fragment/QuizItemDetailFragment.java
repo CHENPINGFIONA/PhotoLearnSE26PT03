@@ -270,11 +270,7 @@ public class QuizItemDetailFragment extends BaseFragment {
     }
 
     @Override
-<<<<<<< HEAD
     public void onBefore(@EventType.Event int event, final UserActionCallback callback) {
-=======
-    public void onBefore(int event, UserActionCallback callback) {
->>>>>>> 723c330c9baa15fefd0b6847d6cb867ccd756c56
         new AlertDialog.Builder(getContext())
                 .setTitle("Title")
                 .setMessage("Your unsaved data will be lost.\n Are you sure you wanted to continue?")
