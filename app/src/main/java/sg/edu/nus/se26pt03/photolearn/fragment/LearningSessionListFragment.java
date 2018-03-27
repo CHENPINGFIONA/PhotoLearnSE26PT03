@@ -1,8 +1,10 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +18,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,6 +34,7 @@ import java.util.stream.Stream;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.Participant;
 import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
+import sg.edu.nus.se26pt03.photolearn.databinding.DialogLearningsessionAccessBinding;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
@@ -82,6 +86,10 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
         App.getCurrentUser().getLearningSessions(new ServiceCallback<List<LearningSession>>() {
             @Override
             public void onComplete(List<LearningSession> data) {
+
+                if (data.size() == 0) sv_learningsessionlist.setVisibility(View.GONE);
+                else sv_learningsessionlist.setVisibility(View.VISIBLE);
+
                 if(learningSessionsRaw == null) learningSessionsRaw = new ArrayList<LearningSession>();
                 learningSessionsRaw.clear();
                 learningSessionsRaw.addAll(data);
@@ -143,9 +151,32 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
                 public void onClicked(Object tag, int position) {
                     switch (tag.toString()) {
                         case "delete":
-                            learningSessionListAdapter.getLearningSessions().remove(position);
-                            learningSessionListAdapter.notifyItemRemoved(position);
-                            learningSessionListAdapter.notifyItemRangeChanged(position, learningSessionListAdapter.getItemCount());
+                            new AlertDialog.Builder(getContext())
+                                .setTitle("Confirmation")
+                                .setMessage("Are you sure you wanted to delete?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        ((Trainer) App.getCurrentUser()).deleteLearningSession(learningSessionListAdapter.getLearningSessions().get(position), new ServiceCallback<Boolean>() {
+                                            @Override
+                                            public void onComplete(Boolean data) {
+                                                if (data) {
+                                                    displayInfoMessage("Learning session has been deleted successfully!");
+                                                }
+                                            }
+                                            @Override
+                                            public void onError(int code, String message, String details) {
+                                                displayErrorMessage(message);
+                                            }
+                                        });
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
                             break;
                         case "edit":
                             onEdit(learningSessionListAdapter.getLearningSessions().get(position), null);
@@ -174,6 +205,7 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
         });
 
         sv_learningsessionlist = getView().findViewById(R.id.sv_learningsessionlist);
+        sv_learningsessionlist.setQueryHint("Filter by keywords");
 
         SearchView sv_learningsessionlist =  getView().findViewById(R.id.sv_learningsessionlist);
         sv_learningsessionlist.setOnClickListener(new View.OnClickListener() {
@@ -205,17 +237,34 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
             public void onClick(View v) {
                 if (App.getCurrentAppMode() == AppMode.PARTICIPENT) {
                     LayoutInflater li = LayoutInflater.from(getContext());
-                    View viewAccessLearningSession = li.inflate(R.layout.dialog_learningsession_access, null);
+//                    View viewAccessLearningSession = li.inflate(R.layout.dialog_learningsession_access, null);
+
+//                    Dialog dialog = new Dialog(getContext());
+//                    dialog.getWindow();
+//                    //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    LearningSessionA termsBinding = LayoutTermsBinding
+//                            .inflate(LayoutInflater.from(context), (ViewGroup) binding.getRoot(), false);
+//
+//
+//                    LayoutTermsBinding termsBinding;
+//
+//                    dialog.setContentView(R.layout.layout_terms);
+//                    dialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//
+//                    dialog.show();
+
+
+                    DialogLearningsessionAccessBinding dialogLearningsessionAccessBinding = DialogLearningsessionAccessBinding.inflate(LayoutInflater.from(getContext()),null, false);
 
                     AlertDialog ad_learningsessionaccess = new AlertDialog.Builder(getContext())
-                            .setView(viewAccessLearningSession)
+                            .setView(dialogLearningsessionAccessBinding.getRoot())
                             .setTitle("Learning Session Access")
                             .setPositiveButton("Add",null)
                             .setNegativeButton("Cancel",null)
                             .create();
 
-                    EditText et_learningsessionid = (EditText) viewAccessLearningSession.findViewById(R.id.et_learningsessionid);
-                    TextInputLayout til_learingsessionid = (TextInputLayout) viewAccessLearningSession.findViewById(R.id.til_learningsessionid);
+                    EditText et_learningsessionid = (EditText) dialogLearningsessionAccessBinding.getRoot().findViewById(R.id.et_learningsessionid);
+                    TextInputLayout til_learingsessionid = (TextInputLayout) dialogLearningsessionAccessBinding.getRoot().findViewById(R.id.til_learningsessionid);
                     ad_learningsessionaccess.setOnShowListener(new DialogInterface.OnShowListener() {
                         @Override
                         public void onShow(DialogInterface dialogInterface) {

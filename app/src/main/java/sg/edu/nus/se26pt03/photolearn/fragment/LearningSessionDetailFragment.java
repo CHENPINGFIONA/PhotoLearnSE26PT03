@@ -23,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
@@ -85,6 +86,7 @@ public class LearningSessionDetailFragment extends BaseFragment {
             emitter = false;
         }
         else {
+            hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
             callback.onPass();
         }
 
@@ -128,11 +130,11 @@ public class LearningSessionDetailFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (!updateMode) {
-                    learningSessionService.save(learningSession, new ServiceCallback<LearningSession>() {
+                    ((Trainer) App.getCurrentUser()).createLearningSession(learningSession, new ServiceCallback<LearningSession>() {
                         @Override
                         public void onComplete(LearningSession data) {
                             learningSession.copy(data);
-                            displayInfoMessage("Learning session saved successfully!");
+                            displayInfoMessage("Learning session has been created successfully!");
                             emitter = true;
                             if (getStackBack()) getActivity().onBackPressed();
                         }
@@ -143,10 +145,10 @@ public class LearningSessionDetailFragment extends BaseFragment {
                         }
                     });
                 } else {
-                    learningSessionService.update(learningSession, new ServiceCallback<Boolean>() {
+                    ((Trainer) App.getCurrentUser()).updateLearningSession(learningSession, new ServiceCallback<Boolean>() {
                         @Override
                         public void onComplete(Boolean data) {
-                            displayInfoMessage("Learning session updated successfully!");
+                            displayInfoMessage("Learning session has been updated successfully!");
                             emitter = true;
                             if (getStackBack()) getActivity().onBackPressed();
                         }

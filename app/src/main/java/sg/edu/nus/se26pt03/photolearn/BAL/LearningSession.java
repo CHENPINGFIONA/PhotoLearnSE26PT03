@@ -299,8 +299,8 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
 
     @Bindable
     public String getCourseDateError() {
-        if (getCourseDate() != null && getCourseDate().compareTo(DateConversionHelper.stripDate(new Date(), "yyyy-MM-dd")) < 0) {
-            return "Invalid course date";
+        if (getCourseDate() == null) {
+            return "Course date is required";
         }
         return "";
     }
