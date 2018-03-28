@@ -3,22 +3,14 @@ package sg.edu.nus.se26pt03.photolearn.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 
-import java.util.List;
-
-import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
-import sg.edu.nus.se26pt03.photolearn.BAL.Trainer;
 import sg.edu.nus.se26pt03.photolearn.BAL.User;
 import sg.edu.nus.se26pt03.photolearn.R;
 
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
-import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
-import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.fragment.LoginFragment;
 import sg.edu.nus.se26pt03.photolearn.service.LearningSessionService;
-import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 public class MainActivity extends BaseActivity{
     private LearningSessionService learningSessionService = new LearningSessionService();
@@ -32,7 +24,6 @@ public class MainActivity extends BaseActivity{
             }
             setFragment(R.id.fl_main, new LoginFragment(),null,false,null,null);
         }
-
     }
 
     @Override
