@@ -32,6 +32,7 @@ import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.Title;
 import sg.edu.nus.se26pt03.photolearn.R;
+import sg.edu.nus.se26pt03.photolearn.activity.LearningActivity;
 import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
@@ -105,7 +106,14 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
         mPager = (ViewPager) getView().findViewById(R.id.vp_learningitem);
         mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), learningTitle, this.learningItemList);
         mPager.setAdapter(mPagerAdapter);
+        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+                LearningActivity.ttsHelper.stopTalking();
 
+            }
+        });
         srf_learningItemList = getView().findViewById(R.id.srf_learningItemList);
         srf_learningItemList.setOnRefreshListener(this);
         srf_learningItemList.post(new Runnable() {
@@ -120,7 +128,7 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
     private void setupViews() {
         tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
 
-        if (this.learningTitle.getCreatedBy() == App.getCurrentUser().getId() && App.getCurrentAccessMode() == AccessMode.EDIT && App.getCurrentAppMode() == AppMode.PARTICIPENT) {
+        if (this.learningTitle.getCreatedBy().equals(App.getCurrentUser().getId()) && App.getCurrentAccessMode() == AccessMode.EDIT && App.getCurrentAppMode() == AppMode.PARTICIPENT) {
             popupimagebutton.setVisibility(mPagerAdapter.getCount() > 0 ? View.VISIBLE : View.INVISIBLE);
             Add.setVisibility(View.VISIBLE);
         } else {

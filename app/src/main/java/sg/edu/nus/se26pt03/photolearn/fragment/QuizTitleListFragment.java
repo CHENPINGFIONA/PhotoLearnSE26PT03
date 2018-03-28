@@ -106,7 +106,7 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
     private void refreshViews() {
         quizTitleListAdapter.notifyDataSetChanged();
         if (quizTitleListAdapter.quizTitleList.size() == 0)
-            getView().findViewById(R.id.tv_learningtitlelist_hint).setVisibility(View.VISIBLE);
+            this.getView().findViewById(R.id.tv_learningtitlelist_hint).setVisibility(View.VISIBLE);
     }
 
     private void setupViews() {

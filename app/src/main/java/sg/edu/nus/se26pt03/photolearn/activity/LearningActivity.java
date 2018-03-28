@@ -3,6 +3,7 @@ package sg.edu.nus.se26pt03.photolearn.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeechService;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SwitchCompat;
@@ -36,14 +37,16 @@ import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemDetailFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemListFragment;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
+import sg.edu.nus.se26pt03.photolearn.utility.TTSHelper;
 
 public class LearningActivity extends BaseActivity {
-
+    public static TTSHelper ttsHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learning);
         setupControls();
+        LearningActivity.ttsHelper=new TTSHelper(getApplicationContext());
         displayInfoMessage("You are signing in as " + App.getCurrentUser().getDisplayName());
     }
 

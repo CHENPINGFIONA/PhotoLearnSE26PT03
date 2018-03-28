@@ -1,16 +1,23 @@
 package sg.edu.nus.se26pt03.photolearn.adapter;
 
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.LongSparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.Coordinate;
 import sg.edu.nus.se26pt03.photolearn.BAL.Item;
@@ -27,7 +34,9 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  * Created by c.banisetty on 3/14/2018.
  */
 
-public class ItemFragmentPageAdapter extends FragmentStatePagerAdapter {
+public class ItemFragmentPageAdapter extends FragmentItemIdStatePagerAdapter {
+    private Fragment mCurrentPrimaryItem = null;
+
     public List<Item> getLearningItemList() {
         return learningItemList;
     }
@@ -61,6 +70,17 @@ public class ItemFragmentPageAdapter extends FragmentStatePagerAdapter {
         return null;
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        LearningItemFragment item = (LearningItemFragment) object;
+        LearningItem itemValue = item.getLearningItem();
+        for (int i = 0; i < learningItemList.size(); i++) {
+            if (learningItemList.get(i).getId().equals(itemValue.getId())) {
+                return i;
+            }
+        }
+        return POSITION_NONE;
+    }
 
     @Override
     public int getCount() {

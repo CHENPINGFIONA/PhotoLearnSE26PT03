@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.R;
+import sg.edu.nus.se26pt03.photolearn.activity.LearningActivity;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
@@ -36,11 +37,18 @@ public class LearningItemFragment extends BaseFragment {
 
     public static final String ARG_ITEM_COUNT = "ITEM_COUNT";
     public static final String ARG_ITEM = "ITEM";
+
+
     private int itemPosition;
+
+    public LearningItem getLearningItem() {
+        return learningItem;
+    }
+
     //Data
     private LearningItem learningItem;
     //helpers
-    private TTSHelper ttsHelper;
+    //private TTSHelper ttsHelper;
     private GPSHelper gpsHelper;
     //controls
     private TextView txtContentView,txtViewLocation;
@@ -64,7 +72,7 @@ public class LearningItemFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         itemPosition=getArguments().getInt(ARG_ITEM_COUNT);
         learningItem=(LearningItem) getArguments().getSerializable(ARG_ITEM);
-        ttsHelper = new TTSHelper(getContext());
+       // ttsHelper = new TTSHelper(getContext());
         gpsHelper=new GPSHelper(getContext());
     }
 
@@ -102,12 +110,21 @@ public class LearningItemFragment extends BaseFragment {
             txtViewLocation.setText(location);
         }
         //TTS setup
-        ttsHelper.setTtsButton(btnTTS);
-        ttsHelper.setTexttoSpeak(learningItem.getContent());
+        //ttsHelper.setTtsButton(btnTTS);
+
         btnTTS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ttsHelper.startandStopTalking();
+
+                if(LearningActivity.ttsHelper!=null && LearningActivity.ttsHelper.getTexttoSpeak().equals(learningItem.getContent())){
+                    LearningActivity.ttsHelper.stopTalking();
+                }
+                else {
+
+                    LearningActivity.ttsHelper.stopTalking();
+                    LearningActivity.ttsHelper.setTexttoSpeak(learningItem.getContent());
+                    LearningActivity.ttsHelper.startandStopTalking();
+                }
             }
         });
 
@@ -132,20 +149,19 @@ public class LearningItemFragment extends BaseFragment {
 
     @Override
     public void onBackstack(Object object, UserActionCallback callback) {
-        ttsHelper.stopTalking();
+        LearningActivity.ttsHelper.stopTalking();
         super.onBackstack(object, callback);
     }
 
     @Override
     public void onPause() {
-        ttsHelper.stopTalking();
+        LearningActivity.ttsHelper.stopTalking();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        ttsHelper.stopTalking();
-        ttsHelper=null;
+        LearningActivity.ttsHelper.stopTalking();
         super.onDestroy();
     }
 

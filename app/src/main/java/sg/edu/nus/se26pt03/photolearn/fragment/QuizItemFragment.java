@@ -46,6 +46,11 @@ public class QuizItemFragment extends BaseFragment {
     public static final String ARG_ITEM = "ITEM";
 
     private int itemPosition;
+
+    public QuizItem getQuizItem() {
+        return quizItem;
+    }
+
     private QuizItem quizItem;
     private QuizAnswerService quizAnswerService;
     private QuizAnswer quizAnswer;

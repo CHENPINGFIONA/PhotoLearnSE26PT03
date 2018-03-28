@@ -34,24 +34,27 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:adjustViewBounds="true"
-                    android:cropToPadding="false"
+                    android:cropToPadding="true"
                     android:scaleType="fitCenter"
-                    android:src="@mipmap/photolearn_round">
+                    android:src="@mipmap/photolearn_round"
+                    android:theme="@style/Animation.AppCompat.Tooltip">
 
 
                 </ImageView>
 
                 <TextView
                     android:id="@+id/tv_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@android:color/white"
-                    android:gravity="bottom|left"
+                    android:layout_gravity="bottom|left"
                     android:hint="Location"
                     android:padding="10dp"
-                    android:text="" />
+                    android:text=""
+
+                    />
 
                 <ProgressBar
                     android:id="@+id/quizitemListprogressBarSmall"
