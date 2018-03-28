@@ -6,18 +6,23 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
+import java.util.ArrayList;
+import java.util.List;
+
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizAnswer;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizOption;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
@@ -25,6 +30,8 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
+import sg.edu.nus.se26pt03.photolearn.service.QuizAnswerService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.GPSHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.TTSHelper;
@@ -40,9 +47,14 @@ public class QuizItemFragment extends BaseFragment {
 
     private int itemPosition;
     private QuizItem quizItem;
+    private QuizAnswerService quizAnswerService;
+    private QuizAnswer quizAnswer;
     private GPSHelper gpsHelper;
     private QuizTitle quizTitle;
     private CheckBox chk_opt1, chk_opt2, chk_opt3, chk_opt4;
+    private ViewPager mPager;
+    private Button btnPrev;
+    private Button btnNext;
 
 
     public static QuizItemFragment create(int itemNumber, QuizItem quizItem) {
@@ -64,6 +76,7 @@ public class QuizItemFragment extends BaseFragment {
         itemPosition = getArguments().getInt(ARG_ITEM_COUNT);
         quizItem = (QuizItem) getArguments().getSerializable(ARG_ITEM);
         gpsHelper = new GPSHelper(getContext());
+        quizAnswerService = new QuizAnswerService();
         // this.getActivity().setTitle("Item :"+itemPosition);
     }
 
@@ -72,7 +85,7 @@ public class QuizItemFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // return super.onCreateView(inflater, container, savedInstanceState);
         ViewGroup rootView = (ViewGroup) inflater
-                .inflate(R.layout.fragment_quiz_item, container, false);
+                .inflate(R.layout.fragment_quiz_item_scrollview , container, false);
 
 
         return rootView;
@@ -90,6 +103,7 @@ public class QuizItemFragment extends BaseFragment {
     TextView txtViewLocation;
     ProgressBar progressBar;
 
+
     private void setupControl() {
 
         imgPhotView = getView().findViewById(R.id.imgItemPhotoUrl);
@@ -97,6 +111,52 @@ public class QuizItemFragment extends BaseFragment {
         txtContentView.setMovementMethod(new ScrollingMovementMethod());
         txtViewLocation = getView().findViewById(R.id.tv_location);
 
+        btnPrev = (Button) getView().findViewById(R.id.btn_prev);
+        btnNext = (Button) getView().findViewById(R.id.btn_next);
+        mPager = (ViewPager) getParentFragment().getView().findViewById(R.id.vp_quizitem);
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quizAnswer = new QuizAnswer();
+                quizAnswer.setQuizItemId(quizItem.getId());
+                quizAnswer.setSelectedOptionIds(getCheckedIds());
+                quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
+                    @Override
+                    public void onComplete(QuizAnswer data) {
+                        displayInfoMessage("Quiz Answer saved successfully!");
+                        mPager.arrowScroll(1);
+                    }
+
+                    @Override
+                    public void onError(int code, String message, String details) {
+                        displayErrorMessage(message);
+                    }
+                });
+
+            }
+        });
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quizAnswer = new QuizAnswer();
+                quizAnswer.setQuizItemId(quizItem.getId());
+                quizAnswer.setSelectedOptionIds(getCheckedIds());
+                quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
+                    @Override
+                    public void onComplete(QuizAnswer data) {
+                        displayInfoMessage("Quiz Answer saved successfully!");
+                        displayInfoMessage(data.getId());
+                        mPager.arrowScroll(2);
+                    }
+
+                    @Override
+                    public void onError(int code, String message, String details) {
+                        displayErrorMessage(message);
+                    }
+                });
+
+            }
+        });
         progressBar = getView().findViewById(R.id.quizitemListprogressBarSmall);
 
 
@@ -144,5 +204,14 @@ public class QuizItemFragment extends BaseFragment {
             chk_opt3.setEnabled(true);
             chk_opt4.setEnabled(true);
         }
+    }
+
+    List<String> getCheckedIds() {
+        List<String> selectedOptionIds = new ArrayList<>();
+        if (chk_opt1.isChecked()) selectedOptionIds.add("1");
+        if (chk_opt2.isChecked()) selectedOptionIds.add("2");
+        if (chk_opt3.isChecked()) selectedOptionIds.add("3");
+        if (chk_opt4.isChecked()) selectedOptionIds.add("4");
+        return selectedOptionIds;
     }
 }

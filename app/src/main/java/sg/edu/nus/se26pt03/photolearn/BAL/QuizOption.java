@@ -1,10 +1,12 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import java.io.Serializable;
+
 /**
  * Created by chen_ on 7/3/2018.
  */
 
-public class QuizOption {
+public class QuizOption implements Serializable {
     public QuizOption(String quizItemId) {
         this.quizItemId = quizItemId;
     }

@@ -1,0 +1,289 @@
+    <ScrollView
+
+        android:layout_marginStart="1dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill_vertical"
+            android:addStatesFromChildren="false"
+            android:alwaysDrawnWithCache="false"
+            android:animateLayoutChanges="false"
+            android:animationCache="false"
+            android:clipChildren="false"
+
+            android:defaultFocusHighlightEnabled="false"
+            android:filterTouchesWhenObscured="false"
+            android:gravity="fill_vertical"
+            android:hapticFeedbackEnabled="false"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/fl_imageFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/ItemImageContentDescription"
+                android:fitsSystemWindows="true">
+
+                <ImageView
+                    android:id="@+id/img_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="true"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/photolearn_round"
+                    android:theme="@style/Animation.AppCompat.Tooltip">
+
+
+                </ImageView>
+
+                <ImageButton
+                    android:id="@+id/imgbtn_CaptureImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:layout_margin="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:adjustViewBounds="true"
+                    android:alpha="0.8"
+                    android:background="@color/secondaryColor"
+                    android:backgroundTint="@color/secondaryColor"
+                    android:cropToPadding="false"
+                    android:elevation="1dp"
+                    android:padding="5dp"
+
+                    android:scaleType="fitXY"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:tint="@color/primaryTextColor"
+                    android:tintMode="multiply"
+                    android:tooltipText="Add/Change Image" />
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|left"
+                    android:background="@android:color/white"
+                    android:gravity="bottom"
+                    android:hint="Location"
+                    android:text=""  android:visibility="gone"/>
+
+
+                <ProgressBar
+                    android:id="@+id/pb_imgloadprogressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:visibility="invisible" />
+            </FrameLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp">
+
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Add Question"
+                    android:maxLines="10"
+                    android:scrollbars="vertical" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_quizoption1layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+
+                android:checked="false"
+                android:duplicateParentState="false"
+                android:orientation="horizontal">
+
+
+                <CheckBox
+                    android:id="@+id/chk_option1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3">
+
+                    <EditText
+                        android:id="@+id/et_option_content1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="left"
+                        android:hint="Option 1"
+                        android:inputType="textMultiLine"
+                        android:text="" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_quizoption2layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+
+
+                android:orientation="horizontal">
+
+
+                <CheckBox
+                    android:id="@+id/chk_option2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3">
+
+                    <EditText
+                        android:id="@+id/et_option_content2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="left"
+                        android:hint="Option 2"
+                        android:inputType="textMultiLine"
+                        android:text="" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_quizoption3layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+
+                android:orientation="horizontal"
+                android:text="Option Three">
+
+
+                <CheckBox
+                    android:id="@+id/chk_option3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3">
+
+                    <EditText
+                        android:id="@+id/et_option_content3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="left"
+                        android:hint="Option 3"
+                        android:inputType="textMultiLine"
+                        android:text="" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_quizoption4layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+
+                <CheckBox
+                    android:id="@+id/chk_option4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3">
+
+                    <EditText
+                        android:id="@+id/et_option_content4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="left"
+                        android:hint="Option 4"
+                        android:inputType="textMultiLine"
+                        android:text="" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="Save" />
+
+
+        </LinearLayout>
+    </ScrollView>
+

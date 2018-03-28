@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.R;
+import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
@@ -79,8 +80,9 @@ public class LearningItemFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupView();
+
         setupControl();
+        setupView();
     }
 
     void setupControl(){
@@ -123,7 +125,9 @@ public class LearningItemFragment extends BaseFragment {
 
     }
     void setupView(){
+        if(learningItem.getCreatedBy() == App.getCurrentUser().getId()){
 
+        }
     }
 
     @Override

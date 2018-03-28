@@ -35,6 +35,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
+import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
@@ -69,7 +70,7 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_learning_item_list, container, false);
         learningTitle = (LearningTitle) getArguments().getSerializable(ConstHelper.REF_LEARNING_TITLES);
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode ,AccessMode.EDIT);
+        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
         return view;
@@ -102,10 +103,10 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
             }
         });
         mPager = (ViewPager) getView().findViewById(R.id.vp_learningitem);
-        mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), learningTitle,this.learningItemList);
+        mPagerAdapter = new ItemFragmentPageAdapter(getChildFragmentManager(), learningTitle, this.learningItemList);
         mPager.setAdapter(mPagerAdapter);
 
-        srf_learningItemList =  getView().findViewById(R.id.srf_learningItemList);
+        srf_learningItemList = getView().findViewById(R.id.srf_learningItemList);
         srf_learningItemList.setOnRefreshListener(this);
         srf_learningItemList.post(new Runnable() {
             @Override
@@ -118,9 +119,13 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
 
     private void setupViews() {
         tvEmpty.setVisibility(mPagerAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
-        if(App.getCurrentUser().getId()==this.learningTitle.getCreatedBy()) {
+
+        if (this.learningTitle.getCreatedBy() == App.getCurrentUser().getId() && App.getCurrentAccessMode() == AccessMode.EDIT && App.getCurrentAppMode() == AppMode.PARTICIPENT) {
             popupimagebutton.setVisibility(mPagerAdapter.getCount() > 0 ? View.VISIBLE : View.INVISIBLE);
-            Add.setVisibility(UserRole.PARTICIPENT.equals(this.role) ? View.VISIBLE : View.INVISIBLE);
+            Add.setVisibility(View.VISIBLE);
+        } else {
+            popupimagebutton.setVisibility(View.INVISIBLE);
+            Add.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -143,7 +148,8 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
                                         learningTitle.deleteItem(((ItemFragmentPageAdapter) mPagerAdapter).getLearningItemByPosition(mPager.getCurrentItem()).getId(), new ServiceCallback<Boolean>() {
                                             @Override
                                             public void onComplete(Boolean data) {
-                                                mPagerAdapter.notifyDataSetChanged();
+                                                loadList();
+                                               // mPagerAdapter.notifyDataSetChanged();
                                             }
 
                                             @Override
@@ -181,15 +187,16 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
             public void onComplete(List<Item> data) {
 
                 if (data != null) {
-                    if(learningItemList !=null )
+                    if (learningItemList != null)
                         learningItemList.clear();
                     LearningItemListFragment.this.learningItemList = data;
-                    ((ItemFragmentPageAdapter)mPagerAdapter).setLearningItemList(data);
+                    ((ItemFragmentPageAdapter) mPagerAdapter).setLearningItemList(data);
                     mPagerAdapter.notifyDataSetChanged();
                     setupViews();
                     srf_learningItemList.setRefreshing(false);
                 }
             }
+
             @Override
             public void onError(int code, String message, String details) {
                 Log.w("ERROR", code + "-" + message + "-" + details);
@@ -197,6 +204,7 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
             }
         });
     }
+
     @Override
     public void onRefresh() {
         loadList();

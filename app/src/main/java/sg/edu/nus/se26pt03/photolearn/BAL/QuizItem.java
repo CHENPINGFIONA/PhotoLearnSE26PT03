@@ -1,5 +1,6 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by chen ping on 7/3/2018.
  */
 
-public class QuizItem extends Item{
+public class QuizItem extends Item implements Serializable{
     public List<QuizOption> getQuizOptions() {
         return quizOptions;
     }
