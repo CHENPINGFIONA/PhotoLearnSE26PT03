@@ -22,6 +22,7 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
         setDAOConversion(new DAOConversion<QuizAnswer, QuizAnswerDAO>() {
             @Override
             public QuizAnswer convertFromDAO(QuizAnswerDAO value) {
+                if (value == null) return null;
                 QuizAnswer quizAnswer = new QuizAnswer();
                 quizAnswer.setId(value.getId());
                 quizAnswer.setParticipantId(value.getCreatedBy());
@@ -33,6 +34,7 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
 
             @Override
             public QuizAnswerDAO convertToDAO(QuizAnswer value) {
+                if (value == null) return null;
                 QuizAnswerDAO quizAnswerDAO = new QuizAnswerDAO();
                 quizAnswerDAO.setQuizItemId(value.getQuizItemId());
                 quizAnswerDAO.setSelectedQuizOptionIds(value.getSelectedOptionIds());

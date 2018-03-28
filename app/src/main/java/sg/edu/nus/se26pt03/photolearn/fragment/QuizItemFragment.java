@@ -96,8 +96,10 @@ public class QuizItemFragment extends BaseFragment {
             @Override
             public void onComplete(QuizAnswer data) {
                 quizAnswer = data;
-                setCheckBoxs(data.getSelectedOptionIds());
-                displayInfoMessage("Quiz Answer retrieve successfully!");
+                if (quizAnswer != null && !quizAnswer.getSelectedOptionIds().isEmpty()) {
+                    setCheckBoxs(data.getSelectedOptionIds());
+                    displayInfoMessage("Quiz Answer retrieve successfully!");
+                }
             }
 
             @Override
