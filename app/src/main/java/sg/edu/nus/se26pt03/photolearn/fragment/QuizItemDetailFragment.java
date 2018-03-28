@@ -89,7 +89,7 @@ public class QuizItemDetailFragment extends BaseFragment {
         src = (QuizItem) this.getArguments().getSerializable(ConstHelper.REF_QUIZ_ITEMS);
         title = src.getTitle();
         quizOptions = src.getQuizOptions();
-        //mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.toInt(AccessMode.EDIT));
+        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
@@ -270,7 +270,7 @@ public class QuizItemDetailFragment extends BaseFragment {
     }
 
     @Override
-    public void onBefore(int event, UserActionCallback callback) {
+    public void onBefore(@EventType.Event int event, final UserActionCallback callback) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Title")
                 .setMessage("Your unsaved data will be lost.\n Are you sure you wanted to continue?")
