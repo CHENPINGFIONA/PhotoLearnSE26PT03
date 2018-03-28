@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 26
     defaultConfig {
         applicationId "sg.edu.nus.se26pt03.photolearn"
         minSdkVersion 26
@@ -24,7 +24,7 @@ android {
             res.srcDirs = ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/partials', 'src/main/res/layouts/items', 'src/main/res/layouts/activities', 'src/main/res/layouts/dialogs', 'src/main/res/layouts/fragments']
         }
     }
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '26.0.2'
     dataBinding {
         enabled = true
     }
