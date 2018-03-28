@@ -48,8 +48,6 @@
         android:gravity="center"
         android:text="@string/no_records_found"
         android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

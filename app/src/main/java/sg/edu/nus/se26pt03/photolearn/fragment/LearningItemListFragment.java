@@ -81,7 +81,7 @@ public class LearningItemListFragment extends BaseFragment implements SwipeRefre
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupControls();
-        setupViews();
+       // setupViews();
     }
 
     private void setupControls() {

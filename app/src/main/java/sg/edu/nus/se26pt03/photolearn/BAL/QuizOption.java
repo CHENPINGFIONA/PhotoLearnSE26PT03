@@ -1,12 +1,17 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 import java.io.Serializable;
+
+import sg.edu.nus.se26pt03.photolearn.BR;
 
 /**
  * Created by chen_ on 7/3/2018.
  */
 
-public class QuizOption implements Serializable {
+public class QuizOption extends BaseObservable implements Serializable {
     public QuizOption(String quizItemId) {
         this.quizItemId = quizItemId;
     }
@@ -53,4 +58,21 @@ public class QuizOption implements Serializable {
     private String content;
     private boolean isAnswer;
     private String quizItemId;
+
+    @Bindable
+    public String getContentError() {
+        if (getContent() != null && getContent().isEmpty()) {
+            return "Question is required";
+        }
+        return "";
+    }
+
+
+
+
+    private void notifyValidity() {
+        //notifyPropertyChanged();
+        notifyPropertyChanged(BR.contentError);
+       // notifyPropertyChanged(BR.);
+    }
 }

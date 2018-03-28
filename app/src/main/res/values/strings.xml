@@ -30,4 +30,6 @@
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_close">Drawer Close</string>
     <string name="pattern_learningsessionid">[0-9]{8}-[A-Z]{3}-M[0-9]{2}</string>
+    <string name="learning_item">Item Image</string>
+    <string name="add_content">Add Content here</string>
 </resources>
