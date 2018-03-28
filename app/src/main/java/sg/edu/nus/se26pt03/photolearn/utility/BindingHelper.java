@@ -1,14 +1,19 @@
 package sg.edu.nus.se26pt03.photolearn.utility;
 
+import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.databinding.BindingMethod;
 import android.databinding.InverseMethod;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
+
+import org.w3c.dom.Text;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
@@ -43,9 +48,16 @@ public abstract class BindingHelper {
         if (!value) return View.INVISIBLE;
         else return View.VISIBLE;
     }
+
     @BindingAdapter("error")
     public static void setErrorMessage(TextInputLayout textInputLayout, String message) {
         textInputLayout.setError(message);
         textInputLayout.setErrorEnabled(!message.isEmpty());
+    }
+
+
+    public static boolean isValidLearningSessionID(String input) {
+        if (input == null) return true;
+        return Pattern.compile(App.getContext().getResources().getString(R.string.pattern_learningsessionid)).matcher(input).matches();
     }
 }

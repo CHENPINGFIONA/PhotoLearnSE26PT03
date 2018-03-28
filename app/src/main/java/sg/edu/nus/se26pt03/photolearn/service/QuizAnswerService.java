@@ -30,10 +30,7 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
             @Override
             public QuizAnswerDAO convertToDAO(QuizAnswer value) {
                 QuizAnswerDAO quizAnswerDAO = new QuizAnswerDAO();
-                quizAnswerDAO.setId(value.getId());
                 quizAnswerDAO.setQuizItemId(value.getQuizItemId());
-                quizAnswerDAO.setCreatedBy(value.getParticipantId());
-                quizAnswerDAO.setTimestamp(value.getTimestamp().getTime());
                 quizAnswerDAO.setSelectedQuizOptionIds(value.getSelectedOptionIds());
                 return quizAnswerDAO;
             }

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/custom_dialog_layout_design_user_input"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="sg.edu.nus.se26pt03.photolearn.utility.BindingHelper"/>
+        <variable
+            name="learningSessionID"
+            type="java.lang.String"/>
+    </data>
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -12,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        app:error="@{(BindingHelper.isValidLearningSessionID(learningSessionID) ? `` : `Invalid format`)}">
 
         <EditText
             android:id="@+id/et_learningsessionid"
@@ -20,6 +29,8 @@
             android:layout_height="wrap_content"
             android:hint="Learnig Session Code (i.e. 20170201-IOT-M01)"
             android:inputType="text"
+            android:text="@={learningSessionID}"
             android:textAppearance="@android:style/TextAppearance.Material.Widget.EditText" />
     </android.support.design.widget.TextInputLayout>
 </LinearLayout>
+</layout>
