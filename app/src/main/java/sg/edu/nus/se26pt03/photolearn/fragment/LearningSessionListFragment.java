@@ -235,22 +235,6 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
             public void onClick(View v) {
                 if (App.getCurrentAppMode() == AppMode.PARTICIPENT) {
                     LayoutInflater li = LayoutInflater.from(getContext());
-//                    View viewAccessLearningSession = li.inflate(R.layout.dialog_learningsession_access, null);
-
-//                    Dialog dialog = new Dialog(getContext());
-//                    dialog.getWindow();
-//                    //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                    LearningSessionA termsBinding = LayoutTermsBinding
-//                            .inflate(LayoutInflater.from(context), (ViewGroup) binding.getRoot(), false);
-//
-//
-//                    LayoutTermsBinding termsBinding;
-//
-//                    dialog.setContentView(R.layout.layout_terms);
-//                    dialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//
-//                    dialog.show();
-
 
                     DialogLearningsessionAccessBinding dialogLearningsessionAccessBinding = DialogLearningsessionAccessBinding.inflate(LayoutInflater.from(getContext()),null, false);
 
@@ -271,7 +255,7 @@ public class LearningSessionListFragment extends BaseFragment implements SwipeRe
                             button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    ((Participant) App.getCurrentUser()).accessLearnigSession(et_learningsessionid.getText().toString(), new ServiceCallback<Boolean>() {
+                                    ((Participant) App.getCurrentUser()).accessLearnigSession(et_learningsessionid.getText().toString().toUpperCase(), new ServiceCallback<Boolean>() {
                                         @Override
                                         public void onComplete(Boolean data) {
                                             ad_learningsessionaccess.dismiss();

@@ -22,6 +22,8 @@
     <string name="facebook_application_id" translatable="false">1929382460709589</string>
     <string name="fb_login_protocol_scheme">fb1929382460709589</string>
     <string name="format_coursedate_display">dd / MM / yyyy (EEEE)</string>
+    <string name="format_coursedate_display_short">dd-MMM-yyyy</string>
+
     <string name="format_coursedate_code">ddMMyyyy</string>
     <string name="format_modulenumber_code">%02d</string>
     <string name="format_modulenumber_display">%02d</string>

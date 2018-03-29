@@ -9,11 +9,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.R;
+import sg.edu.nus.se26pt03.photolearn.utility.BindingHelper;
 
 /**
  * Created by MyatMin on 10/3/18.
@@ -71,7 +74,8 @@ public class LearningSessionListAdapter extends RecyclerView.Adapter<LearningSes
         LearningSession learningSession = learningSessions.get(position);
         holder.tv_learningsession_course.setText(learningSession.getCourseName() + " (" + learningSession.getCourseCode() + ")");
         holder.tv_learningsession_module.setText(Integer.toString(learningSession.getModuleNumber()) + ". " + learningSession.getModuleName());
-        holder.tv_learningsession_date.setText(new SimpleDateFormat("dd-MMM-yyyy").format(learningSession.getCourseDate()).toString());
+        holder.tv_learningsession_date.setText(BindingHelper.toCourseDateDisplayShort(learningSession.getCourseDate()));
+        holder.tv_learningsession_id.setText(learningSession.getLearningSessionId());
     }
 
 
@@ -85,11 +89,13 @@ public class LearningSessionListAdapter extends RecyclerView.Adapter<LearningSes
     public class LearningSessionViewHolder extends RecyclerView.ViewHolder  {
         private TextView tv_learningsession_course;
         private TextView tv_learningsession_module;
+        private TextView tv_learningsession_id;
         private TextView tv_learningsession_date;
         public LearningSessionViewHolder(final View itemView) {
             super(itemView);
             tv_learningsession_course =  itemView.findViewById(R.id.tv_learningsession_course);
             tv_learningsession_module =  itemView.findViewById(R.id.tv_learningsession_module);
+            tv_learningsession_id =  itemView.findViewById(R.id.tv_learningsession_id);
             tv_learningsession_date =  itemView.findViewById(R.id.tv_learningsession_date);
         }
     }

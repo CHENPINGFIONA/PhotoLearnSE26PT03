@@ -29,8 +29,17 @@ public abstract class BindingHelper {
     }
 
     public static String fromCourseDate(Date value) {
+        return toCourseDateDisplay(value);
+    }
+
+    public static String toCourseDateDisplay(Date value) {
         if (value == null) return null;
         return value.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern(App.getContext().getResources().getString(R.string.format_coursedate_display)));
+    }
+
+    public static String toCourseDateDisplayShort(Date value) {
+        if (value == null) return null;
+        return value.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern(App.getContext().getResources().getString(R.string.format_coursedate_display_short)));
     }
 
     @InverseMethod("fromModuleNumber")
@@ -58,6 +67,6 @@ public abstract class BindingHelper {
 
     public static boolean isValidLearningSessionID(String input) {
         if (input == null) return true;
-        return Pattern.compile(App.getContext().getResources().getString(R.string.pattern_learningsessionid)).matcher(input).matches();
+        return Pattern.compile(App.getContext().getResources().getString(R.string.pattern_learningsessionid), Pattern.CASE_INSENSITIVE).matcher(input).matches();
     }
 }
