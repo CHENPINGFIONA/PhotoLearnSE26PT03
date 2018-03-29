@@ -3,10 +3,9 @@ package sg.edu.nus.se26pt03.photolearn.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.speech.tts.TextToSpeechService;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -14,12 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
@@ -42,14 +37,16 @@ import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemDetailFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemListFragment;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
+import sg.edu.nus.se26pt03.photolearn.utility.TTSHelper;
 
-public class LearningActivity extends BaseActivity{
-
+public class LearningActivity extends BaseActivity {
+    public static TTSHelper ttsHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learning);
         setupControls();
+        LearningActivity.ttsHelper=new TTSHelper(getApplicationContext());
         displayInfoMessage("You are signing in as " + App.getCurrentUser().getDisplayName());
     }
 
@@ -68,7 +65,7 @@ public class LearningActivity extends BaseActivity{
 
     @Override
     public void onAppModeChange(@AppMode.Mode int mode, UserActionCallback callback) {
-        super.onAppModeChange(mode, new UserActionCallback(){
+        super.onAppModeChange(mode, new UserActionCallback() {
             @Override
             public void onPass() {
                 App.changeAppMode(mode);
@@ -84,6 +81,7 @@ public class LearningActivity extends BaseActivity{
             @Override
             public void onPass() {
                 App.setCurrentAccessMode(mode);
+                //Refresh current fragment
             }
         });
     }
@@ -93,7 +91,7 @@ public class LearningActivity extends BaseActivity{
         super.onLoad(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, LearningSessionFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
+                setFragment(R.id.fl_main, LearningSessionFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(), true, null, null);
             }
         });
     }
@@ -103,7 +101,7 @@ public class LearningActivity extends BaseActivity{
         super.onCreate(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main,  LearningSessionDetailFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(),true, null, null);
+                setFragment(R.id.fl_main, LearningSessionDetailFragment.newInstance(learningSession), learningSession.getModuleNumber() + ". " + learningSession.getModuleName(), true, null, null);
             }
         });
     }
@@ -113,7 +111,7 @@ public class LearningActivity extends BaseActivity{
         super.onEdit(learningSession, new UserActionCallback() {
             @Override
             public void onPass() {
-                setFragment(R.id.fl_main, LearningSessionDetailFragment.newInstance(learningSession), "New Learning Session",true, null, null);
+                setFragment(R.id.fl_main, LearningSessionDetailFragment.newInstance(learningSession), "New Learning Session", true, null, null);
             }
         });
     }
@@ -124,35 +122,37 @@ public class LearningActivity extends BaseActivity{
     * */
     @Override
     public void onLoad(final LearningTitle learningTitle, UserActionCallback callback) {
-        super.onLoad(learningTitle, new UserActionCallback(){
+        super.onLoad(learningTitle, new UserActionCallback() {
             @Override
 
             public void onPass() {
-                Bundle bundle=new Bundle();
-                bundle.putSerializable(ConstHelper.REF_LEARNING_TITLES,learningTitle);
-                setFragment(R.id.fl_main, new LearningItemListFragment(),"Learning Title 1", true, "TitleFragment", bundle);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ConstHelper.REF_LEARNING_TITLES, learningTitle);
+                setFragment(R.id.fl_main, new LearningItemListFragment(), "Learning Title 1", true, "TitleFragment", bundle);
             }
         });
     }
+
     @Override
     public void onCreate(final LearningItem learningItem, UserActionCallback callback) {
         super.onCreate(learningItem, new UserActionCallback() {
             @Override
             public void onPass() {
-                Bundle bundle=new Bundle();
-                bundle.putSerializable(ConstHelper.REF_LEARNING_ITEMS,learningItem);
-                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2",true, null, bundle);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ConstHelper.REF_LEARNING_ITEMS, learningItem);
+                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2", true, null, bundle);
             }
         });
     }
+
     @Override
     public void onEdit(final LearningItem learningItem, UserActionCallback callback) {
         super.onEdit(learningItem, new UserActionCallback() {
             @Override
             public void onPass() {
-                Bundle bundle=new Bundle();
-                bundle.putSerializable(ConstHelper.REF_LEARNING_ITEMS,learningItem);
-                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2",true, null, bundle);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ConstHelper.REF_LEARNING_ITEMS, learningItem);
+                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2", true, null, bundle);
             }
         });
     }
@@ -166,35 +166,37 @@ public class LearningActivity extends BaseActivity{
 
     @Override
     public void onLoad(final QuizTitle quizTitle, UserActionCallback callback) {
-        super.onLoad(quizTitle, new UserActionCallback(){
+        super.onLoad(quizTitle, new UserActionCallback() {
             @Override
 
             public void onPass() {
-                Bundle bundle=new Bundle();
-                bundle.putSerializable(ConstHelper.REF_QUIZ_TITLES,quizTitle);
-                setFragment(R.id.fl_main, new QuizItemListFragment(),quizTitle.getTitle(), true, "QuizFragment", bundle);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ConstHelper.REF_QUIZ_TITLES, quizTitle);
+                setFragment(R.id.fl_main, new QuizItemListFragment(), quizTitle.getTitle(), true, "QuizFragment", bundle);
             }
         });
     }
+
     @Override
     public void onCreate(final QuizItem quizItem, UserActionCallback callback) {
         super.onCreate(quizItem, new UserActionCallback() {
             @Override
             public void onPass() {
-                Bundle bundle=new Bundle();
-                bundle.putSerializable(ConstHelper.REF_QUIZ_ITEMS,quizItem);
-                setFragment(R.id.fl_main, new QuizItemDetailFragment(), quizItem.getTitle().getTitle()+"/ Add New Item",true, "", bundle);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ConstHelper.REF_QUIZ_ITEMS, quizItem);
+                setFragment(R.id.fl_main, new QuizItemDetailFragment(), quizItem.getTitle().getTitle() + "/ Add New Item", true, "", bundle);
             }
         });
     }
+
     @Override
     public void onEdit(final QuizItem quizItem, UserActionCallback callback) {
         super.onEdit(quizItem, new UserActionCallback() {
             @Override
             public void onPass() {
-                Bundle bundle=new Bundle();
-                bundle.putSerializable(ConstHelper.REF_QUIZ_ITEMS,quizItem);
-                setFragment(R.id.fl_main, new QuizItemDetailFragment(), quizItem.getTitle().getTitle()+"/ Change Item",true, null, bundle);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ConstHelper.REF_QUIZ_ITEMS, quizItem);
+                setFragment(R.id.fl_main, new QuizItemDetailFragment(), quizItem.getTitle().getTitle() + "/ Change Item", true, null, bundle);
             }
         });
     }
@@ -216,7 +218,7 @@ public class LearningActivity extends BaseActivity{
         DrawerLayout drawerLayout = findViewById(R.id.dl_learning);
         //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,R.string.drawer_open,R.string.drawer_close);
 
-        setFragment(R.id.fl_main, new LearningSessionListFragment(),"Welcome " + (App.getCurrentAppMode() == AppMode.TRAINER? "Trainer" : "Participant") + "!" ,false,null, null);
+        setFragment(R.id.fl_main, new LearningSessionListFragment(), "Welcome " + (App.getCurrentAppMode() == AppMode.TRAINER ? "Trainer" : "Participant") + "!", false, null, null);
         findViewById(R.id.btn_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,8 +247,7 @@ public class LearningActivity extends BaseActivity{
             navigationView.getMenu().findItem(R.id.item_trainermode).setChecked(true);
             item_editmode.setEnabled(false);
             item_editmodeswitch.setEnabled(false);
-        }
-        else {
+        } else {
             navigationView.getMenu().findItem(R.id.item_participantmode).setChecked(true);
         }
         item_editmodeswitch.setChecked((App.getCurrentAccessMode() == AccessMode.EDIT ? true : false));
@@ -256,11 +257,11 @@ public class LearningActivity extends BaseActivity{
             ((DrawerLayout) findViewById(R.id.dl_learning)).closeDrawers();
         });
 
-        navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.item_participantmode:
 //                        item_editmode.setEnabled(true);
 //                        item_editmode_switch.setEnabled(true);
@@ -297,7 +298,6 @@ public class LearningActivity extends BaseActivity{
         }
     }
     */
-
 
 
 }

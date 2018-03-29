@@ -24,7 +24,7 @@ import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemFragment;
  * Created by c.banisetty on 3/14/2018.
  */
 
-public class QuizItemFragmentPageAdapter extends FragmentStatePagerAdapter {
+public class QuizItemFragmentPageAdapter extends FragmentItemIdStatePagerAdapter {
     public List<Item> getQuizItemList() {
         return quizItemList;
     }
@@ -42,7 +42,17 @@ public class QuizItemFragmentPageAdapter extends FragmentStatePagerAdapter {
         this.quizTitle = quizTitle;
 
     }
-
+    @Override
+    public int getItemPosition(Object object) {
+        QuizItemFragment item = (QuizItemFragment) object;
+        QuizItem itemValue = item.getQuizItem();
+        for (int i = 0; i < quizItemList.size(); i++) {
+            if (quizItemList.get(i).getId().equals(itemValue.getId())) {
+                return i;
+            }
+        }
+        return POSITION_NONE;
+    }
 
     @Override
     public Fragment getItem(int position) {

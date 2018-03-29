@@ -23,17 +23,18 @@
 
         <TextView
             android:id="@+id/tv_location"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@android:color/white"
-            android:gravity="bottom"
+            android:gravity="bottom|left"
+            android:layout_gravity="left|bottom"
             android:hint="Location"
             android:text="Location" />
 
         <ImageView
             android:id="@+id/imgItemPhotoUrl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" >
 
 
         </ImageView>
@@ -43,7 +44,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" android:visibility="invisible"/>
     </FrameLayout>
 
 

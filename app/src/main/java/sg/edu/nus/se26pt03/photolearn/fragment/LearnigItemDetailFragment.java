@@ -1,6 +1,6 @@
 package sg.edu.nus.se26pt03.photolearn.fragment;
 
-
+import android.databinding.DataBindingUtil;
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -29,10 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.Task;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,10 +36,12 @@ import java.io.IOException;
 import sg.edu.nus.se26pt03.photolearn.BAL.Coordinate;
 import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
-import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.Title;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
+//import sg.edu.nus.se26pt03.photolearn.databinding.FragmentLearningItemDetailBinding;
+import sg.edu.nus.se26pt03.photolearn.databinding.FragmentLearningItemDetailBinding;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
@@ -52,11 +50,14 @@ import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.FileStorageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.GPSTracker;
+import sg.edu.nus.se26pt03.photolearn.*;
+
 
 /**
  * Created by MyatMin on 08/3/18.
  */
 public class LearnigItemDetailFragment extends BaseFragment {
+    private FragmentLearningItemDetailBinding binding=null;
     private LearningItem src=null ;
     private Title title=null;
     private ImageView popupimagebutton;
@@ -75,25 +76,39 @@ public class LearnigItemDetailFragment extends BaseFragment {
     public static final int REQUEST_IMAGE = 100;
     public static final int REQUEST_PERMISSION = 200;
     private String imageFilePath = "";
+    private LearningItem srcCopy;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_learning_item_detail, container, false);
+        View view = binding.getRoot();
+        setupData(binding);
         // Inflate the layout for this fragment
         gpsTracker =new GPSTracker(getActivity());
         if (!gpsTracker.canGetLocation()){
             gpsTracker.requestpermission();
         }
-        return inflater.inflate(R.layout.fragment_learnig_item_detail, container, false);
+        return view;
 
     }
+
+    private void setupData(FragmentLearningItemDetailBinding binding) {
+        try {
+            src = (LearningItem)this.getArguments().getSerializable(ConstHelper.REF_LEARNING_ITEMS);
+            title=src.getTitle();
+            srcCopy = src.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            Log.d(this.getClass().getSimpleName(), e.getMessage());
+        }
+        binding.setLearningItem(src);
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        src = (LearningItem)this.getArguments().getSerializable(ConstHelper.REF_LEARNING_ITEMS);
-        title=src.getTitle();
-        sessionId = "1";
+
         //titleId="-L88Kii8Oc5tSrTBxNaW";
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
@@ -154,6 +169,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
            // LearningItem source= (LearningItem) data;
             //Toast.makeText(getContext(),"Save succesfull "+source.getId(),Toast.LENGTH_LONG).show();
             getFragmentManager().popBackStackImmediate("TitleFragment",0);
+            hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
         }
 
         @Override
@@ -169,6 +185,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
             //Toast.makeText(getContext(),"Save succesfull "+source.getId(),Toast.LENGTH_LONG).show();
             if(data){
                 getFragmentManager().popBackStackImmediate("TitleFragment",0);
+//                hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
             }else {
                 Toast.makeText(getContext(),"Udpdate unsuccesfull PLease try later",Toast.LENGTH_LONG).show();
             }
@@ -187,6 +204,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
     @Override
     public void onBackstack(Object object, UserActionCallback callback) {
         getFragmentManager().popBackStackImmediate("TitleFragment",0);
+       // hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
         //super.onBackstack(object, callback);
     }
     @Override
@@ -198,6 +216,7 @@ public class LearnigItemDetailFragment extends BaseFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         getFragmentManager().popBackStackImmediate("TitleFragment",0);
+                       // hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
                        // callback.onPass();
                     }})
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -302,4 +321,20 @@ public class LearnigItemDetailFragment extends BaseFragment {
 
         }
     }
+
+
+ /*   private void setupData(FragmentLearningSessionDetailBinding binding) {
+        try {
+
+            src = (LearningItem)this.getArguments().getSerializable(ConstHelper.REF_LEARNING_ITEMS);
+            title=src.getTitle();
+            sessionId = "1";
+            srcCopy=src
+
+        }
+        catch (CloneNotSupportedException e) {
+            Log.d(this.getClass().getSimpleName(), e.getMessage());
+        }
+        binding.set(src);
+    }*/
 }

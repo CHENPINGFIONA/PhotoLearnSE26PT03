@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -50,6 +51,7 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.FileStorageHelper;
+import sg.edu.nus.se26pt03.photolearn.utility.GPSHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.GPSTracker;
 
 /**
@@ -62,12 +64,14 @@ public class QuizItemDetailFragment extends BaseFragment {
     private ImageView popupimagebutton;
     private EditText editContentTxtView, editOption1TxtView, editOption2TxtView, editOption3TxtView, editOption4TxtView;
     private CheckBox chkOption1, chkOption2, chkOption3, chkOption4;
+    private TextView tv_location;
     private int role;
     private int mode;
     private String sessionId;
     private String userId;
     private GPSTracker gpsTracker;
     private ImageButton CaptureImageButton;
+    private  GPSHelper gpsHelper;
 
     private ImageView imgPhotView;
     FileStorageHelper mStorageHelper;
@@ -86,6 +90,7 @@ public class QuizItemDetailFragment extends BaseFragment {
         if (!gpsTracker.canGetLocation()) {
             gpsTracker.requestpermission();
         }
+        gpsHelper=new GPSHelper(getContext());
         src = (QuizItem) this.getArguments().getSerializable(ConstHelper.REF_QUIZ_ITEMS);
         title = src.getTitle();
         quizOptions = src.getQuizOptions();
@@ -93,7 +98,7 @@ public class QuizItemDetailFragment extends BaseFragment {
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
 
-        return inflater.inflate(R.layout.fragment_quiz_item_detail, container, false);
+        return inflater.inflate(R.layout.fragment_quiz_item_detail_scrollview, container, false);
 
     }
 
@@ -111,6 +116,10 @@ public class QuizItemDetailFragment extends BaseFragment {
 
     private void setupControls() {
 
+        tv_location=(TextView) this.getView().findViewById(R.id.tv_location) ;
+        if(src.getCoordinate()!=null){
+            tv_location.setText(gpsHelper.GetLocationByLatandLongitudeAsString(src.getCoordinate().getLatitude(),src.getCoordinate().getLongitude()));
+        }
 
         progressBar = (ProgressBar) this.getView().findViewById(R.id.pb_imgloadprogressBar);
         progressBar.setVisibility(View.INVISIBLE);
@@ -146,16 +155,16 @@ public class QuizItemDetailFragment extends BaseFragment {
         if (quizOptions != null) {
             if (quizOptions.size() > 0 && quizOptions.size() <= 4) {
                 //set option values
-                QuizOption quizOption1 = quizOptions.get(1);
+                QuizOption quizOption1 = quizOptions.get(0);
                 editOption1TxtView.setText(quizOption1.getContent());
                 chkOption1.setChecked(quizOption1.isAnswer());
-                QuizOption quizOption2 = quizOptions.get(2);
+                QuizOption quizOption2 = quizOptions.get(1);
                 editOption2TxtView.setText(quizOption2.getContent());
                 chkOption2.setChecked(quizOption2.isAnswer());
                 QuizOption quizOption3 = quizOptions.get(2);
                 editOption3TxtView.setText(quizOption3.getContent());
                 chkOption3.setChecked(quizOption3.isAnswer());
-                QuizOption quizOption4 = quizOptions.get(2);
+                QuizOption quizOption4 = quizOptions.get(3);
                 editOption4TxtView.setText(quizOption4.getContent());
                 chkOption4.setChecked(quizOption4.isAnswer());
             }
@@ -265,7 +274,7 @@ public class QuizItemDetailFragment extends BaseFragment {
 
     @Override
     public void onBackstack(Object object, UserActionCallback callback) {
-        getFragmentManager().popBackStackImmediate("TitleFragment", 0);
+        getFragmentManager().popBackStackImmediate("QuizFragment", 0);
         //super.onBackstack(object, callback);
     }
 
@@ -277,7 +286,7 @@ public class QuizItemDetailFragment extends BaseFragment {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        getFragmentManager().popBackStackImmediate("TitleFragment", 0);
+                        getFragmentManager().popBackStackImmediate("QuizFragment", 0);
                         // callback.onPass();
                     }
                 })
@@ -332,9 +341,11 @@ public class QuizItemDetailFragment extends BaseFragment {
 
                 if (gpsTracker.canGetLocation()) {
                     Location location = gpsTracker.getLocation();
-                    Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
+                    if(location!=null){
+                        Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
+                        src.setCoordinate(coordinate);
+                    }
 
-                    src.setCoordinate(coordinate);
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getContext(), "You cancelled the operation", Toast.LENGTH_SHORT).show();
@@ -345,6 +356,7 @@ public class QuizItemDetailFragment extends BaseFragment {
                 @Override
                 public void onComplete(String data) {
                     src.setPhotoURL(data);
+
                 }
 
                 @Override

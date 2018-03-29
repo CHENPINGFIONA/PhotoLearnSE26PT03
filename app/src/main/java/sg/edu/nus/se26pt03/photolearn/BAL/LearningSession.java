@@ -2,10 +2,8 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.util.Log;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +15,6 @@ import sg.edu.nus.se26pt03.photolearn.service.LearningTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.QuizTitleService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.BindingHelper;
-import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 /**
  * Created by chen ping on 7/3/2018.
@@ -62,7 +59,6 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-
     }
 
     public Date getCourseDate() {
@@ -145,19 +141,6 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
         return learningTitles.add(learningTitle);
     }
 
-    public boolean removeLearningTitle(List<LearningTitle> learningTitles) {
-        for (LearningTitle learningTitle : learningTitles) {
-            if (!removeLearningTitle(learningTitle)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean removeLearningTitle(LearningTitle learningTitle) {
-        return learningTitles.remove(learningTitle);
-    }
-
     public boolean removeAllLearningTitle() {
         return learningTitles.removeAll(learningTitles);
     }
@@ -182,10 +165,6 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
             }
         }
         return true;
-    }
-
-    public boolean removeQuizTitle(QuizTitle quizTitle) {
-        return quizTitles.remove(quizTitle);
     }
 
     public boolean removeAllQuizTitle() {
@@ -317,7 +296,6 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
     public void createLearningTitle(LearningTitle title, ServiceCallback<LearningTitle> callback) {
         try {
             learningTitleService.save((LearningTitle) title, callback);
-
         } catch (Exception ex) {
             throw ex;
         }
@@ -333,7 +311,6 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
 
     public void deleteLearningTitle(String titleId) {
         try {
-
             learningTitleService.deleteById(titleId, null);
         } catch (Exception ex) {
             throw ex;
@@ -359,7 +336,6 @@ public class LearningSession extends BaseObservable implements Cloneable, Serial
 
     public void deleteQuizTitle(String titleId) {
         try {
-
             quizTitleService.deleteById(titleId, null);
         } catch (Exception ex) {
             throw ex;

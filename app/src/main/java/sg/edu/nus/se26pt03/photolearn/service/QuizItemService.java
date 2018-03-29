@@ -35,7 +35,7 @@ public class QuizItemService extends BaseService<Item, QuizItemDAO> {
             public QuizItem convertFromDAO(QuizItemDAO value) {
                 QuizItem result = new QuizItem(quizTitle);
                 result.setContent(value.getContent());
-                //result.setCoordinate(new Coordinate(value.getLatitude() == null ? 0 : value.getLatitude(), value.getLongitude() == null ? 0 : value.getLongitude()));
+                result.setCoordinate(new Coordinate(value.getLatitude(), value.getLongitude()));
                 result.setPhotoURL(value.getPhotoURL());
                 result.setCreatedBy(value.getCreatedBy());
                 result.setId(value.getId());
@@ -75,6 +75,10 @@ public class QuizItemService extends BaseService<Item, QuizItemDAO> {
                 result.setCreatedBy(source.getCreatedBy() == null ? "" : source.getCreatedBy());
                 result.setQuizTitleId(source.getTitle().getId());
                 result.setId(source.getId() == null ? "" : source.getId());
+                if(source.getCoordinate()!=null) {
+                    result.setLatitude(source.getCoordinate().getLatitude());
+                    result.setLongitude(source.getCoordinate().getLongitude());
+                }
                 result.setTimestamp(source.getTimestamp().getTime());
                 return result;
             }

@@ -291,9 +291,11 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
     private void applyFilter() {
         Stream<LearningTitle> learningTitleStream = learningTitlesOrigianl.stream();
         final String query = (sv_learningtitlelist == null ? "" : sv_learningtitlelist.getQuery().toString().toUpperCase());
-        if (!query.isEmpty()) {
-            learningTitleStream = learningTitleStream.filter(s -> (s.getTitle() + s.getCreatedBy()).toUpperCase().contains(query));
-        }
+
+        Boolean isEditMode = App.getCurrentAccessMode() == AccessMode.EDIT;
+
+        learningTitleStream = learningTitleStream.filter(s -> (s.getTitle() + s.getCreatedBy()).toUpperCase().contains(query)
+                && (!isEditMode || s.getCreatedBy().equals(App.getCurrentUser().getId())));
         learningTitles.clear();
         learningTitles.addAll(learningTitleStream.collect(Collectors.toList()));
     }

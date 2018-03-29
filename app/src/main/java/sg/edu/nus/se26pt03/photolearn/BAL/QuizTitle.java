@@ -1,5 +1,6 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,9 +12,9 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  * Created by chen ping on 7/3/2018.
  */
 
-public class QuizTitle extends Title {
+public class QuizTitle extends Title implements Serializable {
     private List<QuizItem> quizItems;
-    QuizItemService quizItemService = new QuizItemService(this);
+    transient QuizItemService  quizItemService = new QuizItemService(this);
 
     public QuizTitle() {
         setLearningSession(new LearningSession());

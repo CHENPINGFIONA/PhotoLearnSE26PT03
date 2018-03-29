@@ -1,10 +1,14 @@
 package sg.edu.nus.se26pt03.photolearn.service;
 
+import com.google.firebase.database.DatabaseError;
+
 import java.util.Date;
+import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizAnswer;
 import sg.edu.nus.se26pt03.photolearn.DAL.QuizAnswerDAO;
 import sg.edu.nus.se26pt03.photolearn.database.QuizAnswerRepo;
+import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
 
 /**
  * Created by Administrator on 2018/3/24.
@@ -18,6 +22,7 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
         setDAOConversion(new DAOConversion<QuizAnswer, QuizAnswerDAO>() {
             @Override
             public QuizAnswer convertFromDAO(QuizAnswerDAO value) {
+                if (value == null) return null;
                 QuizAnswer quizAnswer = new QuizAnswer();
                 quizAnswer.setId(value.getId());
                 quizAnswer.setParticipantId(value.getCreatedBy());
@@ -29,6 +34,7 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
 
             @Override
             public QuizAnswerDAO convertToDAO(QuizAnswer value) {
+                if (value == null) return null;
                 QuizAnswerDAO quizAnswerDAO = new QuizAnswerDAO();
                 quizAnswerDAO.setQuizItemId(value.getQuizItemId());
                 quizAnswerDAO.setSelectedQuizOptionIds(value.getSelectedOptionIds());
@@ -37,5 +43,17 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
         });
     }
 
+    public void getByQuizItemIDAndParticipantID(String quizItemId, String participantId, final ServiceCallback<QuizAnswer> callback){
+        quizAnswerRepo.getByQuizItemIDAndParticipantID(quizItemId, participantId, new RepoCallback<QuizAnswerDAO>(){
+            @Override
+            public void onComplete(QuizAnswerDAO data) {
+                callback.onComplete(getDAOConversion().convertFromDAO(data));
+            }
 
+            @Override
+            public void onError(DatabaseError databaseError) {
+                callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
+            }
+        });
+    }
 }

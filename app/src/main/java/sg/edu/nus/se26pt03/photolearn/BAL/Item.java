@@ -1,14 +1,19 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Date;
+
+import sg.edu.nus.se26pt03.photolearn.BR;
 
 /**
  * Created by chen ping on 3/10/2018.
  */
 
-public class Item implements Serializable {
+public class Item extends BaseObservable implements Serializable  {
     private String photoURL;
     private String id;
 
@@ -19,7 +24,7 @@ public class Item implements Serializable {
     public Title getTitle() {
         return title;
     }
-
+    @Bindable
     public void setTitle(Title title) {
         this.title = title;
     }
@@ -43,7 +48,12 @@ public class Item implements Serializable {
     }
 
     public void setContent(String content) {
-        this.content = content;
+      //  this.content = content;
+
+        if ((content != null && this.content == null) || !this.content.equals(content)) {
+            this.content = content;
+            notifyValidity();
+        }
     }
 
     public Coordinate getCoordinate() {
@@ -76,5 +86,23 @@ public class Item implements Serializable {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+    @Bindable
+    public boolean getValidity() {
+        if ("".equals(getContent())) return false;
+        return true;
+    }
+    @Bindable
+    public String getContentError() {
+        if (getContent() != null && getContent().isEmpty()) {
+            return "Content is required";
+        }
+        return "";
+    }
+
+    private void notifyValidity() {
+        //notifyPropertyChanged();
+        notifyPropertyChanged(BR.validity);
+        notifyPropertyChanged(BR.contentError);
     }
 }

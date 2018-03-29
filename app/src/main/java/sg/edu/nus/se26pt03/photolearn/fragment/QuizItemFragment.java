@@ -46,11 +46,15 @@ public class QuizItemFragment extends BaseFragment {
     public static final String ARG_ITEM = "ITEM";
 
     private int itemPosition;
+
+    public QuizItem getQuizItem() {
+        return quizItem;
+    }
+
     private QuizItem quizItem;
     private QuizAnswerService quizAnswerService;
     private QuizAnswer quizAnswer;
     private GPSHelper gpsHelper;
-    private QuizTitle quizTitle;
     private CheckBox chk_opt1, chk_opt2, chk_opt3, chk_opt4;
     private ViewPager mPager;
     private Button btnPrev;
@@ -77,6 +81,7 @@ public class QuizItemFragment extends BaseFragment {
         quizItem = (QuizItem) getArguments().getSerializable(ARG_ITEM);
         gpsHelper = new GPSHelper(getContext());
         quizAnswerService = new QuizAnswerService();
+
         // this.getActivity().setTitle("Item :"+itemPosition);
     }
 
@@ -85,8 +90,23 @@ public class QuizItemFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // return super.onCreateView(inflater, container, savedInstanceState);
         ViewGroup rootView = (ViewGroup) inflater
-                .inflate(R.layout.fragment_quiz_item, container, false);
+                .inflate(R.layout.fragment_quiz_item_scrollview , container, false);
 
+        quizAnswerService.getByQuizItemIDAndParticipantID(quizItem.getId(), App.getCurrentUser().getId(), new ServiceCallback<QuizAnswer>() {
+            @Override
+            public void onComplete(QuizAnswer data) {
+                quizAnswer = data;
+                if (quizAnswer != null && !quizAnswer.getSelectedOptionIds().isEmpty()) {
+                    setCheckBoxs(data.getSelectedOptionIds());
+                    displayInfoMessage("Quiz Answer retrieve successfully!");
+                }
+            }
+
+            @Override
+            public void onError(int code, String message, String details) {
+                displayErrorMessage(message);
+            }
+        });
 
         return rootView;
     }
@@ -117,7 +137,9 @@ public class QuizItemFragment extends BaseFragment {
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                quizAnswer = new QuizAnswer();
+                if (quizAnswer == null) {
+                    quizAnswer = new QuizAnswer();
+                }
                 quizAnswer.setQuizItemId(quizItem.getId());
                 quizAnswer.setSelectedOptionIds(getCheckedIds());
                 quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
@@ -138,7 +160,9 @@ public class QuizItemFragment extends BaseFragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                quizAnswer = new QuizAnswer();
+                if (quizAnswer == null) {
+                    quizAnswer = new QuizAnswer();
+                }
                 quizAnswer.setQuizItemId(quizItem.getId());
                 quizAnswer.setSelectedOptionIds(getCheckedIds());
                 quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
@@ -213,5 +237,12 @@ public class QuizItemFragment extends BaseFragment {
         if (chk_opt3.isChecked()) selectedOptionIds.add("3");
         if (chk_opt4.isChecked()) selectedOptionIds.add("4");
         return selectedOptionIds;
+    }
+
+    void setCheckBoxs(List<String> checkedId){
+        if (checkedId.contains("1")) chk_opt1.setChecked(true);
+        if (checkedId.contains("2")) chk_opt2.setChecked(true);
+        if (checkedId.contains("3")) chk_opt3.setChecked(true);
+        if (checkedId.contains("4")) chk_opt4.setChecked(true);
     }
 }

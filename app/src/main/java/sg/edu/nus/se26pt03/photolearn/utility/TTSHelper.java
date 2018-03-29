@@ -89,14 +89,15 @@ public class TTSHelper implements TextToSpeech.OnInitListener {
 
             if (setLangresult == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Toast.makeText(this.ctx, "Current Device Language is not Supported By TTS", Toast.LENGTH_LONG);
-                ttsButton.setEnabled(false);
+                //ttsButton.setEnabled(false);
             } else {
-                ttsButton.setEnabled(true);
+                //ttsButton.setEnabled(true);
             }
 
         }
     }
     public void stopTalking() {
+        this.setTexttoSpeak("");
         this.textToSpeech.stop();
     }
 
@@ -104,8 +105,6 @@ public class TTSHelper implements TextToSpeech.OnInitListener {
 
         if (this.textToSpeech.isSpeaking()) {
             this.textToSpeech.stop();
-            Resources res = this.ctx.getResources();
-
         } else {
 
             this.textToSpeech.speak(this.getTexttoSpeak(), TextToSpeech.QUEUE_FLUSH, null, "TESTID");
