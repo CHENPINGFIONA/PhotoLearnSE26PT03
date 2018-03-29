@@ -34,7 +34,6 @@ public class QuizItemFragmentPageAdapter extends FragmentItemIdStatePagerAdapter
     }
 
     private List<Item> quizItemList = null;
-    private QuizItem previousAttempt;
     private QuizTitle quizTitle;
 
     public QuizItemFragmentPageAdapter(FragmentManager fm, QuizTitle quizTitle, List<Item> items) {

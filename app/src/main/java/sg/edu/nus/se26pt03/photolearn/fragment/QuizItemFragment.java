@@ -44,7 +44,6 @@ public class QuizItemFragment extends BaseFragment {
 
     public static final String ARG_ITEM_COUNT = "ITEM_COUNT";
     public static final String ARG_ITEM = "ITEM";
-    public static final String ARG_CURRENT_ATTEMPT = "CURRENT_ATTEMPT";
 
     private int itemPosition;
 
