@@ -34,13 +34,13 @@ public class QuizItemFragmentPageAdapter extends FragmentItemIdStatePagerAdapter
     }
 
     private List<Item> quizItemList = null;
+    private QuizItem previousAttempt;
     private QuizTitle quizTitle;
 
     public QuizItemFragmentPageAdapter(FragmentManager fm, QuizTitle quizTitle, List<Item> items) {
         super(fm);
         this.quizItemList = items==null?new ArrayList<Item>():items;
         this.quizTitle = quizTitle;
-
     }
     @Override
     public int getItemPosition(Object object) {
@@ -56,7 +56,7 @@ public class QuizItemFragmentPageAdapter extends FragmentItemIdStatePagerAdapter
 
     @Override
     public Fragment getItem(int position) {
-        return QuizItemFragment.create(position, (QuizItem) this.quizItemList.get(position));
+        return QuizItemFragment.create(position, (QuizItem) this.quizItemList.get(position) );
     }
 
     public QuizItem getQuizItemByPosition(int position) {
@@ -65,6 +65,7 @@ public class QuizItemFragmentPageAdapter extends FragmentItemIdStatePagerAdapter
         }
         return null;
     }
+
     @Override
     public int getCount() {
         return this.quizItemList.size();

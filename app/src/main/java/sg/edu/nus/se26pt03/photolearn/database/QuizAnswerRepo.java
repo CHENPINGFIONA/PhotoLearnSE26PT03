@@ -47,4 +47,30 @@ public class QuizAnswerRepo extends BaseRepo<QuizAnswerDAO> {
                 });
 
     }
+
+    public void getCurrentAttemptByQuizItemIDAndParticipantID(final String participantId, final List<String> quizItemIds, final RepoCallback<QuizAnswerDAO> repoCallback) {
+        mDatabaseRef.orderByChild("createdBy").equalTo(participantId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //use the onDataChange() method to read a static snapshot of the contents at a given path
+                        // Get Post object and use the values to update the UI
+                        for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                            QuizAnswerDAO quizAnswerDAO = getValue(childDataSnapshot);
+                            if (quizItemIds.contains(quizAnswerDAO.getQuizItemId()) && quizAnswerDAO.getIsCurrentAttempt()) {
+                                repoCallback.onComplete(quizAnswerDAO);
+                                return;
+                            }
+                        }
+                        //if the loop ends but still can not find the QuizAnswer, that means the user haven't answer this quizItem yet
+                        repoCallback.onComplete(null);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Getting Post failed, log a message
+                    }
+                });
+
+    }
 }

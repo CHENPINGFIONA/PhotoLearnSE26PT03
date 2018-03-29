@@ -124,23 +124,20 @@
 
     <Button
         android:id="@+id/btn_next"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="left|bottom"
-        android:layout_marginEnd="8dp"
-        android:gravity="left|bottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="Next"
-        app:layout_constraintBottom_toTopOf="@+id/sv_quiztITemlayout"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <Button
         android:id="@+id/btn_prev"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="right|bottom"
-        android:gravity="right|bottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="Previous"
-        app:layout_constraintBottom_toTopOf="@+id/sv_quiztITemlayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

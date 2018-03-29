@@ -22,10 +22,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizAnswer;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.Title;
@@ -37,6 +41,7 @@ import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
+import sg.edu.nus.se26pt03.photolearn.service.QuizAnswerService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
@@ -64,6 +69,8 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     private PagerAdapter mPagerAdapter;
     private TextView tvEmpty;
     private FloatingActionButton Add;
+    private QuizAnswerService quizAnswerService;
+    private QuizAnswer currentAttempt;
 
     @Nullable
     @Override
@@ -90,9 +97,28 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
 
     }
 
+    public void updateCurrentAttempt(QuizAnswer quizAnswer){
+        if (currentAttempt != null && !currentAttempt.getQuizItemId().equals(quizAnswer.getQuizItemId())) {
+            currentAttempt.setIsCurrentAttempt(false);
+            quizAnswerService.update(currentAttempt, new ServiceCallback<Boolean>() {
+                @Override
+                public void onComplete(Boolean data) {
+                    if (data) displayInfoMessage("Former Attempt removed!");
+                    else displayInfoMessage("Error occured when removing Former Attempt!");
+                }
+
+                @Override
+                public void onError(int code, String message, String details) {
+
+                }
+            });
+        }
+        currentAttempt = quizAnswer;
+    }
+
     private void setupControls() {
 
-
+        quizAnswerService = new QuizAnswerService();
         tvEmpty = (TextView) getView().findViewById(R.id.tv_itemempty_value);
         Add = (FloatingActionButton) getView().findViewById(R.id.fab_addquizitem);
         popupimagebutton = (ImageView) getView().findViewById(R.id.img_popupmenu);
@@ -192,13 +218,37 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
             public void onComplete(List<Item> data) {
 
                 if (data != null) {
-                    if(quizItemList !=null )
+                    if (quizItemList != null)
                         quizItemList.clear();
-                    QuizItemListFragment.this.quizItemList = data;
-                    ((QuizItemFragmentPageAdapter)mPagerAdapter).setQuizItemList(data);
+                    quizItemList = data;
+                    ((QuizItemFragmentPageAdapter) mPagerAdapter).setQuizItemList(data);
                     mPagerAdapter.notifyDataSetChanged();
                     setupViews();
                     srf_quizItemList.setRefreshing(false);
+                    List<String> quizItemIds = quizItemList.stream().map(x -> x.getId()).collect(Collectors.toList());
+                    quizAnswerService.getCurrentAttemptByQuizItemIDAndParticipantID
+                            (App.getCurrentUser().getId(), quizItemIds, new ServiceCallback<QuizAnswer>() {
+                                @Override
+                                public void onComplete(QuizAnswer data) {
+                                    currentAttempt = data;
+                                    if (data == null) {
+                                        displayErrorMessage("User has no attempt on this quiz title.");
+                                        return;
+                                    }
+                                    OptionalInt position = IntStream.range(0,quizItemIds.size()).filter(i -> (data.getQuizItemId()).equals(quizItemIds.get(i))).findFirst();
+                                    if (position.isPresent() && position.getAsInt() >= 0) {
+                                        mPager.setCurrentItem(position.getAsInt());
+                                        displayErrorMessage("User last attempt found, view pager navigating to: " + position.getAsInt() + ".");
+                                    } else {
+                                        displayErrorMessage("User has no attempt on this quiz title.");
+                                    }
+                                }
+
+                                @Override
+                                public void onError(int code, String message, String details) {
+                                    displayErrorMessage(message);
+                                }
+                            });
                 }
             }
             @Override

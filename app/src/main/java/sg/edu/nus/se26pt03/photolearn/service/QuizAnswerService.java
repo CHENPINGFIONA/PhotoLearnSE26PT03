@@ -27,6 +27,7 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
                 quizAnswer.setId(value.getId());
                 quizAnswer.setParticipantId(value.getCreatedBy());
                 quizAnswer.setQuizItemId(value.getQuizItemId());
+                quizAnswer.setIsCurrentAttempt(value.getIsCurrentAttempt());
                 quizAnswer.setTimestamp(new Date(value.getTimestamp()));
                 quizAnswer.setSelectedOptionIds(value.getSelectedQuizOptionIds());
                 return quizAnswer;
@@ -36,7 +37,9 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
             public QuizAnswerDAO convertToDAO(QuizAnswer value) {
                 if (value == null) return null;
                 QuizAnswerDAO quizAnswerDAO = new QuizAnswerDAO();
+                quizAnswerDAO.setId(value.getId());
                 quizAnswerDAO.setQuizItemId(value.getQuizItemId());
+                quizAnswerDAO.setIsCurrentAttempt(value.getIsCurrentAttempt());
                 quizAnswerDAO.setSelectedQuizOptionIds(value.getSelectedOptionIds());
                 return quizAnswerDAO;
             }
@@ -55,5 +58,20 @@ public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {
                 callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
             }
         });
+    }
+
+    public void getCurrentAttemptByQuizItemIDAndParticipantID(String participantId, List<String> quizItemIds, final ServiceCallback<QuizAnswer> callback) {
+        quizAnswerRepo.getCurrentAttemptByQuizItemIDAndParticipantID(participantId, quizItemIds, new RepoCallback<QuizAnswerDAO>() {
+            @Override
+            public void onComplete(QuizAnswerDAO data) {
+                callback.onComplete(getDAOConversion().convertFromDAO(data));
+            }
+
+            @Override
+            public void onError(DatabaseError databaseError) {
+                callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
+            }
+        });
+
     }
 }
