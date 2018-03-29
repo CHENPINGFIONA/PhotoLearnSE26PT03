@@ -56,10 +56,10 @@ public class App extends Application {
     }
     public static  void changeAppMode(@AppMode.Mode int mode) {
         if (mode == AppMode.TRAINER) {
-            setCurrentUser(getCurrentUser().toTrainer());
+            setCurrentUser(new Trainer(FirebaseAuth.getInstance().getCurrentUser()));
         }
         else {
-            setCurrentUser(getCurrentUser().toParticipant());
+            setCurrentUser(new Participant(FirebaseAuth.getInstance().getCurrentUser()));
         }
     }
     public static Context getContext(){
