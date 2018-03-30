@@ -21,9 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.AbstractMap;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizTitleListAdapter;
@@ -77,7 +80,37 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
         quizTitleListAdapter = new QuizTitleListAdapter(quizTitles, new QuizTitleListAdapter.QuizTitleViewHolderClick() {
             @Override
             public void onItemClick(QuizTitleListAdapter.QuizTitleViewHolder viewHolder) {
-                onLoad(quizTitles.get(viewHolder.getAdapterPosition()), null);
+                QuizTitle quizTitle = quizTitles.get(viewHolder.getAdapterPosition());
+               quizTitle.getQuizSubmissionProgress(App.getCurrentUser().getId(), new ServiceCallback<AbstractMap.SimpleEntry<Integer, Integer>>() {
+                   @Override
+                   public void onComplete(AbstractMap.SimpleEntry<Integer, Integer> data) {
+                       if (data.getKey() == data.getValue()) {
+                           new AlertDialog.Builder(getContext())
+                                   .setTitle("Confirmation")
+                                   .setMessage("You already submitted all quizes!\n Please choose the action of your choice to proceed?")
+                                   .setPositiveButton("View Summary", new DialogInterface.OnClickListener() {
+                                       @Override
+                                       public void onClick(DialogInterface dialog, int whichButton) {
+                                           onSummary(quizTitle, null);
+                                       }
+                                   })
+                                   .setNegativeButton("Retake Quiz", new DialogInterface.OnClickListener() {
+                                       @Override
+                                       public void onClick(DialogInterface dialog, int which) {
+                                        //Delete the quiz and retake
+                                       }
+                                   }).show();
+                       }
+                       else {
+                           onLoad(quizTitle, null);
+                       }
+                   }
+
+                   @Override
+                   public void onError(int code, String message, String details) {
+
+                   }
+               });
             }
         });
     }

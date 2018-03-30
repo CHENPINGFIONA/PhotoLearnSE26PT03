@@ -17,14 +17,12 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  * Created by chen ping on 3/10/2018.
  */
 
-public abstract class Item extends BaseObservable implements Serializable  {
+public class Item extends BaseObservable implements Serializable  {
     private String photoURL;
     private String id;
-    private transient QuizAnswerService quizAnswerService;
 
     public Item(Title title) {
         this.title = title;
-        quizAnswerService = new QuizAnswerService();
     }
 
     public Title getTitle() {
@@ -85,12 +83,6 @@ public abstract class Item extends BaseObservable implements Serializable  {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-    public void getQuizAnswer(String createdBy, ServiceCallback<List<QuizAnswer>> callback) {
-        List<AbstractMap.SimpleEntry<String, Object>> listKeyValue = new ArrayList<AbstractMap.SimpleEntry<String, Object>>();
-        listKeyValue.add(new AbstractMap.SimpleEntry<String, Object>("quizItemId", this.getId()));
-        listKeyValue.add(new AbstractMap.SimpleEntry<String, Object>("createdBy", createdBy));
-        quizAnswerService.getAllByKeyValueList(listKeyValue, callback);
-    }
 
     public Date getTimestamp() {
         return timestamp==null?new Date():timestamp;
@@ -99,9 +91,22 @@ public abstract class Item extends BaseObservable implements Serializable  {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
+    @Bindable
+    public boolean getValidity() {
+        if ("".equals(getContent())) return false;
+        return true;
+    }
+    @Bindable
+    public String getContentError() {
+        if (getContent() != null && getContent().isEmpty()) {
+            return "Content is required";
+        }
+        return "";
+    }
 
-
-
-
-    protected abstract void notifyValidity();
+    private void notifyValidity() {
+        //notifyPropertyChanged();
+        notifyPropertyChanged(BR.validity);
+        notifyPropertyChanged(BR.contentError);
+    }
 }

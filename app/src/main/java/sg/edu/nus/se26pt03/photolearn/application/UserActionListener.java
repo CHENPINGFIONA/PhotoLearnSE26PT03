@@ -22,17 +22,6 @@ import sg.edu.nus.se26pt03.photolearn.enums.EventType;
  */
 
 public interface UserActionListener {
-//    enum Event{
-//        BEFORE,
-//        APPMODE_CHANGE,
-//        ACCESSMODE_CHANGE,
-//        LOGIN,
-//        LOGOUT,
-//        LOAD,
-//        CREATE,
-//        EDIT,
-//        BACKSTACK
-//    }
     List<UserActionListener> getRelatives();
 
     void onBefore(@EventType.Event int event, UserActionCallback callback, UserActionListener source);
@@ -43,6 +32,7 @@ public interface UserActionListener {
     void onLoad(Object object, UserActionCallback callback, UserActionListener source);
     void onCreate(Object object, UserActionCallback callback, UserActionListener source);
     void onEdit(Object object, UserActionCallback callback, UserActionListener source);
+    void onSummary(Object object, UserActionCallback callback, UserActionListener source);
     void onBackstack(Object object, UserActionCallback callback, UserActionListener source);
 
     void onBefore(@EventType.Event int event, UserActionCallback callback);
@@ -71,6 +61,8 @@ public interface UserActionListener {
     void onEdit(QuizTitle quizTitle, UserActionCallback callback);
     void onEdit(QuizItem quizItem, UserActionCallback callback);
     void onEdit(QuizAnswer quizAnswer, UserActionCallback callback);
+
+    void onSummary(QuizTitle quizTitle, UserActionCallback callback);
 
     void onBackstack(Object object, UserActionCallback callback);
 

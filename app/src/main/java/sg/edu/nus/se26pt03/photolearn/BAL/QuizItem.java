@@ -5,10 +5,13 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.Observable;
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BR;
+import sg.edu.nus.se26pt03.photolearn.service.QuizAnswerService;
+import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
  * Created by chen ping on 7/3/2018.
@@ -38,10 +41,20 @@ public class QuizItem extends Item implements Serializable, Cloneable {
 
     private int position;
 
+    private QuizAnswerService quizAnswerService;
+
     public QuizItem(Title title) {
 
         super(title);
         quizOptions = new ArrayList<QuizOption>();
+        quizAnswerService = new QuizAnswerService();
+    }
+
+    public void getQuizAnswers(String createdBy, ServiceCallback<List<QuizAnswer>> callback) {
+        List<AbstractMap.SimpleEntry<String, Object>> listKeyValue = new ArrayList<AbstractMap.SimpleEntry<String, Object>>();
+        listKeyValue.add(new AbstractMap.SimpleEntry<String, Object>("quizItemId", this.getId()));
+        listKeyValue.add(new AbstractMap.SimpleEntry<String, Object>("createdBy", createdBy));
+        quizAnswerService.getAllByKeyValueList(listKeyValue, callback);
     }
 
     public boolean checkAnswer(int selectedOptionId) {
