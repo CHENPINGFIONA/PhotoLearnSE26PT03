@@ -106,6 +106,19 @@ public class BaseService<T, V extends BaseDAO> {
         });
     }
 
+    public void getAllByKeyValueList(List<AbstractMap.SimpleEntry<String, Object>> listKeyValue, final ServiceCallback<List<T>> callback) {
+        baseRepo.getAllByKeyValueList(listKeyValue, new RepoCallback<List<V>>() {
+            @Override
+            public void onComplete(List<V> data) {
+                if (callback != null) callback.onComplete(daoConversion.convertFromDAO(data));
+            }
+
+            @Override
+            public void onError(DatabaseError databaseError) {
+                if (callback != null) callback.onError(databaseError.getCode(), databaseError.getMessage(), databaseError.getDetails());
+            }
+        });
+    }
 
     public void getAllByKeyValue(String key, Object value, final ServiceCallback<List<T>> callback) {
         baseRepo.getAllByKeyValue(key, value, new RepoCallback<List<V>>() {
