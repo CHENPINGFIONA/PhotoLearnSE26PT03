@@ -257,6 +257,7 @@ public class QuizItemFragment extends BaseFragment {
             chk_opt4.setEnabled(false);
             btnPrev.setVisibility(View.GONE);
             btnNext.setVisibility(View.GONE);
+            mPager.setSwipeEnabled(true);
         } else {
             chk_opt1.setEnabled(true);
             chk_opt2.setEnabled(true);
