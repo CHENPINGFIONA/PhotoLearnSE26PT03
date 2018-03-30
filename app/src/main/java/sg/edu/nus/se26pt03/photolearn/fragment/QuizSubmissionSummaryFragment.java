@@ -10,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.List;
 import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizAnswer;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizOption;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizItemQuizAnswerListAdapter;
@@ -98,6 +102,14 @@ public class QuizSubmissionSummaryFragment extends BaseFragment {
             quizItemQuizAnswerListAdapter.setListQuizItemQuizAnswer(listQuizItemQuizAnswer);
         }
         quizItemQuizAnswerListAdapter.notifyDataSetChanged();
+        TextView tv_score = getView().findViewById(R.id.tv_score);
+        int totalQuestions = listQuizItemQuizAnswer.size();
+        int totalCorrectAnswer = 0;
+        for(AbstractMap.SimpleEntry<QuizItem, QuizAnswer> quizItemQuizAnswer: listQuizItemQuizAnswer) {
+            for(QuizOption quizOption: quizItemQuizAnswer.getKey().getQuizOptions()) {
+//                quizOption.
+            }
+        }
     }
 
     private void setupControls() {
