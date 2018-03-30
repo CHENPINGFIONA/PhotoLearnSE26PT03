@@ -12,21 +12,14 @@ import sg.edu.nus.se26pt03.photolearn.BR;
  */
 
 public class QuizOption extends BaseObservable implements Serializable {
-    public QuizOption(String quizItemId) {
-        this.quizItemId = quizItemId;
-    }
-
-    public String getQuizItemId() {
-        return quizItemId;
-    }
-
-    public void setQuizItemId(String quizItemId) {
-        this.quizItemId = quizItemId;
-    }
-
-
-
-
+    //Uid of Quiz Option
+    private String id;
+    // Question
+    private String content;
+    // Is Answer
+    private boolean isAnswer;
+    //Quiz Item
+    private final QuizItem quizItem;
 
     public String getId() {
         return id;
@@ -36,14 +29,13 @@ public class QuizOption extends BaseObservable implements Serializable {
         this.id = id;
     }
 
-
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+        notifyValidity();
     }
 
     public boolean isAnswer() {
@@ -52,12 +44,19 @@ public class QuizOption extends BaseObservable implements Serializable {
 
     public void setAnswer(boolean answer) {
         isAnswer = answer;
+        quizItem.notifyValidity();
     }
 
-    private String id;
-    private String content;
-    private boolean isAnswer;
-    private String quizItemId;
+    //Constructor
+    public QuizOption(QuizItem quizItem) {
+        this.quizItem = quizItem;
+    }
+
+    //get Quiz Item Id
+    public String getQuizItemId() {
+        return quizItem.getId();
+    }
+
 
     @Bindable
     public String getContentError() {
@@ -67,12 +66,8 @@ public class QuizOption extends BaseObservable implements Serializable {
         return "";
     }
 
-
-
-
     private void notifyValidity() {
-        //notifyPropertyChanged();
         notifyPropertyChanged(BR.contentError);
-       // notifyPropertyChanged(BR.);
+        quizItem.notifyValidity();
     }
 }

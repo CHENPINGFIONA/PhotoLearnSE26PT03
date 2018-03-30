@@ -1,10 +1,12 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.service.QuizAnswerService;
 import sg.edu.nus.se26pt03.photolearn.service.QuizItemService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
@@ -14,9 +16,12 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 public class QuizTitle extends Title implements Serializable {
     private List<QuizItem> quizItems;
-    transient QuizItemService  quizItemService = new QuizItemService(this);
+    transient QuizItemService  quizItemService;
+    transient QuizAnswerService quizAnswerService;
 
     public QuizTitle() {
+        quizItemService = new QuizItemService(this);
+        quizAnswerService = new QuizAnswerService();
         setLearningSession(new LearningSession());
         quizItems = new ArrayList<QuizItem>();
     }
@@ -47,6 +52,36 @@ public class QuizTitle extends Title implements Serializable {
 
     }
 
+    public void getQuizSubmissionProgress(String createdBy, ServiceCallback<AbstractMap.SimpleEntry<Integer, Integer>> callback) {
+        getQuizItems(new ServiceCallback<List<Item>>() {
+            @Override
+            public void onComplete(List<Item> data) {
+                List<QuizAnswer> result = new ArrayList<QuizAnswer>();
+                for (Item item: data) {
+                    ((QuizItem) item).getQuizAnswers(createdBy, new ServiceCallback<List<QuizAnswer>>() {
+                        @Override
+                        public void onComplete(List<QuizAnswer> childData) {
+                            if (childData.size() > 0) {
+                                result.add(childData.get(0));
+                            }
+                            if (data.indexOf(item) == data.size()-1) {
+                                callback.onComplete(new AbstractMap.SimpleEntry<Integer, Integer>(data.size(), result.size()));
+                            }
+                        }
+                        @Override
+                        public void onError(int code, String message, String details) {
+                            callback.onError(code, message, details);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onError(int code, String message, String details) {
+
+            }
+        });
+    }
 
 
     @Override
@@ -82,6 +117,14 @@ public class QuizTitle extends Title implements Serializable {
     public void getItems(ServiceCallback<List<Item>> callback) {
         try {
             quizItemService.getAllByQuizTitleId(this.getId(), callback);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void getQuizItems(ServiceCallback<List<Item>> callback) {
+        try {
+            quizItemService.getAllByKeyValue("quizTitleId", this.getId(), callback);
         } catch (Exception ex) {
             throw ex;
         }

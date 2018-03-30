@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -171,6 +172,34 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
     }
 
     @Override
+    public void getAllByKeyValueList(List<AbstractMap.SimpleEntry<String, Object>> listKeyValue, final RepoCallback<List<T>> callback) {
+        if (listKeyValue.size() >= 1) {
+            getAllByKeyValue(listKeyValue.get(0).getKey(), listKeyValue.get(0).getValue(), new RepoCallback<List<T>>() {
+                @Override
+                public void onComplete(List<T> data) {
+                    List<T> result = data;
+                    if (result != null) {
+                        for(int i = 1; i < listKeyValue.size(); i++) {
+                            for (T t : result) {
+                                if (!isValid(t, listKeyValue.get(i).getKey(), listKeyValue.get(i).getValue()))
+                                {
+                                    result.remove(t);
+                                }
+                            }
+                        }
+                    }
+                    callback.onComplete(result);
+                }
+
+                @Override
+                public void onError(DatabaseError databaseError) {
+                    callback.onError(databaseError);
+                }
+            });
+        }
+    }
+
+    @Override
     public void getAllByKeyValue(String key, Object value, final RepoCallback<List<T>> callback) {
         String[] keys = key.split("\\.");
 
@@ -205,6 +234,46 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
                     callback.onError(databaseError);
                 }
             });
+    }
+
+    private boolean isValid(Object object, String key, Object value) {
+        String[] keys = key.split("\\.");
+        Class<?> c = object.getClass();
+        try {
+            Method m = c.getDeclaredMethod("get"+ keys[0].substring(0,1).toUpperCase() + keys[0].substring(1), null);
+            Object readValue = null;
+            try {
+                readValue = m.invoke(object);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                return false;
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+                return false;
+            }
+            if (keys.length == 1) {
+                return value.equals(readValue);
+            }
+            if (readValue instanceof Iterable) {
+                for (Object childValue : (Iterable) readValue) {
+                    String childKey = key.substring(key.indexOf(".") + 1);
+                    if (isValid(childValue, childKey, value)) {
+                        return true;
+                    }
+                }
+            }
+            else {
+                String childKey = key.substring(key.indexOf(".") + 1);
+                if (isValid(readValue, childKey, value)) {
+                    return true;
+                }
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            return  false;
+        }
+
+        return false;
     }
 
     private boolean isValid(DataSnapshot dataSnapshot, String key, Object value) {

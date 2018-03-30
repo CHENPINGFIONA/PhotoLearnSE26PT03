@@ -98,6 +98,11 @@ public class BaseFragment extends Fragment implements UserActionListener {
     }
 
     @Override
+    public final void onSummary(Object object, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( EventType.SUMMARY, false, object, callback, source);
+    }
+
+    @Override
     public final void onBackstack(Object object, UserActionCallback callback, UserActionListener source) {
         userActionEmitter.dynamicEmit( EventType.BACKSTACK, false, object, callback, source);
     }
@@ -218,6 +223,11 @@ public class BaseFragment extends Fragment implements UserActionListener {
     }
 
     @Override
+    public void onSummary(QuizTitle quizTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(EventType.SUMMARY, true, quizTitle, callback, null);
+    }
+
+    @Override
     public void onBackstack(Object object, UserActionCallback callback) {
         userActionEmitter.dynamicEmit(EventType.BACKSTACK, true, object, callback, null);
     }
@@ -279,6 +289,15 @@ public class BaseFragment extends Fragment implements UserActionListener {
         viewPager.setAdapter(appFragmentPagerAdapter);
 
     }
+
+    protected void refresh(String tag) {
+        Fragment fragment = null;
+        fragment = getActivity().getSupportFragmentManager().findFragmentByTag(tag);
+        final FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.detach(fragment);
+        fragmentTransaction.attach(fragment);
+        fragmentTransaction.commit();
+        }
 
     protected void displayInfoMessage(String message) {
         Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG).show();

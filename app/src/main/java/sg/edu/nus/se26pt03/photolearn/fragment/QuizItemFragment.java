@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -56,7 +57,7 @@ public class QuizItemFragment extends BaseFragment {
     private QuizAnswer quizAnswer;
     private GPSHelper gpsHelper;
     private CheckBox chk_opt1, chk_opt2, chk_opt3, chk_opt4;
-    private ViewPager mPager;
+    private sg.edu.nus.se26pt03.photolearn.view.ViewPager mPager;
     private Button btnPrev;
     private Button btnNext;
 
@@ -92,23 +93,7 @@ public class QuizItemFragment extends BaseFragment {
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_quiz_item_scrollview, container, false);
 
-        quizAnswerService.getByQuizItemIDAndParticipantID(quizItem.getId(), App.getCurrentUser().getId(), new ServiceCallback<QuizAnswer>() {
-            @Override
-            public void onComplete(QuizAnswer data) {
-                quizAnswer = data;
-                if (quizAnswer != null && !quizAnswer.getSelectedOptionIds().isEmpty()) {
-                    setCheckBoxs(data.getSelectedOptionIds());
-                    displayInfoMessage("Quiz Answer retrieve successfully!");
-                } else {
-                    Log.i(App.getCurrentUser().getId(), "This user has not attempt this quiz item yet.");
-                }
-            }
 
-            @Override
-            public void onError(int code, String message, String details) {
-                displayErrorMessage(message);
-            }
-        });
 
         return rootView;
     }
@@ -118,6 +103,25 @@ public class QuizItemFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setupControl();
         setupView();
+        if (App.getCurrentAppMode() == AppMode.PARTICIPENT)
+            bindParticipantQuizAnswer();
+    }
+
+    private void bindParticipantQuizAnswer() {
+        quizAnswerService.getByQuizItemIDAndParticipantID(quizItem.getId(), App.getCurrentUser().getId(), new ServiceCallback<QuizAnswer>() {
+            @Override
+            public void onComplete(QuizAnswer data) {
+                quizAnswer = data;
+                if (quizAnswer != null && quizAnswer.getSelectedOptionIds()!=null  && !quizAnswer.getSelectedOptionIds().isEmpty()) {
+                    setCheckBoxs(data.getSelectedOptionIds());
+                }
+            }
+
+            @Override
+            public void onError(int code, String message, String details) {
+                displayErrorMessage(message);
+            }
+        });
     }
 
     ImageView imgPhotView;
@@ -135,97 +139,32 @@ public class QuizItemFragment extends BaseFragment {
 
         btnPrev = (Button) getView().findViewById(R.id.btn_prev);
         btnNext = (Button) getView().findViewById(R.id.btn_next);
-        mPager = (ViewPager) getParentFragment().getView().findViewById(R.id.vp_quizitem);
+        mPager = getParentFragment().getView().findViewById(R.id.vp_quizitem);
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (quizAnswer == null) {
-                    quizAnswer = new QuizAnswer();
-                    quizAnswer.setQuizItemId(quizItem.getId());
-                    quizAnswer.setIsCurrentAttempt(true);
-                    quizAnswer.setSelectedOptionIds(getCheckedIds());
-                    quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
-                        @Override
-                        public void onComplete(QuizAnswer data) {
-                            displayInfoMessage("Quiz Answer saved successfully!");
-                            quizAnswer = data;
-                            ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
-                            mPager.arrowScroll(1);
-                        }
-
-                        @Override
-                        public void onError(int code, String message, String details) {
-                            displayErrorMessage(message);
-                        }
-                    });
+                List<String> checkedIds = getCheckedIds();
+                if (checkedIds.isEmpty()) {
+                    displayInfoMessage("You haven't select any option yet!");
                 } else {
-                    quizAnswer.setQuizItemId(quizItem.getId());
-                    quizAnswer.setIsCurrentAttempt(true);
-                    quizAnswer.setSelectedOptionIds(getCheckedIds());
-                    quizAnswerService.update(quizAnswer, new ServiceCallback<Boolean>() {
-                        @Override
-                        public void onComplete(Boolean data) {
-                            if (data) {
-                                displayInfoMessage("Quiz Answer updated successfully!");
-                                ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
-                            } else displayInfoMessage("Error occured when updating Quiz Answer!");
-                            mPager.arrowScroll(1);
-                        }
-
-                        @Override
-                        public void onError(int code, String message, String details) {
-                            displayErrorMessage(message);
-                        }
-                    });
+                    saveOrUpdateQuizAnswer(1, checkedIds);
                 }
-
             }
         });
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (quizAnswer == null) {
-                    quizAnswer = new QuizAnswer();
-                    quizAnswer.setQuizItemId(quizItem.getId());
-                    quizAnswer.setIsCurrentAttempt(true);
-                    quizAnswer.setSelectedOptionIds(getCheckedIds());
-                    quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
-                        @Override
-                        public void onComplete(QuizAnswer data) {
-                            displayInfoMessage("Quiz Answer saved successfully!");
-                            quizAnswer = data;
-                            ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
-                            mPager.arrowScroll(2);
-                        }
-
-                        @Override
-                        public void onError(int code, String message, String details) {
-                            displayErrorMessage(message);
-                        }
-                    });
+                List<String> checkedIds = getCheckedIds();
+                if (checkedIds.isEmpty()) {
+                    displayInfoMessage("You haven't select any option yet!");
                 } else {
-                    quizAnswer.setQuizItemId(quizItem.getId());
-                    quizAnswer.setIsCurrentAttempt(true);
-                    quizAnswer.setSelectedOptionIds(getCheckedIds());
-                    quizAnswerService.update(quizAnswer, new ServiceCallback<Boolean>() {
-                        @Override
-                        public void onComplete(Boolean data) {
-                            if (data) {
-                                displayInfoMessage("Quiz Answer updated successfully!");
-                                ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
-                            } else displayInfoMessage("Error occured when updating Quiz Answer!");
-                            mPager.arrowScroll(2);
-                        }
-
-                        @Override
-                        public void onError(int code, String message, String details) {
-                            displayErrorMessage(message);
-                        }
-                    });
+                    saveOrUpdateQuizAnswer(2, checkedIds);
                 }
-
             }
         });
+        if (isLastQuizItem()) {
+            btnNext.setText("Submit");
+        }
         progressBar = getView().findViewById(R.id.quizitemListprogressBarSmall);
 
 
@@ -260,17 +199,72 @@ public class QuizItemFragment extends BaseFragment {
 
     }
 
+    private void saveOrUpdateQuizAnswer(int direction, List<String> checkedIds) {
+        if (quizAnswer == null) {
+            quizAnswer = new QuizAnswer();
+            quizAnswer.setQuizItemId(quizItem.getId());
+            quizAnswer.setIsCurrentAttempt(true);
+            quizAnswer.setSelectedOptionIds(checkedIds);
+            quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
+                @Override
+                public void onComplete(QuizAnswer data) {
+                    displayInfoMessage("Quiz Answer saved successfully!");
+                    quizAnswer = data;
+                    ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
+                    if (isLastQuizItem() && direction == 2) {
+                        //inflate your summary here MM
+                    } else {
+                        mPager.arrowScroll(direction);
+                    }
+                }
+
+                @Override
+                public void onError(int code, String message, String details) {
+                    displayErrorMessage(message);
+                }
+            });
+        } else {
+            quizAnswer.setQuizItemId(quizItem.getId());
+            quizAnswer.setIsCurrentAttempt(true);
+            quizAnswer.setSelectedOptionIds(checkedIds);
+            quizAnswerService.update(quizAnswer, new ServiceCallback<Boolean>() {
+                @Override
+                public void onComplete(Boolean data) {
+                    if (data) {
+                        displayInfoMessage("Quiz Answer updated successfully!");
+                        ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
+                    } else displayInfoMessage("Error occured when updating Quiz Answer!");
+                    if (isLastQuizItem() && direction == 2) {
+                        //inflate your summary here MM
+                    } else {
+                        mPager.arrowScroll(direction);
+                    }
+                }
+
+                @Override
+                public void onError(int code, String message, String details) {
+                    displayErrorMessage(message);
+                }
+            });
+        }
+    }
+
     void setupView() {
         if (App.getCurrentAppMode() == AppMode.TRAINER) {
             chk_opt1.setEnabled(false);
             chk_opt2.setEnabled(false);
             chk_opt3.setEnabled(false);
             chk_opt4.setEnabled(false);
+            btnPrev.setVisibility(View.GONE);
+            btnNext.setVisibility(View.GONE);
         } else {
             chk_opt1.setEnabled(true);
             chk_opt2.setEnabled(true);
             chk_opt3.setEnabled(true);
             chk_opt4.setEnabled(true);
+            btnPrev.setVisibility(View.VISIBLE);
+            btnNext.setVisibility(View.VISIBLE);
+            mPager.setSwipeEnabled(false);
         }
     }
 
@@ -288,5 +282,9 @@ public class QuizItemFragment extends BaseFragment {
         if (checkedId.contains("2")) chk_opt2.setChecked(true);
         if (checkedId.contains("3")) chk_opt3.setChecked(true);
         if (checkedId.contains("4")) chk_opt4.setChecked(true);
+    }
+
+    boolean isLastQuizItem() {
+        return itemPosition == mPager.getAdapter().getCount() - 1;
     }
 }

@@ -35,6 +35,7 @@ import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionListFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemDetailFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemListFragment;
+import sg.edu.nus.se26pt03.photolearn.fragment.QuizSubmissionSummaryFragment;
 import sg.edu.nus.se26pt03.photolearn.utility.AsyncLoadImageHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.TTSHelper;
@@ -77,11 +78,12 @@ public class LearningActivity extends BaseActivity {
 
     @Override
     public void onAccessModeChange(int mode, UserActionCallback callback) {
+        App.setCurrentAccessMode(mode);
+        @AccessMode.Mode int orginalAccessMode = App.getCurrentAccessMode();
         super.onAccessModeChange(mode, new UserActionCallback() {
             @Override
-            public void onPass() {
-                App.setCurrentAccessMode(mode);
-                //Refresh current fragment
+            public void onReject() {
+                App.setCurrentAccessMode(orginalAccessMode);
             }
         });
     }
@@ -157,7 +159,15 @@ public class LearningActivity extends BaseActivity {
         });
     }
 
-
+    @Override
+    public void onSummary(QuizTitle quizTitle, UserActionCallback callback) {
+        super.onSummary(quizTitle, new UserActionCallback() {
+            @Override
+            public void onPass() {
+                setFragment(R.id.fl_main, QuizSubmissionSummaryFragment.newInstance(quizTitle), "Summary - " + quizTitle.getTitle(), true, null, null);
+            }
+        });
+    }
 
     /*
     * Quiz Item Starts Here

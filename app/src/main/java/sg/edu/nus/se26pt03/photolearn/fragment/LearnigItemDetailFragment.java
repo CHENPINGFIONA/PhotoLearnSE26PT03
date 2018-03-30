@@ -57,11 +57,11 @@ import sg.edu.nus.se26pt03.photolearn.*;
  * Created by MyatMin on 08/3/18.
  */
 public class LearnigItemDetailFragment extends BaseFragment {
-    private FragmentLearningItemDetailBinding binding=null;
-    private LearningItem src=null ;
-    private Title title=null;
+    private FragmentLearningItemDetailBinding binding = null;
+    private LearningItem src = null;
+    private Title title = null;
     private ImageView popupimagebutton;
-    private EditText editContentTxtView=null;
+    private EditText editContentTxtView = null;
     private int role;
     private int mode;
     private String sessionId;
@@ -81,12 +81,12 @@ public class LearnigItemDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_learning_item_detail, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_learning_item_detail, container, false);
         View view = binding.getRoot();
         setupData(binding);
         // Inflate the layout for this fragment
-        gpsTracker =new GPSTracker(getActivity());
-        if (!gpsTracker.canGetLocation()){
+        gpsTracker = new GPSTracker(getActivity());
+        if (!gpsTracker.canGetLocation()) {
             gpsTracker.requestpermission();
         }
         return view;
@@ -95,11 +95,10 @@ public class LearnigItemDetailFragment extends BaseFragment {
 
     private void setupData(FragmentLearningItemDetailBinding binding) {
         try {
-            src = (LearningItem)this.getArguments().getSerializable(ConstHelper.REF_LEARNING_ITEMS);
-            title=src.getTitle();
+            src = (LearningItem) this.getArguments().getSerializable(ConstHelper.REF_LEARNING_ITEMS);
+            title = src.getTitle();
             srcCopy = src.clone();
-        }
-        catch (CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             Log.d(this.getClass().getSimpleName(), e.getMessage());
         }
         binding.setLearningItem(src);
@@ -113,18 +112,18 @@ public class LearnigItemDetailFragment extends BaseFragment {
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
-        CaptureImageButton=(ImageButton) this.getView().findViewById(R.id.imgbtn_CaptureImage);
-        progressBar=(ProgressBar) this.getView().findViewById(R.id.pb_imgloadprogressBar);
+        CaptureImageButton = (ImageButton) this.getView().findViewById(R.id.imgbtn_CaptureImage);
+        progressBar = (ProgressBar) this.getView().findViewById(R.id.pb_imgloadprogressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
-        editContentTxtView=(EditText)this.getView().findViewById(R.id.edt_content);
+        editContentTxtView = (EditText) this.getView().findViewById(R.id.edt_content);
         editContentTxtView.setText(src.getContent());
         imgPhotView = this.getView().findViewById(R.id.img_photo);
-        if(src.getPhotoURL() !=null ) {
+        if (src.getPhotoURL() != null) {
             imgPhotView.setScaleType(ImageView.ScaleType.FIT_XY);
             imgPhotView.setAlpha(0.8f);
             try {
-                AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView,getContext(),progressBar);
+                AsyncLoadImageHelper loader = new AsyncLoadImageHelper(imgPhotView, getContext(), progressBar);
                 loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, src.getPhotoURL());
 
             } catch (Exception ex) {
@@ -132,26 +131,26 @@ public class LearnigItemDetailFragment extends BaseFragment {
             }
         }
         popupimagebutton = (ImageView) getView().findViewById(R.id.img_popupmenu);
-        Button btnSave=this.getView().findViewById(R.id.btn_item_save);
+        Button btnSave = this.getView().findViewById(R.id.btn_item_save);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"Save clicked",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Save clicked", Toast.LENGTH_LONG).show();
                 LearnigItemDetailFragment.this.src.setContent(editContentTxtView.getText().toString());
-                ServiceCallback<Item> itemServiceCallback= new SaveServiceCallback();
-                ServiceCallback<Boolean> booleanServiceCallback= new UpdateServiceCallback();
-                if(src.getId() == null || src.getId().equals("") ) {
+                ServiceCallback<Item> itemServiceCallback = new SaveServiceCallback();
+                ServiceCallback<Boolean> booleanServiceCallback = new UpdateServiceCallback();
+                if (src.getId() == null || src.getId().equals("")) {
                     title.createItem(src, itemServiceCallback);
-                }else {
-                    title.updateItem(src    ,booleanServiceCallback );
+                } else {
+                    title.updateItem(src, booleanServiceCallback);
                 }
             }
         });
         mStorageHelper = new FileStorageHelper();
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_PERMISSION);
         }
 
@@ -166,47 +165,48 @@ public class LearnigItemDetailFragment extends BaseFragment {
     public class SaveServiceCallback implements ServiceCallback<Item> {
         @Override
         public void onComplete(Item data) {
-           // LearningItem source= (LearningItem) data;
+            // LearningItem source= (LearningItem) data;
             //Toast.makeText(getContext(),"Save succesfull "+source.getId(),Toast.LENGTH_LONG).show();
-            getFragmentManager().popBackStackImmediate("TitleFragment",0);
-            hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
+            getFragmentManager().popBackStackImmediate("TitleFragment", 0);
+//            hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
         }
 
         @Override
         public void onError(int code, String message, String details) {
-            Log.w("ERROR",code+"-"+message+"-"+details);
+            Log.w("ERROR", code + "-" + message + "-" + details);
 
         }
     }
+
     public class UpdateServiceCallback implements ServiceCallback<Boolean> {
         @Override
         public void onComplete(Boolean data) {
             //LearningItem source= (LearningItem) data;
             //Toast.makeText(getContext(),"Save succesfull "+source.getId(),Toast.LENGTH_LONG).show();
-            if(data){
-                getFragmentManager().popBackStackImmediate("TitleFragment",0);
+            if (data) {
+                getFragmentManager().popBackStackImmediate("TitleFragment", 0);
 //                hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
-            }else {
-                Toast.makeText(getContext(),"Udpdate unsuccesfull PLease try later",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(), "Udpdate unsuccesfull PLease try later", Toast.LENGTH_LONG).show();
             }
 
         }
 
         @Override
         public void onError(int code, String message, String details) {
-            Log.w("ERROR",code+"-"+message+"-"+details);
+            Log.w("ERROR", code + "-" + message + "-" + details);
 
         }
     }
 
 
-
     @Override
     public void onBackstack(Object object, UserActionCallback callback) {
-        getFragmentManager().popBackStackImmediate("TitleFragment",0);
-       // hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
+        getFragmentManager().popBackStackImmediate("TitleFragment", 0);
+        // hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
         //super.onBackstack(object, callback);
     }
+
     @Override
     public void onBefore(@EventType.Event int event, final UserActionCallback callback) {
         new AlertDialog.Builder(getContext())
@@ -215,10 +215,11 @@ public class LearnigItemDetailFragment extends BaseFragment {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        getFragmentManager().popBackStackImmediate("TitleFragment",0);
-                       // hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
-                       // callback.onPass();
-                    }})
+                        getFragmentManager().popBackStackImmediate("TitleFragment", 0);
+                        // hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
+                        // callback.onPass();
+                    }
+                })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -234,25 +235,23 @@ public class LearnigItemDetailFragment extends BaseFragment {
     }
 
 
-
     private void OpenCameraIntent() {
 
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (pictureIntent.resolveActivity(this.getActivity().getPackageManager()) != null) {
 
-            File photoFile,storageDir = null;
+            File photoFile, storageDir = null;
             try {
                 storageDir = this.getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                 photoFile = mStorageHelper.createImageFile(storageDir);
                 imageFilePath = photoFile.getAbsolutePath();
-               // PackageManager packageManager=this.getActivity().getPackageManager();
-                Toast.makeText(getContext(),getContext().getPackageName(),Toast.LENGTH_LONG);
-            }
-            catch (IOException e) {
+                // PackageManager packageManager=this.getActivity().getPackageManager();
+                Toast.makeText(getContext(), getContext().getPackageName(), Toast.LENGTH_LONG);
+            } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
-            Uri photoUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() +".provider", photoFile);
+            Uri photoUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider", photoFile);
             pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(pictureIntent, REQUEST_IMAGE);
         }
@@ -276,18 +275,19 @@ public class LearnigItemDetailFragment extends BaseFragment {
                 imgPhotView.setImageURI(Uri.parse(imageFilePath));
                 Toast.makeText(getContext(), "Uploading..", Toast.LENGTH_SHORT).show();
 
-                if(gpsTracker.canGetLocation()){
-                    Location location= gpsTracker.getLocation();
-                    Coordinate coordinate=new Coordinate(location.getLatitude(),location.getLongitude());
+                if (gpsTracker.canGetLocation()) {
+                    Location location = gpsTracker.getLocation();
+                    if (location != null) {
+                        Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
 
-                    src.setCoordinate(coordinate);
+                        src.setCoordinate(coordinate);
+                    }
                 }
-            }
-            else if (resultCode == Activity.RESULT_CANCELED) {
+            } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getContext(), "You cancelled the operation", Toast.LENGTH_SHORT).show();
             }
             Uri file = Uri.fromFile(new File(imageFilePath));
-            String fN=mStorageHelper.uploadFile(file,new ServiceCallback<String>(){
+            String fN = mStorageHelper.uploadFile(file, new ServiceCallback<String>() {
 
                 @Override
                 public void onComplete(String data) {
@@ -296,10 +296,10 @@ public class LearnigItemDetailFragment extends BaseFragment {
 
                 @Override
                 public void onError(int code, String message, String details) {
-                    Log.e("","");
+                    Log.e("", "");
                 }
             });
-           // src.setPhotoURL(fN);
+            // src.setPhotoURL(fN);
             /*try {
                 Uri URl=mStorageHelper.GetdownloadFileUrl(fN).getResult();
                 src.setPhotoURL(URl.toString());

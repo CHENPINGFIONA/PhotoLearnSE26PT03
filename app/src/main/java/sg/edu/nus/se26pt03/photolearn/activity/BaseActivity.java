@@ -83,6 +83,11 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     }
 
     @Override
+    public final void onSummary(Object object, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( EventType.SUMMARY, false, object, callback, source);
+    }
+
+    @Override
     public final void onBackstack(Object object, UserActionCallback callback, UserActionListener source) {
         userActionEmitter.dynamicEmit( EventType.BACKSTACK, false, object, callback, source);
     }
@@ -203,6 +208,11 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     }
 
     @Override
+    public void onSummary(QuizTitle quizTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(EventType.SUMMARY, true, quizTitle, callback, null);
+    }
+
+    @Override
     public void onBackstack(Object object, UserActionCallback callback) {
         userActionEmitter.dynamicEmit(EventType.BACKSTACK, true, object, callback, null);
     }
@@ -230,7 +240,7 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
         bundle.putBoolean(fragment.ARG_STACKBACK, stackback);
         fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(containerViewId, fragment);
+        fragmentTransaction.replace(containerViewId, fragment, (tag == null ? fragment.getClass().getName(): tag));
         if (stackback) {
             if (tag != null) {
                 fragmentTransaction.addToBackStack(tag);

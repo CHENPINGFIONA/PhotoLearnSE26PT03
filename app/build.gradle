@@ -55,7 +55,7 @@ dependencies {
     compile 'com.firebaseui:firebase-ui:0.4.4'
     compile 'com.firebaseui:firebase-ui-auth:3.2.2'
     compile 'com.facebook.android:facebook-login:4.31.0'
-    compile'com.android.support:customtabs:26.0.0'
+    compile 'com.android.support:customtabs:26.0.0'
     compile 'com.android.support:support-annotations:24.2.0'
     testCompile 'org.powermock:powermock:1.6.5'
     testCompile 'org.powermock:powermock-module-junit4:1.6.5'

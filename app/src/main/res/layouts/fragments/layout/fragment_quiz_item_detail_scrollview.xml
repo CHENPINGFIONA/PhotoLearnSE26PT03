@@ -1,9 +1,21 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="sg.edu.nus.se26pt03.photolearn.fragment.QuizItemDetailFragment"
+    >
+
+    <data>
+
+        <import type="sg.edu.nus.se26pt03.photolearn.utility.BindingHelper" />
+        <variable
+            name="quizItem"
+            type="sg.edu.nus.se26pt03.photolearn.BAL.QuizItem" />
+    </data>
+
+
     <ScrollView
 
         android:layout_marginStart="1dp"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarAlwaysDrawVerticalTrack="true"
@@ -97,6 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                app:error="@{quizItem.contentError}"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp">
@@ -106,6 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="Add Question"
+                    android:text="@={quizItem.content}"
                     android:maxLines="10"
                     android:scrollbars="vertical" />
             </android.support.design.widget.TextInputLayout>
@@ -119,7 +133,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
 
-                android:checked="false"
+
                 android:duplicateParentState="false"
                 android:orientation="horizontal">
 
@@ -130,12 +144,17 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:gravity="center" />
+
+                    android:checked="@={quizItem.getQuizOptions.get(0).answer}"
+                    android:gravity="center"
+
+                    />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    app:error="@{quizItem.getOptionsError}"
                     android:layout_weight="3">
 
                     <EditText
@@ -146,7 +165,8 @@
                         android:gravity="left"
                         android:hint="Option 1"
                         android:inputType="textMultiLine"
-                        android:text="" />
+                        android:text="@={quizItem.getQuizOptions.get(0).content}"
+                        />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -171,12 +191,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:checked="@={quizItem.getQuizOptions.get(1).answer}"
                     android:gravity="center" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    app:error="@{quizItem.getOptionsError}"
                     android:layout_weight="3">
 
                     <EditText
@@ -187,7 +209,8 @@
                         android:gravity="left"
                         android:hint="Option 2"
                         android:inputType="textMultiLine"
-                        android:text="" />
+                        android:text="@={quizItem.getQuizOptions.get(1).content}"
+                        />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -212,12 +235,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:checked="@={quizItem.getQuizOptions.get(2).answer}"
+
                     android:gravity="center" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    app:error="@{quizItem.getOptionsError}"
                     android:layout_weight="3">
 
                     <EditText
@@ -228,7 +254,8 @@
                         android:gravity="left"
                         android:hint="Option 3"
                         android:inputType="textMultiLine"
-                        android:text="" />
+                        android:text="@={quizItem.getQuizOptions.get(2).content}"
+                        />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -251,12 +278,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:checked="@={quizItem.getQuizOptions.get(2).answer}"
                     android:gravity="center" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    app:error="@{quizItem.getOptionsError}"
                     android:layout_weight="3">
 
                     <EditText
@@ -267,7 +296,7 @@
                         android:gravity="left"
                         android:hint="Option 4"
                         android:inputType="textMultiLine"
-                        android:text="" />
+                        android:text="@={quizItem.getQuizOptions.get(3).content}" />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -281,9 +310,11 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
+                android:enabled="@{quizItem.validity}"
                 android:text="Save" />
 
 
         </LinearLayout>
     </ScrollView>
 
+</layout>
