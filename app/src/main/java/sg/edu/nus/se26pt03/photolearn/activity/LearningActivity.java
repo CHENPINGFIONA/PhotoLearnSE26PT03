@@ -130,7 +130,7 @@ public class LearningActivity extends BaseActivity {
             public void onPass() {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ConstHelper.REF_LEARNING_TITLES, learningTitle);
-                setFragment(R.id.fl_main, new LearningItemListFragment(), "Learning Title 1", true, "TitleFragment", bundle);
+                setFragment(R.id.fl_main, new LearningItemListFragment(), learningTitle.getTitle(), true, "TitleFragment", bundle);
             }
         });
     }
@@ -142,7 +142,7 @@ public class LearningActivity extends BaseActivity {
             public void onPass() {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ConstHelper.REF_LEARNING_ITEMS, learningItem);
-                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2", true, null, bundle);
+                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Add Item", true, null, bundle);
             }
         });
     }
@@ -154,7 +154,7 @@ public class LearningActivity extends BaseActivity {
             public void onPass() {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ConstHelper.REF_LEARNING_ITEMS, learningItem);
-                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Learming Item 2", true, null, bundle);
+                setFragment(R.id.fl_main, new LearnigItemDetailFragment(), "Edit Item", true, null, bundle);
             }
         });
     }
