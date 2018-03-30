@@ -37,6 +37,7 @@ public class QuizTitle extends Title implements Serializable {
         return 0;
     }
 
+
     public void getQuizSubmissionProgress(String createdBy, ServiceCallback<AbstractMap.SimpleEntry<Integer, Integer>> callback) {
         getQuizItems(new ServiceCallback<List<Item>>() {
             @Override

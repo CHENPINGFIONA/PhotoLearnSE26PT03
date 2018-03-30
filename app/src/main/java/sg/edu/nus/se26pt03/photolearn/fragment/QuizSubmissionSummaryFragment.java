@@ -103,13 +103,25 @@ public class QuizSubmissionSummaryFragment extends BaseFragment {
         }
         quizItemQuizAnswerListAdapter.notifyDataSetChanged();
         TextView tv_score = getView().findViewById(R.id.tv_score);
-        int totalQuestions = listQuizItemQuizAnswer.size();
-        int totalCorrectAnswer = 0;
+        double totalQuestions = listQuizItemQuizAnswer.size();
+        double totalScore = 0.00;
         for(AbstractMap.SimpleEntry<QuizItem, QuizAnswer> quizItemQuizAnswer: listQuizItemQuizAnswer) {
+            double totalAnswer = 0;
+            double totalCorrectAnswer = 0;
             for(QuizOption quizOption: quizItemQuizAnswer.getKey().getQuizOptions()) {
-//                quizOption.
+                if (quizOption.isAnswer()) {
+                    totalAnswer++;
+                    if (quizItemQuizAnswer.getValue().getSelectedOptionIds().indexOf(quizOption.getId()) >= 0) {
+                        totalCorrectAnswer++;
+                   }
+                }
+
+            }
+            if (totalCorrectAnswer == totalAnswer) {
+                totalScore = totalScore + 1;//(totalCorrectAnswer / totalAnswer);
             }
         }
+        tv_score.setText("Your score: " + totalScore + " out of " + totalQuestions + "");
     }
 
     private void setupControls() {

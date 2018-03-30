@@ -52,8 +52,8 @@ public class QuizItem extends Item implements Serializable, Cloneable {
 
     public void getQuizAnswers(String createdBy, ServiceCallback<List<QuizAnswer>> callback) {
         List<AbstractMap.SimpleEntry<String, Object>> listKeyValue = new ArrayList<AbstractMap.SimpleEntry<String, Object>>();
-        listKeyValue.add(new AbstractMap.SimpleEntry<String, Object>("quizItemId", this.getId()));
         listKeyValue.add(new AbstractMap.SimpleEntry<String, Object>("createdBy", createdBy));
+        listKeyValue.add(new AbstractMap.SimpleEntry<String, Object>("quizItemId", this.getId()));
         quizAnswerService.getAllByKeyValueList(listKeyValue, callback);
     }
 

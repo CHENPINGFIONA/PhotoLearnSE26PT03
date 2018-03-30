@@ -88,7 +88,7 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
                             if (data.getKey() == data.getValue()) {
                                 new AlertDialog.Builder(getContext())
                                         .setTitle("Confirmation")
-                                        .setMessage("You already submitted all quizes!\n Please choose the action of your choice to proceed?")
+                                        .setMessage("You already submitted this quiz!\nPlease choose the action of your choice to proceed?")
                                         .setPositiveButton("View Summary", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int whichButton) {

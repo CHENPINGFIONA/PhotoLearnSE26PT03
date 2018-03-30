@@ -212,7 +212,7 @@ public class QuizItemFragment extends BaseFragment {
                     quizAnswer = data;
                     ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
                     if (isLastQuizItem() && direction == 2) {
-                        //inflate your summary here MM
+                        onSummary((QuizTitle) quizItem.getTitle(), null);
                     } else {
                         mPager.arrowScroll(direction);
                     }
@@ -235,7 +235,7 @@ public class QuizItemFragment extends BaseFragment {
                         ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
                     } else displayInfoMessage("Error occured when updating Quiz Answer!");
                     if (isLastQuizItem() && direction == 2) {
-                        //inflate your summary here MM
+                        onSummary((QuizTitle) quizItem.getTitle(), null);
                     } else {
                         mPager.arrowScroll(direction);
                     }
