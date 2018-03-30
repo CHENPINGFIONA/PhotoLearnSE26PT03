@@ -146,7 +146,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
         RecyclerView recyclerView = getView().findViewById(R.id.rv_learning_title);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(learningTitleListAdapter);
-        final SwipeController swipeController = new SwipeController(0, (App.getCurrentAccessMode() == AccessMode.EDIT ? R.layout.partial_swipe_item : 0)) {
+        final SwipeController swipeController = new SwipeController(0, (App.getCurrentAppMode()==AppMode.TRAINER ? R.layout.partial_swipe_item : 0)) {
             @Override
             public void onRevealInflated(View view, int position) {
                 if (view instanceof LinearLayout) {
