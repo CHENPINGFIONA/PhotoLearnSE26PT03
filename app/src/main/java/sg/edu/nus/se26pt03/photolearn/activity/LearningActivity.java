@@ -77,11 +77,12 @@ public class LearningActivity extends BaseActivity {
 
     @Override
     public void onAccessModeChange(int mode, UserActionCallback callback) {
+        App.setCurrentAccessMode(mode);
+        @AccessMode.Mode int orginalAccessMode = App.getCurrentAccessMode();
         super.onAccessModeChange(mode, new UserActionCallback() {
             @Override
-            public void onPass() {
-                App.setCurrentAccessMode(mode);
-                //Refresh current fragment
+            public void onReject() {
+                App.setCurrentAccessMode(orginalAccessMode);
             }
         });
     }
