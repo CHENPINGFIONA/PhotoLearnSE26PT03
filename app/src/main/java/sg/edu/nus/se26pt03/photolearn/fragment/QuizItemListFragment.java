@@ -98,7 +98,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     }
 
     public void updateCurrentAttempt(QuizAnswer quizAnswer) {
-        if (currentAttempt != null && !currentAttempt.getQuizItemId().equals(quizAnswer.getQuizItemId())) {
+        if (currentAttempt != null && currentAttempt.getQuizItemId() != null && !currentAttempt.getQuizItemId().equals(quizAnswer.getQuizItemId())) {
             currentAttempt.setIsCurrentAttempt(false);
             quizAnswerService.update(currentAttempt, new ServiceCallback<Boolean>() {
                 @Override

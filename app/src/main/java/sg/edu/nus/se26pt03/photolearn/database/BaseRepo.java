@@ -240,7 +240,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
         String[] keys = key.split("\\.");
         Class<?> c = object.getClass();
         try {
-            Method m = c.getDeclaredMethod("get"+ keys[0].substring(0,1).toUpperCase() + keys[0].substring(1), null);
+            Method m = c.getDeclaredMethod("get"+ keys[0].substring(0,1).toUpperCase() + keys[0].substring(1), new  Class[ 0 ]);
             Object readValue = null;
             try {
                 readValue = m.invoke(object);

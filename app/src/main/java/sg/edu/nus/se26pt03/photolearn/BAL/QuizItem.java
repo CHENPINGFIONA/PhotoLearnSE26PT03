@@ -41,7 +41,7 @@ public class QuizItem extends Item implements Serializable, Cloneable {
 
     private int position;
 
-    private QuizAnswerService quizAnswerService;
+    private transient QuizAnswerService quizAnswerService;
 
     public QuizItem(Title title) {
 
