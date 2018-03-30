@@ -118,21 +118,34 @@
                 android:layout_marginTop="8dp"
                 android:text="Option Four" />
 
-            <Button
-                android:id="@+id/btn_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|bottom"
-                android:text="Next"
-                />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
 
-            <Button
-                android:id="@+id/btn_prev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
-                android:text="Previous"
-                />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_next"
+                    android:layout_margin="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Next" />
+
+                <Button
+                    android:id="@+id/btn_prev"
+                    android:layout_margin="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Previous" />
+            </RelativeLayout>
+
+
         </LinearLayout>
 
     </ScrollView>
