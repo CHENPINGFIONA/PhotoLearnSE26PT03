@@ -41,7 +41,7 @@ public class QuizItemService extends BaseService<Item, QuizItemDAO> {
                 result.setId(value.getId());
                 if (value.getQuizOptionDAOS() != null) {
                     for (QuizOptionDAO optionDAO : value.getQuizOptionDAOS()) {
-                        QuizOption option = new QuizOption(optionDAO.getQuizItemId());
+                        QuizOption option = new QuizOption(result);
                         option.setAnswer(optionDAO.isAnswer());
                         option.setContent(optionDAO.getContent());
                         result.Add(option);

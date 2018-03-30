@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -44,6 +45,8 @@ import sg.edu.nus.se26pt03.photolearn.BAL.QuizOption;
 import sg.edu.nus.se26pt03.photolearn.BAL.Title;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
+import sg.edu.nus.se26pt03.photolearn.databinding.FragmentLearningItemDetailBinding;
+import sg.edu.nus.se26pt03.photolearn.databinding.FragmentQuizItemDetailScrollviewBinding;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
@@ -58,6 +61,8 @@ import sg.edu.nus.se26pt03.photolearn.utility.GPSTracker;
  * Created by MyatMin on 08/3/18.
  */
 public class QuizItemDetailFragment extends BaseFragment {
+    private FragmentQuizItemDetailScrollviewBinding binding;
+
     private QuizItem src = null;
     private List<QuizOption> quizOptions = null;
     private Title title = null;
@@ -80,6 +85,7 @@ public class QuizItemDetailFragment extends BaseFragment {
     public static final int REQUEST_IMAGE = 100;
     public static final int REQUEST_PERMISSION = 200;
     private String imageFilePath = "";
+    private QuizItem srcCopy;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,11 +103,23 @@ public class QuizItemDetailFragment extends BaseFragment {
         mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
         role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
         userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
-
-        return inflater.inflate(R.layout.fragment_quiz_item_detail_scrollview, container, false);
-
+        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_quiz_item_detail_scrollview, container, false);
+                View view = binding.getRoot();
+        setupData(binding);
+       // return inflater.inflate(R.layout.fragment_quiz_item_detail_scrollview, container, false);
+        return view;
     }
-
+    private void setupData(FragmentQuizItemDetailScrollviewBinding binding) {
+        try {
+            src = (QuizItem) this.getArguments().getSerializable(ConstHelper.REF_QUIZ_ITEMS);
+            title=src.getTitle();
+            srcCopy = src.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            Log.d(this.getClass().getSimpleName(), e.getMessage());
+        }
+        binding.setQuizItem(src);
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -214,24 +232,24 @@ public class QuizItemDetailFragment extends BaseFragment {
         @Override
         public void onComplete(Item data) {
             QuizItem source = (QuizItem) data;
-            QuizOption option1 = new QuizOption(source.getId());
+            QuizOption option1 = new QuizOption(source);
             option1.setContent(editOption1TxtView.getText().toString());
             option1.setAnswer(chkOption1.isChecked());
             source.Add(option1);
 
-            QuizOption option2 = new QuizOption(source.getId());
+            QuizOption option2 = new QuizOption(source);
             option2.setContent(editOption2TxtView.getText().toString());
             option2.setAnswer(chkOption2.isChecked());
             source.Add(option2);
             // source.createQuizOption(option2,SaveOptionServiceCallback);
 
-            QuizOption option3 = new QuizOption(source.getId());
+            QuizOption option3 = new QuizOption(source);
             option3.setContent(editOption3TxtView.getText().toString());
             option3.setAnswer(chkOption3.isChecked());
             source.Add(option3);
             //source.createQuizOption(option3,SaveOptionServiceCallback);
 
-            QuizOption option4 = new QuizOption(source.getId());
+            QuizOption option4 = new QuizOption(source);
             option4.setContent(editOption4TxtView.getText().toString());
             option4.setAnswer(chkOption4.isChecked());
             source.Add(option4);

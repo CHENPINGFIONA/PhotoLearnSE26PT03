@@ -1,5 +1,6 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,11 @@ public class QuizAnswer {
     private List<String> selectedOptionIds;
 
     private transient List<QuizOption> answerOptions;
+
+    public QuizAnswer() {
+        selectedOptionIds=new ArrayList<>();
+
+    }
 
     public List<QuizOption> getAnswerOptions() {
         return answerOptions;

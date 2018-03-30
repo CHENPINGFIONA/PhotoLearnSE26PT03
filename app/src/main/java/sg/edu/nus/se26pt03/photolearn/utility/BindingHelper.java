@@ -9,12 +9,15 @@ import android.view.View;
 
 import org.w3c.dom.Text;
 
+import java.security.cert.PKIXRevocationChecker;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizOption;
 import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.App;
 
@@ -53,9 +56,50 @@ public abstract class BindingHelper {
         return String.format(App.getContext().getResources().getString(R.string.format_modulenumber_display), value).toString();
     }
 
+
     public static int toVisibility(boolean value) {
         if (!value) return View.INVISIBLE;
         else return View.VISIBLE;
+    }
+    @InverseMethod("setIsAnswer")
+    public static Boolean getIsAnswer(List<QuizOption> options, int position) {
+        if(options!=null && options.size()>0){
+            QuizOption opt= options.get(position);
+            return opt.isAnswer();
+        }
+        return  false;
+    }
+
+    public static Boolean setIsAnswer(List<QuizOption> options, int position) {
+        if(options!=null && options.size()>0){
+            QuizOption opt= options.get(position);
+            return opt.isAnswer();
+        }
+        return  false;
+    }
+   /* @InverseMethod("setContent")
+    public static String getContent(String value,List<QuizOption> options, int position) {
+        if(options!=null && options.size()>0){
+            QuizOption opt= options.get(position);
+            return opt.getContent();
+        }
+        return  "";
+    }
+    public static String setContent(String value,List<QuizOption> options, int position) {
+        if(options!=null && options.size()>0){
+            QuizOption opt= options.get(position);
+            opt.setContent(value);
+            opt.getContent();
+        }
+        return  "";
+    }*/
+
+    public static String getContentError(List<QuizOption> options, int position) {
+        if(options!=null && options.size()>0){
+            QuizOption opt= options.get(position);
+            return opt.getContentError();
+        }
+        return  "";
     }
 
     @BindingAdapter("error")
