@@ -76,15 +76,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz_item_list, container, false);
-        //  super.onCreateView(inflater, container, savedInstanceState);
-        //setContentView(R.layout.activity_view_page_with_fragment);
         quizTitle = (QuizTitle) getArguments().getSerializable(ConstHelper.REF_QUIZ_TITLES);
-        // sessionId = "1";
-        //titleId="-L88Kii8Oc5tSrTBxNaW";
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
-        role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
-        userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
-
         return view;
     }
 
@@ -92,9 +84,6 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupControls();
-        // setupViews();
-
-
     }
 
     public void updateCurrentAttempt(QuizAnswer quizAnswer) {
@@ -209,7 +198,6 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
 
     }
 
-
     private void loadList() {
         srf_quizItemList.setRefreshing(true);
         this.quizTitle.getItems(new ServiceCallback<List<Item>>() {
@@ -231,30 +219,6 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                 }
             }
 
-            private void getLastAttempt() {
-                List<String> quizItemIds = quizItemList.stream().map(x -> x.getId()).collect(Collectors.toList());
-                quizAnswerService.getCurrentAttemptByQuizItemIDAndParticipantID
-                        (App.getCurrentUser().getId(), quizItemIds, new ServiceCallback<QuizAnswer>() {
-                            @Override
-                            public void onComplete(QuizAnswer data) {
-                                currentAttempt = data;
-                                if (data == null) {
-                                    return;
-                                }
-                                OptionalInt position = IntStream.range(0, quizItemIds.size()).filter(i -> (data.getQuizItemId()).equals(quizItemIds.get(i))).findFirst();
-                                if (position.isPresent() && position.getAsInt() >= 0) {
-                                    int currentPosition = position.getAsInt() + 1;
-                                    mPager.setCurrentItem(currentPosition > mPagerAdapter.getCount() - 1 ? currentPosition - 1 : currentPosition);
-                                }
-                            }
-
-                            @Override
-                            public void onError(int code, String message, String details) {
-                                displayErrorMessage(message);
-                            }
-                        });
-            }
-
             @Override
             public void onError(int code, String message, String details) {
                 Log.w("ERROR", code + "-" + message + "-" + details);
@@ -263,6 +227,29 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
         });
     }
 
+    private void getLastAttempt() {
+        List<String> quizItemIds = quizItemList.stream().map(x -> x.getId()).collect(Collectors.toList());
+        quizAnswerService.getCurrentAttemptByQuizItemIDAndParticipantID
+                (App.getCurrentUser().getId(), quizItemIds, new ServiceCallback<QuizAnswer>() {
+                    @Override
+                    public void onComplete(QuizAnswer data) {
+                        currentAttempt = data;
+                        if (data == null) {
+                            return;
+                        }
+                        OptionalInt position = IntStream.range(0, quizItemIds.size()).filter(i -> (data.getQuizItemId()).equals(quizItemIds.get(i))).findFirst();
+                        if (position.isPresent() && position.getAsInt() >= 0) {
+                            int currentPosition = position.getAsInt() + 1;
+                            mPager.setCurrentItem(currentPosition > mPagerAdapter.getCount() - 1 ? currentPosition - 1 : currentPosition);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code, String message, String details) {
+                        displayErrorMessage(message);
+                    }
+                });
+    }
 
     @Override
     public void onRefresh() {
