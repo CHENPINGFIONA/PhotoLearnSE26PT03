@@ -116,6 +116,9 @@ public class UserActionEmitter {
                         case EventType.EDIT:
                             outBound.onEdit(object, outboundCallback, base);
                             break;
+                        case EventType.SUMMARY:
+                            outBound.onSummary(object, outboundCallback, base);
+                            break;
                         case EventType.BACKSTACK:
                             outBound.onBackstack(object, outboundCallback, base);
                             break;
@@ -190,6 +193,10 @@ public class UserActionEmitter {
                     else if (object instanceof QuizAnswer)
                         base.onEdit((QuizAnswer) object, callback);
                     break;
+                    case EventType.SUMMARY:
+                        if (object instanceof QuizTitle)
+                            base.onEdit((QuizTitle) object, callback);
+                        break;
                 case EventType.BACKSTACK:
                     base.onBackstack(object, callback);
             }

@@ -83,6 +83,11 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     }
 
     @Override
+    public final void onSummary(Object object, UserActionCallback callback, UserActionListener source) {
+        userActionEmitter.dynamicEmit( EventType.SUMMARY, false, object, callback, source);
+    }
+
+    @Override
     public final void onBackstack(Object object, UserActionCallback callback, UserActionListener source) {
         userActionEmitter.dynamicEmit( EventType.BACKSTACK, false, object, callback, source);
     }
@@ -200,6 +205,11 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     @Override
     public void onEdit(QuizAnswer quizAnswer, UserActionCallback callback) {
         userActionEmitter.dynamicEmit(EventType.EDIT, true, quizAnswer, callback, null);
+    }
+
+    @Override
+    public void onSummary(QuizTitle quizTitle, UserActionCallback callback) {
+        userActionEmitter.dynamicEmit(EventType.SUMMARY, true, quizTitle, callback, null);
     }
 
     @Override

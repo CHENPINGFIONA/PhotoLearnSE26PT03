@@ -59,7 +59,7 @@ public class QuizSubmissionSummaryFragment extends BaseFragment {
             @Override
             public void onComplete(List<Item> data) {
                 for (Item item : data) {
-                    item.getQuizAnswer(App.getCurrentUser().getId(), new ServiceCallback<List<QuizAnswer>>() {
+                    ((QuizItem) item).getQuizAnswers(App.getCurrentUser().getId(), new ServiceCallback<List<QuizAnswer>>() {
                         int totalRecievedQuizItem = 0;
                         @Override
                         public void onComplete(List<QuizAnswer> childData) {

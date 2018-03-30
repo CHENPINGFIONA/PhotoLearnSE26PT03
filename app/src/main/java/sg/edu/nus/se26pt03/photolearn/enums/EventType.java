@@ -18,14 +18,15 @@ public class EventType {
     public static final int LOAD = 5;
     public static final int CREATE = 6;
     public static final int EDIT = 7;
-    public static final int BACKSTACK = 8;
+    public static final int SUMMARY = 8;
+    public static final int BACKSTACK = 9;
 
 
 
     public EventType(@Event int event) {
     }
 
-    @IntDef({BEFORE, APPMODE_CHANGE, ACCESSMODE_CHANGE, LOGIN, LOGOUT, LOAD, CREATE, EDIT, BACKSTACK})
+    @IntDef({BEFORE, APPMODE_CHANGE, ACCESSMODE_CHANGE, LOGIN, LOGOUT, LOAD, CREATE, EDIT, SUMMARY, BACKSTACK})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Event {}
 }
