@@ -44,7 +44,7 @@ public class QuizItemService extends BaseService<Item, QuizItemDAO> {
                         QuizOption option = new QuizOption(result);
                         option.setAnswer(optionDAO.isAnswer());
                         option.setContent(optionDAO.getContent());
-                        result.Add(option);
+                        result.add(option);
                     }
                 }
                 result.setPosition(value.getPosition());
