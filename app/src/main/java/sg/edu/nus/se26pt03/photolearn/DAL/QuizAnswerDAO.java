@@ -12,7 +12,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 public class QuizAnswerDAO extends BaseDAO {
     private String QuizItemId;
-
+    private boolean isCurrentAttempt;
     private List<String> SelectedQuizOptionIds;
 
     public String getQuizItemId() {
@@ -21,6 +21,14 @@ public class QuizAnswerDAO extends BaseDAO {
 
     public void setQuizItemId(String quizItemId) {
         QuizItemId = quizItemId;
+    }
+
+    public boolean getIsCurrentAttempt() {
+        return isCurrentAttempt;
+    }
+
+    public void setIsCurrentAttempt(boolean currentAttempt) {
+        isCurrentAttempt = currentAttempt;
     }
 
     public List<String> getSelectedQuizOptionIds() {
