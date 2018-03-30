@@ -51,25 +51,38 @@ public class QuizItemQuizAnswerListAdapter extends RecyclerView.Adapter<QuizItem
 
     @Override
     public void onBindViewHolder(QuizItemQuizAnswerViewHolder holder, int position) {
-        AsyncLoadImageHelper loader = new AsyncLoadImageHelper(holder.img_quizitem_photo, holder.itemView.getContext(), holder.pb_quizitem_photo);
-        loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, listQuizItemQuizAnswer.get(position).getKey().getPhotoURL());
+        if(!listQuizItemQuizAnswer.get(position).getKey().getPhotoURL().equals("")) {
+            AsyncLoadImageHelper loader = new AsyncLoadImageHelper(holder.img_quizitem_photo, holder.itemView.getContext(), holder.pb_quizitem_photo);
+            loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, listQuizItemQuizAnswer.get(position).getKey().getPhotoURL());
+        }
+        else {
+            holder.img_quizitem_photo.setVisibility(View.GONE);
+            holder.pb_quizitem_photo.setVisibility(View.GONE);
+        }
         holder.tv_quizitem_content.setText(listQuizItemQuizAnswer.get(position).getKey().getContent());
+        holder.ll_quizitem_options.removeAllViews();
         for (QuizOption quizOption : listQuizItemQuizAnswer.get(position).getKey().getQuizOptions()) {
             QuizAnswer quizAnswer = listQuizItemQuizAnswer.get(position).getValue();
             CheckedTextView ctv_quizoption = new CheckedTextView(holder.itemView.getContext());
             ctv_quizoption.setWidth(holder.itemView.getWidth());
-            ctv_quizoption.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-            ctv_quizoption.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            ctv_quizoption.setCheckMarkDrawable(R.drawable.ic_check_circle_black_24dp);
-            ctv_quizoption.setChecked(quizAnswer.getSelectedOptionIds().get(quizAnswer.getSelectedOptionIds().indexOf(quizOption.getId())) != null);
+            ctv_quizoption.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (quizAnswer.getSelectedOptionIds().indexOf(quizOption.getId()) >= 0) {
+                ctv_quizoption.setChecked(true);
+                ctv_quizoption.setCheckMarkDrawable(R.drawable.ic_check_circle_black_24dp);
+                Drawable drawable = ctv_quizoption.getCheckMarkDrawable();
+                drawable.mutate().setColorFilter(holder.itemView.getContext().getColor(R.color.correctQuizOptionColor), PorterDuff.Mode.SRC_IN);
+                if (!quizOption.isAnswer()) {
+                    drawable.mutate().setColorFilter(holder.itemView.getContext().getColor(R.color.incorrectQuizOptionColor), PorterDuff.Mode.SRC_IN);
+
+                }
+            }
+            else
+            {
+                ctv_quizoption.setChecked(false);
+            }
+            ctv_quizoption.setText(quizOption.getContent());
             ctv_quizoption.setCheckMarkTintMode(PorterDuff.Mode.DST_ATOP);
             ctv_quizoption.setClickable(false);
-            Drawable drawable = ctv_quizoption.getCheckMarkDrawable();
-            drawable.mutate().setColorFilter(holder.itemView.getContext().getColor(R.color.correctQuizOptionColor), PorterDuff.Mode.SRC_IN);
-            if (!quizOption.isAnswer()) {
-                drawable.mutate().setColorFilter(holder.itemView.getContext().getColor(R.color.incorrectQuizOptionColor), PorterDuff.Mode.SRC_IN);
-
-            }
             holder.ll_quizitem_options.addView(ctv_quizoption);
         }
     }
@@ -88,7 +101,7 @@ public class QuizItemQuizAnswerListAdapter extends RecyclerView.Adapter<QuizItem
             super(itemView);
             img_quizitem_photo = itemView.findViewById(R.id.img_quizitem_photo);
             pb_quizitem_photo = itemView.findViewById(R.id.pb_quizitem_photo);
-            tv_quizitem_content = itemView.findViewById(R.id.pb_quizitem_photo);
+            tv_quizitem_content = itemView.findViewById(R.id.tv_quizitem_content);
             ll_quizitem_options = itemView.findViewById(R.id.ll_quizitem_options);
         }
     }

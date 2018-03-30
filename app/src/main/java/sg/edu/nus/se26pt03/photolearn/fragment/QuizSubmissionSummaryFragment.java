@@ -3,6 +3,7 @@ package sg.edu.nus.se26pt03.photolearn.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,10 +43,14 @@ public class QuizSubmissionSummaryFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setupData();
         return inflater.inflate(R.layout.fragment_quiz_submission_summary, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        setupControls();
     }
 
     private void setupData() {
@@ -55,19 +60,18 @@ public class QuizSubmissionSummaryFragment extends BaseFragment {
 
     private void loadData() {
         srf_quizitem_quizanswer.setRefreshing(true);
+        listQuizItemQuizAnswer.clear();
         quizTitle.getQuizItems(new ServiceCallback<List<Item>>() {
             @Override
             public void onComplete(List<Item> data) {
                 for (Item item : data) {
                     ((QuizItem) item).getQuizAnswers(App.getCurrentUser().getId(), new ServiceCallback<List<QuizAnswer>>() {
-                        int totalRecievedQuizItem = 0;
                         @Override
                         public void onComplete(List<QuizAnswer> childData) {
                             if (childData.size() > 0) {
                                 listQuizItemQuizAnswer.add(new AbstractMap.SimpleEntry<QuizItem, QuizAnswer>((QuizItem) item, childData.get(0)));
                                 refreshViews();
-                                totalRecievedQuizItem = totalRecievedQuizItem + 1;
-                                if (totalRecievedQuizItem >= data.size()) {
+                                if (listQuizItemQuizAnswer.size() >= data.size()) {
                                     srf_quizitem_quizanswer.setRefreshing(false);
                                 }
                             }

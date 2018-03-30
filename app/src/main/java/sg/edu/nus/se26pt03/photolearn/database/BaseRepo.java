@@ -177,10 +177,10 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
             getAllByKeyValue(listKeyValue.get(0).getKey(), listKeyValue.get(0).getValue(), new RepoCallback<List<T>>() {
                 @Override
                 public void onComplete(List<T> data) {
-                    List<T> result = data;
-                    if (result != null) {
+                    List<T> result = new ArrayList<T>(data);
+                    if (data != null) {
                         for(int i = 1; i < listKeyValue.size(); i++) {
-                            for (T t : result) {
+                            for (T t : data) {
                                 if (!isValid(t, listKeyValue.get(i).getKey(), listKeyValue.get(i).getValue()))
                                 {
                                     result.remove(t);
@@ -240,7 +240,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
         String[] keys = key.split("\\.");
         Class<?> c = object.getClass();
         try {
-            Method m = c.getDeclaredMethod("get"+ keys[0].substring(0,1).toUpperCase() + keys[0].substring(1), new  Class[ 0 ]);
+            Method m = c.getMethod("get"+ keys[0].substring(0,1).toUpperCase() + keys[0].substring(1), new  Class[ 0 ]);
             Object readValue = null;
             try {
                 readValue = m.invoke(object);

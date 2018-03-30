@@ -5,6 +5,7 @@
     android:id="@+id/cv_quizanswer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:clickable="false"
     android:focusable="true"
     app:cardCornerRadius="0dp">
@@ -16,12 +17,15 @@
 
         <ImageView
             android:id="@+id/img_quizitem_photo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="false"
             android:cropToPadding="false"
+            android:maxHeight="250dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_upload_image"></ImageView>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
 
         <ProgressBar
             android:id="@+id/pb_quizitem_photo"
@@ -40,9 +44,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            app:layout_constraintTop_toBottomOf="@+id/img_quizitem_photo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/img_quizitem_photo" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/ll_quizitem_options"
@@ -55,18 +59,5 @@
             app:layout_constraintTop_toBottomOf="@id/tv_quizitem_content">
 
         </LinearLayout>
-
-        <CheckedTextView
-            android:id="@+id/ctv_quizitem_option1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:checkMark="@drawable/ic_check_circle_black_24dp"
-            android:checkMarkTint="@color/colorAccent"
-            android:checked="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_quizitem_content" />
-
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

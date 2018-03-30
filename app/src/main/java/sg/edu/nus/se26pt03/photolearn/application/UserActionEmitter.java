@@ -195,7 +195,7 @@ public class UserActionEmitter {
                     break;
                     case EventType.SUMMARY:
                         if (object instanceof QuizTitle)
-                            base.onEdit((QuizTitle) object, callback);
+                            base.onSummary((QuizTitle) object, callback);
                         break;
                 case EventType.BACKSTACK:
                     base.onBackstack(object, callback);

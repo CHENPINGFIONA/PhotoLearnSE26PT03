@@ -40,11 +40,14 @@ public class QuizItemService extends BaseService<Item, QuizItemDAO> {
                 result.setCreatedBy(value.getCreatedBy());
                 result.setId(value.getId());
                 if (value.getQuizOptions() != null) {
+                    int i = 0;
                     for (QuizOptionDAO optionDAO : value.getQuizOptions()) {
                         QuizOption option = new QuizOption(result);
                         option.setAnswer(optionDAO.isAnswer());
                         option.setContent(optionDAO.getContent());
+                        option.setId(Integer.toString(i));
                         result.Add(option);
+                        i++;
                     }
                 }
                 result.setPosition(value.getPosition());
