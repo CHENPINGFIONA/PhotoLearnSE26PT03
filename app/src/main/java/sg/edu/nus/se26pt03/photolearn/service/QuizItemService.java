@@ -39,8 +39,8 @@ public class QuizItemService extends BaseService<Item, QuizItemDAO> {
                 result.setPhotoURL(value.getPhotoURL());
                 result.setCreatedBy(value.getCreatedBy());
                 result.setId(value.getId());
-                if (value.getQuizOptionDAOS() != null) {
-                    for (QuizOptionDAO optionDAO : value.getQuizOptionDAOS()) {
+                if (value.getQuizOptions() != null) {
+                    for (QuizOptionDAO optionDAO : value.getQuizOptions()) {
                         QuizOption option = new QuizOption(result);
                         option.setAnswer(optionDAO.isAnswer());
                         option.setContent(optionDAO.getContent());
@@ -66,7 +66,7 @@ public class QuizItemService extends BaseService<Item, QuizItemDAO> {
                         optionDAO.setQuizItemId(quizOption.getQuizItemId());
                         optionDAO.setAnswer(quizOption.isAnswer());
                         optionDAO.setContent(quizOption.getContent());
-                        result.getQuizOptionDAOS().add(optionDAO);
+                        result.getQuizOptions().add(optionDAO);
                         i++;
 
                     }

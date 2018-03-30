@@ -65,7 +65,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     private ImageView popupimagebutton;
     private QuizTitle quizTitle;
     private SwipeRefreshLayout srf_quizItemList;
-    private ViewPager mPager;
+    private sg.edu.nus.se26pt03.photolearn.view.ViewPager mPager;
     private PagerAdapter mPagerAdapter;
     private TextView tvEmpty;
     private FloatingActionButton Add;
@@ -136,7 +136,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                 popupMenu.show();
             }
         });
-        mPager = (ViewPager) getView().findViewById(R.id.vp_quizitem);
+        mPager = getView().findViewById(R.id.vp_quizitem);
         mPagerAdapter = new QuizItemFragmentPageAdapter(getChildFragmentManager(), quizTitle, this.quizItemList);
         mPager.setAdapter(mPagerAdapter);
 

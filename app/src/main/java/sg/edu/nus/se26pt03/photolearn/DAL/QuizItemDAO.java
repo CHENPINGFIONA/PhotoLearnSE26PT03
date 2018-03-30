@@ -38,18 +38,18 @@ public class QuizItemDAO extends  BaseDAO {
     private double Latitude;
     private double Longitude;
     public QuizItemDAO() {
-        this.quizOptionDAOS= new ArrayList<>();
+        this.quizOptions= new ArrayList<>();
     }
 
-    public List<QuizOptionDAO> getQuizOptionDAOS() {
-        return quizOptionDAOS;
+    public List<QuizOptionDAO> getQuizOptions() {
+        return quizOptions;
     }
 
-    public void setQuizOptionDAOS(List<QuizOptionDAO> quizOptionDAOS) {
-        this.quizOptionDAOS = quizOptionDAOS;
+    public void setQuizOptions(List<QuizOptionDAO> quizOptionDAOS) {
+        this.quizOptions = quizOptionDAOS;
     }
 
-    private List<QuizOptionDAO> quizOptionDAOS;
+    private List<QuizOptionDAO> quizOptions;
 
     public String getQuizTitleId() {
         return QuizTitleId;

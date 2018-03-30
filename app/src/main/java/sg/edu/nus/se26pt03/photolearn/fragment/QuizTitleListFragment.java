@@ -72,7 +72,7 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
 
     private void setupData() {
         learningSession = (LearningSession) getArguments().getSerializable("learningSession");
-        quizTitleService = new QuizTitleService();
+        quizTitleService = new QuizTitleService(learningSession);
         quizTitles = learningSession.getQuizTitles();
         quizTitleListAdapter = new QuizTitleListAdapter(quizTitles, new QuizTitleListAdapter.QuizTitleViewHolderClick() {
             @Override

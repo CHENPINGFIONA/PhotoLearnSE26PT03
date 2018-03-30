@@ -57,7 +57,7 @@ public class QuizItemFragment extends BaseFragment {
     private QuizAnswer quizAnswer;
     private GPSHelper gpsHelper;
     private CheckBox chk_opt1, chk_opt2, chk_opt3, chk_opt4;
-    private ViewPager mPager;
+    private sg.edu.nus.se26pt03.photolearn.view.ViewPager mPager;
     private Button btnPrev;
     private Button btnNext;
 
@@ -93,20 +93,7 @@ public class QuizItemFragment extends BaseFragment {
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_quiz_item_scrollview, container, false);
 
-        quizAnswerService.getByQuizItemIDAndParticipantID(quizItem.getId(), App.getCurrentUser().getId(), new ServiceCallback<QuizAnswer>() {
-            @Override
-            public void onComplete(QuizAnswer data) {
-                quizAnswer = data;
-                if (quizAnswer != null && !quizAnswer.getSelectedOptionIds().isEmpty()) {
-                    setCheckBoxs(data.getSelectedOptionIds());
-                }
-            }
 
-            @Override
-            public void onError(int code, String message, String details) {
-                displayErrorMessage(message);
-            }
-        });
 
         return rootView;
     }
@@ -116,6 +103,25 @@ public class QuizItemFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setupControl();
         setupView();
+        if (App.getCurrentAppMode() == AppMode.PARTICIPENT)
+            bindParticipantQuizAnswer();
+    }
+
+    private void bindParticipantQuizAnswer() {
+        quizAnswerService.getByQuizItemIDAndParticipantID(quizItem.getId(), App.getCurrentUser().getId(), new ServiceCallback<QuizAnswer>() {
+            @Override
+            public void onComplete(QuizAnswer data) {
+                quizAnswer = data;
+                if (quizAnswer != null && quizAnswer.getSelectedOptionIds()!=null  && !quizAnswer.getSelectedOptionIds().isEmpty()) {
+                    setCheckBoxs(data.getSelectedOptionIds());
+                }
+            }
+
+            @Override
+            public void onError(int code, String message, String details) {
+                displayErrorMessage(message);
+            }
+        });
     }
 
     ImageView imgPhotView;
@@ -133,17 +139,27 @@ public class QuizItemFragment extends BaseFragment {
 
         btnPrev = (Button) getView().findViewById(R.id.btn_prev);
         btnNext = (Button) getView().findViewById(R.id.btn_next);
-        mPager = (ViewPager) getParentFragment().getView().findViewById(R.id.vp_quizitem);
+        mPager = getParentFragment().getView().findViewById(R.id.vp_quizitem);
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveOrUpdateQuizAnswer(1);
+                List<String> checkedIds = getCheckedIds();
+                if (checkedIds.isEmpty()) {
+                    displayInfoMessage("You haven't select any option yet!");
+                } else {
+                    saveOrUpdateQuizAnswer(1, checkedIds);
+                }
             }
         });
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveOrUpdateQuizAnswer(2);
+                List<String> checkedIds = getCheckedIds();
+                if (checkedIds.isEmpty()) {
+                    displayInfoMessage("You haven't select any option yet!");
+                } else {
+                    saveOrUpdateQuizAnswer(2, checkedIds);
+                }
             }
         });
         if (isLastQuizItem()) {
@@ -183,12 +199,12 @@ public class QuizItemFragment extends BaseFragment {
 
     }
 
-    private void saveOrUpdateQuizAnswer(int direction) {
+    private void saveOrUpdateQuizAnswer(int direction, List<String> checkedIds) {
         if (quizAnswer == null) {
             quizAnswer = new QuizAnswer();
             quizAnswer.setQuizItemId(quizItem.getId());
             quizAnswer.setIsCurrentAttempt(true);
-            quizAnswer.setSelectedOptionIds(getCheckedIds());
+            quizAnswer.setSelectedOptionIds(checkedIds);
             quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
                 @Override
                 public void onComplete(QuizAnswer data) {
@@ -210,7 +226,7 @@ public class QuizItemFragment extends BaseFragment {
         } else {
             quizAnswer.setQuizItemId(quizItem.getId());
             quizAnswer.setIsCurrentAttempt(true);
-            quizAnswer.setSelectedOptionIds(getCheckedIds());
+            quizAnswer.setSelectedOptionIds(checkedIds);
             quizAnswerService.update(quizAnswer, new ServiceCallback<Boolean>() {
                 @Override
                 public void onComplete(Boolean data) {
@@ -248,14 +264,7 @@ public class QuizItemFragment extends BaseFragment {
             chk_opt4.setEnabled(true);
             btnPrev.setVisibility(View.VISIBLE);
             btnNext.setVisibility(View.VISIBLE);
-            mPager.setOnTouchListener(new View.OnTouchListener()
-            {
-                @Override
-                public boolean onTouch(View v, MotionEvent event)
-                {
-                    return true;
-                }
-            });
+            mPager.setSwipeEnabled(false);
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.Item;
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningItemDAO;
 import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
@@ -20,15 +21,16 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 public class LearningTitleService extends BaseService<LearningTitle, LearningTitleDAO> {
     private LearningTitleRepo learningTitleRepo = new LearningTitleRepo();
-
-    public LearningTitleService() {
+    private LearningSession learningSession;
+    public LearningTitleService(LearningSession learningSession) {
         setBaseRepo(learningTitleRepo);
+        this.learningSession=learningSession;
         setDAOConversion(new DAOConversion<LearningTitle, LearningTitleDAO>() {
             @Override
             public LearningTitle convertFromDAO(LearningTitleDAO value) {
                 LearningTitle learningTitle = new LearningTitle();
                 learningTitle.setId(value.getId());
-                learningTitle.getLearningSession().setId(value.getLearningSessionId());
+                learningTitle.setLearningSession(learningSession);
                 learningTitle.setTitle(value.getTitle());
                 learningTitle.setCreatedBy(value.getCreatedBy());
                 learningTitle.setTimestamp(new Date(value.getTimestamp()));
