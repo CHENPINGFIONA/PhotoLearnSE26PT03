@@ -15,9 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 
 import java.util.Date;
-import java.util.List;
 
-import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizOption;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
@@ -82,16 +80,8 @@ public class QuizItemUnitTest {
 
     @Test
     public void Assert_UpdateQuizOption() throws Exception {
-
-    }
-
-    @Test
-    public void Assert_DeleteQuizOption() throws Exception {
-
-    }
-
-    @Test
-    public void Assert_CreateQuizAnswer() throws Exception {
-
+        int count = item.getQuizOptions().size();
+        item.update(0, new QuizOption(item));
+        assertEquals(count + 1, item.getQuizOptions().size());
     }
 }
