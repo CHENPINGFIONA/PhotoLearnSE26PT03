@@ -81,36 +81,40 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
             @Override
             public void onItemClick(QuizTitleListAdapter.QuizTitleViewHolder viewHolder) {
                 QuizTitle quizTitle = quizTitles.get(viewHolder.getAdapterPosition());
-               quizTitle.getQuizSubmissionProgress(App.getCurrentUser().getId(), new ServiceCallback<AbstractMap.SimpleEntry<Integer, Integer>>() {
-                   @Override
-                   public void onComplete(AbstractMap.SimpleEntry<Integer, Integer> data) {
-                       if (data.getKey() == data.getValue()) {
-                           new AlertDialog.Builder(getContext())
-                                   .setTitle("Confirmation")
-                                   .setMessage("You already submitted all quizes!\n Please choose the action of your choice to proceed?")
-                                   .setPositiveButton("View Summary", new DialogInterface.OnClickListener() {
-                                       @Override
-                                       public void onClick(DialogInterface dialog, int whichButton) {
-                                           onSummary(quizTitle, null);
-                                       }
-                                   })
-                                   .setNegativeButton("Retake Quiz", new DialogInterface.OnClickListener() {
-                                       @Override
-                                       public void onClick(DialogInterface dialog, int which) {
-                                        //Delete the quiz and retake
-                                       }
-                                   }).show();
-                       }
-                       else {
-                           onLoad(quizTitle, null);
-                       }
-                   }
+                if (App.getCurrentAppMode() == AppMode.PARTICIPENT) {
+                    quizTitle.getQuizSubmissionProgress(App.getCurrentUser().getId(), new ServiceCallback<AbstractMap.SimpleEntry<Integer, Integer>>() {
+                        @Override
+                        public void onComplete(AbstractMap.SimpleEntry<Integer, Integer> data) {
+                            if (data.getKey() == data.getValue()) {
+                                new AlertDialog.Builder(getContext())
+                                        .setTitle("Confirmation")
+                                        .setMessage("You already submitted all quizes!\n Please choose the action of your choice to proceed?")
+                                        .setPositiveButton("View Summary", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int whichButton) {
 
-                   @Override
-                   public void onError(int code, String message, String details) {
+                                                onSummary(quizTitle, null);
 
-                   }
-               });
+                                            }
+                                        })
+                                        .setNegativeButton("Retake Quiz", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //Delete the quiz and retake
+                                            }
+                                        }).show();
+                            } else {
+                                onLoad(quizTitle, null);
+                            }
+                        }
+
+                        @Override
+                        public void onError(int code, String message, String details) {
+
+                        }
+                    });
+                } else
+                    onLoad(quizTitle, null);
             }
         });
     }
@@ -214,7 +218,7 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
         });
 
         FloatingActionButton floatingActionButton = getView().findViewById(R.id.fab_learningtitlelist);
-        floatingActionButton.setVisibility(App.getCurrentAppMode() == AppMode.TRAINER? View.VISIBLE : View.GONE);
+        floatingActionButton.setVisibility(App.getCurrentAppMode() == AppMode.TRAINER ? View.VISIBLE : View.GONE);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
 
         {

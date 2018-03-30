@@ -58,8 +58,7 @@ public class QuizItemFragment extends BaseFragment {
     private GPSHelper gpsHelper;
     private CheckBox chk_opt1, chk_opt2, chk_opt3, chk_opt4;
     private sg.edu.nus.se26pt03.photolearn.view.ViewPager mPager;
-    private Button btnPrev;
-    private Button btnNext;
+
 
 
     public static QuizItemFragment create(int itemNumber, QuizItem quizItem) {
@@ -137,34 +136,10 @@ public class QuizItemFragment extends BaseFragment {
         txtContentView.setMovementMethod(new ScrollingMovementMethod());
         txtViewLocation = getView().findViewById(R.id.tv_location);
 
-        btnPrev = (Button) getView().findViewById(R.id.btn_prev);
-        btnNext = (Button) getView().findViewById(R.id.btn_next);
+
         mPager = getParentFragment().getView().findViewById(R.id.vp_quizitem);
-        btnPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<String> checkedIds = getCheckedIds();
-                if (checkedIds.isEmpty()) {
-                    displayInfoMessage("You haven't select any option yet!");
-                } else {
-                    saveOrUpdateQuizAnswer(1, checkedIds);
-                }
-            }
-        });
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<String> checkedIds = getCheckedIds();
-                if (checkedIds.isEmpty()) {
-                    displayInfoMessage("You haven't select any option yet!");
-                } else {
-                    saveOrUpdateQuizAnswer(2, checkedIds);
-                }
-            }
-        });
-        if (isLastQuizItem()) {
-            btnNext.setText("Submit");
-        }
+
+
         progressBar = getView().findViewById(R.id.quizitemListprogressBarSmall);
 
 
@@ -199,7 +174,16 @@ public class QuizItemFragment extends BaseFragment {
 
     }
 
-    private void saveOrUpdateQuizAnswer(int direction, List<String> checkedIds) {
+    protected void checkAnswerSelectionAndSave(int direction, boolean isLastQuizItem) {
+        List<String> checkedIds = getCheckedIds();
+        if (checkedIds.isEmpty()) {
+            displayInfoMessage("You haven't select any option yet!");
+        } else {
+            saveOrUpdateQuizAnswer(direction, checkedIds, isLastQuizItem);
+        }
+    }
+
+    private void saveOrUpdateQuizAnswer(int direction, List<String> checkedIds, boolean isLastQuizItem) {
         if (quizAnswer == null) {
             quizAnswer = new QuizAnswer();
             quizAnswer.setQuizItemId(quizItem.getId());
@@ -211,8 +195,9 @@ public class QuizItemFragment extends BaseFragment {
                     displayInfoMessage("Quiz Answer saved successfully!");
                     quizAnswer = data;
                     ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
-                    if (isLastQuizItem() && direction == 2) {
+                    if (isLastQuizItem && direction == 2) {
                         //inflate your summary here MM
+                        displayInfoMessage("MM please inflate your summary here!");
                     } else {
                         mPager.arrowScroll(direction);
                     }
@@ -234,8 +219,9 @@ public class QuizItemFragment extends BaseFragment {
                         displayInfoMessage("Quiz Answer updated successfully!");
                         ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
                     } else displayInfoMessage("Error occured when updating Quiz Answer!");
-                    if (isLastQuizItem() && direction == 2) {
+                    if (isLastQuizItem && direction == 2) {
                         //inflate your summary here MM
+                        displayInfoMessage("MM please inflate your summary here!");
                     } else {
                         mPager.arrowScroll(direction);
                     }
@@ -255,15 +241,12 @@ public class QuizItemFragment extends BaseFragment {
             chk_opt2.setEnabled(false);
             chk_opt3.setEnabled(false);
             chk_opt4.setEnabled(false);
-            btnPrev.setVisibility(View.GONE);
-            btnNext.setVisibility(View.GONE);
+            mPager.setSwipeEnabled(true);
         } else {
             chk_opt1.setEnabled(true);
             chk_opt2.setEnabled(true);
             chk_opt3.setEnabled(true);
             chk_opt4.setEnabled(true);
-            btnPrev.setVisibility(View.VISIBLE);
-            btnNext.setVisibility(View.VISIBLE);
             mPager.setSwipeEnabled(false);
         }
     }
@@ -282,9 +265,5 @@ public class QuizItemFragment extends BaseFragment {
         if (checkedId.contains("2")) chk_opt2.setChecked(true);
         if (checkedId.contains("3")) chk_opt3.setChecked(true);
         if (checkedId.contains("4")) chk_opt4.setChecked(true);
-    }
-
-    boolean isLastQuizItem() {
-        return itemPosition == mPager.getAdapter().getCount() - 1;
     }
 }

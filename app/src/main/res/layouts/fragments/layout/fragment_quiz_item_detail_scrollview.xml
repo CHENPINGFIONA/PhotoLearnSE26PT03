@@ -278,7 +278,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:checked="@={quizItem.getQuizOptions.get(2).answer}"
+                    android:checked="@={quizItem.getQuizOptions.get(3).answer}"
                     android:gravity="center" />
 
                 <android.support.design.widget.TextInputLayout
