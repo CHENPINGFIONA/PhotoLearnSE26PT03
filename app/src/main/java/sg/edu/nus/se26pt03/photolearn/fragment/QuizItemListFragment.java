@@ -76,15 +76,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz_item_list, container, false);
-        //  super.onCreateView(inflater, container, savedInstanceState);
-        //setContentView(R.layout.activity_view_page_with_fragment);
         quizTitle = (QuizTitle) getArguments().getSerializable(ConstHelper.REF_QUIZ_TITLES);
-        // sessionId = "1";
-        //titleId="-L88Kii8Oc5tSrTBxNaW";
-        mode = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_Access_Mode, AccessMode.EDIT);
-        role = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(ConstHelper.SharedPreferences_User_Id, UserRole.toInt(UserRole.PARTICIPENT));
-        userId = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(ConstHelper.SharedPreferences_User_Id, "0");
-
         return view;
     }
 
@@ -92,9 +84,6 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupControls();
-        // setupViews();
-
-
     }
 
     public void updateCurrentAttempt(QuizAnswer quizAnswer) {
@@ -209,7 +198,6 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
 
     }
 
-
     private void loadList() {
         srf_quizItemList.setRefreshing(true);
         this.quizTitle.getItems(new ServiceCallback<List<Item>>() {
@@ -230,8 +218,6 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                     }
                 }
             }
-
-
 
             @Override
             public void onError(int code, String message, String details) {
@@ -264,6 +250,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                     }
                 });
     }
+
     @Override
     public void onRefresh() {
         loadList();

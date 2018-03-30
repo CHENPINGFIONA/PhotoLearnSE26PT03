@@ -230,10 +230,10 @@ public class QuizItemDetailFragment extends BaseFragment {
         addOptionToItem(source, 3, editOption4TxtView.getText().toString(), chkOption4.isChecked());
     }
     private void addOptionToItem(QuizItem item, int position, String content, boolean answer) {
-        QuizOption option1 = new QuizOption(item);
-        option1.setContent(editOption1TxtView.getText().toString());
-        option1.setAnswer(chkOption1.isChecked());
-        item.update(position, option1);
+        QuizOption option = new QuizOption(item);
+        option.setContent(content);
+        option.setAnswer(answer);
+        item.update(position, option);
     }
     public class SaveServiceCallback implements ServiceCallback<Item> {
         @Override
