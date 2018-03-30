@@ -271,18 +271,18 @@ public class QuizItemFragment extends BaseFragment {
 
     List<String> getCheckedIds() {
         List<String> selectedOptionIds = new ArrayList<>();
-        if (chk_opt1.isChecked()) selectedOptionIds.add("1");
-        if (chk_opt2.isChecked()) selectedOptionIds.add("2");
-        if (chk_opt3.isChecked()) selectedOptionIds.add("3");
-        if (chk_opt4.isChecked()) selectedOptionIds.add("4");
+        if (chk_opt1.isChecked()) selectedOptionIds.add("0");
+        if (chk_opt2.isChecked()) selectedOptionIds.add("1");
+        if (chk_opt3.isChecked()) selectedOptionIds.add("2");
+        if (chk_opt4.isChecked()) selectedOptionIds.add("3");
         return selectedOptionIds;
     }
 
     void setCheckBoxs(List<String> checkedId) {
-        if (checkedId.contains("1")) chk_opt1.setChecked(true);
-        if (checkedId.contains("2")) chk_opt2.setChecked(true);
-        if (checkedId.contains("3")) chk_opt3.setChecked(true);
-        if (checkedId.contains("4")) chk_opt4.setChecked(true);
+        if (checkedId.contains("0")) chk_opt1.setChecked(true);
+        if (checkedId.contains("1")) chk_opt2.setChecked(true);
+        if (checkedId.contains("2")) chk_opt3.setChecked(true);
+        if (checkedId.contains("3")) chk_opt4.setChecked(true);
     }
 
     boolean isLastQuizItem() {

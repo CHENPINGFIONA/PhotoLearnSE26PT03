@@ -2,7 +2,6 @@ package sg.edu.nus.se26pt03.photolearn.BAL;
 
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
@@ -10,6 +9,7 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 /**
  * Created by chen ping on 3/8/2018.
  */
+
 
 public class Trainer extends User{
 

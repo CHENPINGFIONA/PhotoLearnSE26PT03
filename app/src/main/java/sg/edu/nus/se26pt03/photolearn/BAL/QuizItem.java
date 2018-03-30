@@ -61,17 +61,14 @@ public class QuizItem extends Item implements Serializable, Cloneable {
         return true;
     }
 
-    public void Add(QuizOption option) {
+    public void add(QuizOption option) {
         this.quizOptions.add(option);
     }
 
-    public void Update(int position, QuizOption option) {
+    public void update(int position, QuizOption option) {
         this.quizOptions.add(position, option);
     }
 
-    public void Delete(QuizOption option) {
-        this.quizOptions.remove(option);
-    }
     @Override
     public QuizItem clone() throws CloneNotSupportedException {
         return (QuizItem) super.clone();
