@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -71,6 +72,8 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     private FloatingActionButton Add;
     private QuizAnswerService quizAnswerService;
     private QuizAnswer currentAttempt;
+    private Button btnPrev;
+    private Button btnNext;
 
     @Nullable
     @Override
@@ -122,6 +125,8 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
         tvEmpty = (TextView) getView().findViewById(R.id.tv_itemempty_value);
         Add = (FloatingActionButton) getView().findViewById(R.id.fab_addquizitem);
         popupimagebutton = (ImageView) getView().findViewById(R.id.img_popupmenu);
+        btnPrev = (Button) getView().findViewById(R.id.btn_prev);
+        btnNext = (Button) getView().findViewById(R.id.btn_next);
 
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +154,26 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                 loadList();
             }
         });
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QuizItemFragment mfragment = (QuizItemFragment) ((QuizItemFragmentPageAdapter) mPagerAdapter).getItem(mPager.getCurrentItem());
+                mfragment.checkAnswerSelectionAndSave(1, false);
+            }
+        });
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isLastQuizItem = mPager.getCurrentItem() == mPager.getAdapter().getCount() - 1;
+                if (mPager.getCurrentItem() == mPager.getAdapter().getCount() - 1) {
+                    btnNext.setText("Submit");
+                }
+                QuizItemFragment mfragment = (QuizItemFragment) ((QuizItemFragmentPageAdapter) mPagerAdapter).getItem(mPager.getCurrentItem());
+                mfragment.checkAnswerSelectionAndSave(2, isLastQuizItem);
+
+            }
+        });
+
     }
 
     private void setupViews() {
@@ -156,6 +181,11 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
         if (App.getCurrentAppMode() == AppMode.TRAINER) {
             popupimagebutton.setVisibility(mPagerAdapter.getCount() > 0 ? View.VISIBLE : View.INVISIBLE);
             Add.setVisibility(View.VISIBLE);
+            btnPrev.setVisibility(View.GONE);
+            btnNext.setVisibility(View.GONE);
+        } else {
+            btnPrev.setVisibility(View.VISIBLE);
+            btnNext.setVisibility(View.VISIBLE);
         }
     }
 
