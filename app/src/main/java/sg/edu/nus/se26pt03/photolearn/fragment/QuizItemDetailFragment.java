@@ -179,7 +179,7 @@ public class QuizItemDetailFragment extends BaseFragment {
                 editOption3TxtView.setText(quizOption3.getContent());
                 chkOption3.setChecked(quizOption3.isAnswer());
                 QuizOption quizOption4 = quizOptions.get(3);
-                editOption4TxtView.setText(quizOption4.getContent());
+                editOption4TxtView.setText(quizOption4.getContent()+ " "+quizOption4.isAnswer());
                 chkOption4.setChecked(quizOption4.isAnswer());
             }
         }
