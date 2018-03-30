@@ -77,7 +77,7 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
 
     private void setupData() {
         learningSession = (LearningSession) getArguments().getSerializable("learningSession");
-        learningTitleService = new LearningTitleService();
+        learningTitleService = new LearningTitleService(learningSession);
         learningTitles = new ArrayList<>();
         learningTitlesOrigianl = learningSession.getLearningTitles();
         applyFilter();
