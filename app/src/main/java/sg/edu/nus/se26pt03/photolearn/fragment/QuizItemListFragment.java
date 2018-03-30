@@ -126,6 +126,9 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
             }
         });
         mPager = getView().findViewById(R.id.vp_quizitem);
+        if (App.getCurrentAppMode() == AppMode.TRAINER) {
+            mPager.setSwipeEnabled(true);
+        }
         mPagerAdapter = new QuizItemFragmentPageAdapter(getChildFragmentManager(), quizTitle, this.quizItemList);
         mPager.setAdapter(mPagerAdapter);
 
