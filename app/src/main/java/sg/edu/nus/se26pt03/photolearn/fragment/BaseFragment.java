@@ -280,6 +280,15 @@ public class BaseFragment extends Fragment implements UserActionListener {
 
     }
 
+    protected void refresh(String tag) {
+        Fragment fragment = null;
+        fragment = getActivity().getSupportFragmentManager().findFragmentByTag(tag);
+        final FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.detach(fragment);
+        fragmentTransaction.attach(fragment);
+        fragmentTransaction.commit();
+        }
+
     protected void displayInfoMessage(String message) {
         Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG).show();
     }

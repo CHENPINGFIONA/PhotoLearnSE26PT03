@@ -230,7 +230,7 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
         bundle.putBoolean(fragment.ARG_STACKBACK, stackback);
         fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(containerViewId, fragment);
+        fragmentTransaction.replace(containerViewId, fragment, (tag == null ? fragment.getClass().getName(): tag));
         if (stackback) {
             if (tag != null) {
                 fragmentTransaction.addToBackStack(tag);
