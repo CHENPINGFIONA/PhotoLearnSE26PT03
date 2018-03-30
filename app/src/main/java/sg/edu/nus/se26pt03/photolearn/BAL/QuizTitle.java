@@ -37,8 +37,27 @@ public class QuizTitle extends Title implements Serializable {
         return 0;
     }
 
+    public void removeAllAnswers(List<QuizAnswer> quizAnswers, ServiceCallback<List<Boolean>> callback) {
+        List<Boolean> result = new ArrayList<Boolean>();
+        for (QuizAnswer quizAnswer : quizAnswers) {
+            quizAnswerService.delete(quizAnswer, new ServiceCallback<Boolean>() {
+                @Override
+                public void onComplete(Boolean data) {
+                    result.add(data);
+                    if (result.size() == quizAnswers.size()) {
+                        callback.onComplete(result);
+                    }
+                }
 
-    public void getQuizSubmissionProgress(String createdBy, ServiceCallback<AbstractMap.SimpleEntry<Integer, Integer>> callback) {
+                @Override
+                public void onError(int code, String message, String details) {
+                    callback.onError(code,message,details);
+                }
+            });
+        }
+    }
+
+    public void getQuizSubmissionProgress(String createdBy, ServiceCallback<AbstractMap.SimpleEntry<List<Item>, List<QuizAnswer>>> callback) {
         getQuizItems(new ServiceCallback<List<Item>>() {
             @Override
             public void onComplete(List<Item> data) {
@@ -51,7 +70,7 @@ public class QuizTitle extends Title implements Serializable {
                                 result.add(childData.get(0));
                             }
                             if (data.indexOf(item) == data.size()-1) {
-                                callback.onComplete(new AbstractMap.SimpleEntry<Integer, Integer>(data.size(), result.size()));
+                                callback.onComplete(new AbstractMap.SimpleEntry<List<Item>, List<QuizAnswer>>(data, result));
                             }
                         }
                         @Override

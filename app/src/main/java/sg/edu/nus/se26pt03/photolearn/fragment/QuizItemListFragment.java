@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
@@ -38,8 +39,10 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.adapter.ItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.adapter.QuizItemFragmentPageAdapter;
 import sg.edu.nus.se26pt03.photolearn.application.App;
+import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.AppMode;
+import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 import sg.edu.nus.se26pt03.photolearn.enums.UserRole;
 import sg.edu.nus.se26pt03.photolearn.service.QuizAnswerService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
@@ -53,6 +56,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
 
     public static String SharedPreferences_Access_Mode = "ACCESSMODE";
 
+    private boolean emitter;
 
     private int role;
     private int mode;
@@ -259,5 +263,49 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
         loadList();
     }
 
+    @Override
+    public void onBefore(@EventType.Event int event, final UserActionCallback callback) {
+        if (!emitter && event == EventType.BACKSTACK) {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Confirmation")
+                    .setMessage("Do you wanted to save your answers?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            callback.onPass();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            quizTitle.getQuizSubmissionProgress(App.getCurrentUser().getId(), new ServiceCallback<AbstractMap.SimpleEntry<List<Item>, List<QuizAnswer>>>() {
+                                @Override
+                                public void onComplete(AbstractMap.SimpleEntry<List<Item>, List<QuizAnswer>> data) {
+                                    quizTitle.removeAllAnswers(data.getValue(), new ServiceCallback<List<Boolean>>() {
+                                        @Override
+                                        public void onComplete(List<Boolean> data) {
+                                        }
+                                        @Override
+                                        public void onError(int code, String message, String details) {
+                                            displayErrorMessage(message);
+                                        }
+                                    });
+                                }
+                                @Override
+                                public void onError(int code, String message, String details) {
+                                    displayErrorMessage(message);
+                                    callback.onPass();
+                                }
+                            });
+                            callback.onPass();
+                        }
+                    }).show();
+            emitter = false;
+        }
+        else {
+            hideSoftInput(getActivity().getCurrentFocus().getWindowToken());
+            callback.onPass();
+        }
 
+    }
 }

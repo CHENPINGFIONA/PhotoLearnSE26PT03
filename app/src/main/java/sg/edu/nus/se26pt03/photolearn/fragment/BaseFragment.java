@@ -300,11 +300,11 @@ public class BaseFragment extends Fragment implements UserActionListener {
         }
 
     protected void displayInfoMessage(String message) {
-        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
     }
 
     protected void displayErrorMessage(String message) {
-        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
     }
 
     protected void hideSoftInput (IBinder token) {

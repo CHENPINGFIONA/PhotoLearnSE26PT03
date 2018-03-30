@@ -174,7 +174,7 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
     @Override
     public void getAllByKeyValueList(List<AbstractMap.SimpleEntry<String, Object>> listKeyValue, final RepoCallback<List<T>> callback) {
         if (listKeyValue.size() >= 1) {
-            getAllByKeyValue(listKeyValue.get(0).getKey(), listKeyValue.get(0).getValue(), new RepoCallback<List<T>>() {
+            getAllByKeyValueSingleListener(listKeyValue.get(0).getKey(), listKeyValue.get(0).getValue(), new RepoCallback<List<T>>() {
                 @Override
                 public void onComplete(List<T> data) {
                     List<T> result = new ArrayList<T>(data);
@@ -197,6 +197,42 @@ public class BaseRepo<T extends BaseDAO> implements AutoCloseable, IRepository<T
                 }
             });
         }
+    }
+
+    public void getAllByKeyValueSingleListener(String key, Object value, final RepoCallback<List<T>> callback) {
+        String[] keys = key.split("\\.");
+
+        Query query = mDatabaseRef.orderByChild(keys[0]);
+        if (keys.length == 1) {
+            if (value instanceof Double) {
+                query = query.equalTo((Double) value);
+            } else if (value instanceof String) {
+                query = query.equalTo((String) value);
+            } else if (value instanceof Boolean) {
+                query = query.equalTo((Boolean) value);
+            }
+        }
+        query.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<T> result = new ArrayList<>();
+                        for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                            if (keys.length == 1) result.add(getValue(childDataSnapshot));
+                            else {
+                                if (isValid(childDataSnapshot,key, value)) {
+                                    result.add(getValue(childDataSnapshot));
+                                }
+                            }
+                        }
+                        callback.onComplete(result);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        callback.onError(databaseError);
+                    }
+                });
     }
 
     @Override

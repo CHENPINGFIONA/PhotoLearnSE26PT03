@@ -26,6 +26,7 @@ import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.BAL.Item;
 import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
+import sg.edu.nus.se26pt03.photolearn.BAL.QuizAnswer;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizItem;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
@@ -82,10 +83,10 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
             public void onItemClick(QuizTitleListAdapter.QuizTitleViewHolder viewHolder) {
                 QuizTitle quizTitle = quizTitles.get(viewHolder.getAdapterPosition());
                 if (App.getCurrentAppMode() == AppMode.PARTICIPENT) {
-                    quizTitle.getQuizSubmissionProgress(App.getCurrentUser().getId(), new ServiceCallback<AbstractMap.SimpleEntry<Integer, Integer>>() {
+                    quizTitle.getQuizSubmissionProgress(App.getCurrentUser().getId(), new ServiceCallback<AbstractMap.SimpleEntry<List<Item>, List<QuizAnswer>>>() {
                         @Override
-                        public void onComplete(AbstractMap.SimpleEntry<Integer, Integer> data) {
-                            if (data.getKey() == data.getValue()) {
+                        public void onComplete(AbstractMap.SimpleEntry<List<Item>, List<QuizAnswer>> data) {
+                            if (data.getKey().size() == data.getValue().size()) {
                                 new AlertDialog.Builder(getContext())
                                         .setTitle("Confirmation")
                                         .setMessage("You already submitted this quiz!\nPlease choose the action of your choice to proceed?")
@@ -100,7 +101,17 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
                                         .setNegativeButton("Retake Quiz", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                //Delete the quiz and retake
+                                                    quizTitle.removeAllAnswers(data.getValue(), new ServiceCallback<List<Boolean>>() {
+                                                        @Override
+                                                        public void onComplete(List<Boolean> data) {
+                                                            onLoad(quizTitle, null);
+                                                        }
+                                                        @Override
+                                                        public void onError(int code, String message, String details) {
+                                                            displayErrorMessage(message);
+                                                        }
+                                                    });
+
                                             }
                                         }).show();
                             } else {
@@ -111,6 +122,11 @@ public class QuizTitleListFragment extends BaseFragment implements SwipeRefreshL
                         @Override
                         public void onError(int code, String message, String details) {
 
+                        }
+
+                        @Override
+                        protected void finalize() throws Throwable {
+                            super.finalize();
                         }
                     });
                 } else

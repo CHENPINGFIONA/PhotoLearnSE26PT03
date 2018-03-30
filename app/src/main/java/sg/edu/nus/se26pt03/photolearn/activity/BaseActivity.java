@@ -26,6 +26,9 @@ import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionEmitter;
 import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 import sg.edu.nus.se26pt03.photolearn.fragment.BaseFragment;
+import sg.edu.nus.se26pt03.photolearn.fragment.LearningSessionFragment;
+import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemListFragment;
+import sg.edu.nus.se26pt03.photolearn.fragment.QuizSubmissionSummaryFragment;
 import sg.edu.nus.se26pt03.photolearn.utility.PhotoLearnAppExceptionHandler;
 
 /**
@@ -229,6 +232,10 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
+            if (getSupportFragmentManager().findFragmentByTag(QuizSubmissionSummaryFragment.class.getName())!=null && getSupportFragmentManager().findFragmentByTag(QuizSubmissionSummaryFragment.class.getName()).isVisible() ) {
+                getSupportFragmentManager().popBackStack(LearningSessionFragment.class.getName(), 0);
+                return;
+            }
             onBackstack(null, new UserActionCallback() {
                 @Override
                 public void onPass() {
@@ -271,11 +278,11 @@ public class BaseActivity extends AppCompatActivity implements UserActionListene
     }
 
     protected void displayInfoMessage(String message) {
-        Snackbar.make(this.findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(this.findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
     }
 
     protected void displayErrorMessage(String message) {
-        Snackbar.make(this.findViewById(android.R.id.content),message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(this.findViewById(android.R.id.content),message, Snackbar.LENGTH_SHORT).show();
     }
 
 }
