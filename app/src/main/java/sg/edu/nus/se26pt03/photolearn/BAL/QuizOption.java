@@ -14,6 +14,12 @@ import sg.edu.nus.se26pt03.photolearn.BR;
 public class QuizOption extends BaseObservable implements Serializable {
     //Uid of Quiz Option
     private String id;
+    // Question
+    private String content;
+    // Is Answer
+    private boolean isAnswer;
+    //Quiz Item
+    private final QuizItem quizItem;
 
     public String getId() {
         return id;
@@ -22,12 +28,6 @@ public class QuizOption extends BaseObservable implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-
-    //Quiz Item
-    private final QuizItem quizItem;
-
-    // Question
-    private String content;
 
     public String getContent() {
         return content;
@@ -38,8 +38,6 @@ public class QuizOption extends BaseObservable implements Serializable {
         notifyValidity();
     }
 
-    // Is Answer
-    private boolean isAnswer;
     public boolean isAnswer() {
         return isAnswer;
     }
@@ -58,12 +56,6 @@ public class QuizOption extends BaseObservable implements Serializable {
     public String getQuizItemId() {
         return quizItem.getId();
     }
-
-
-
-
-
-
 
 
     @Bindable
