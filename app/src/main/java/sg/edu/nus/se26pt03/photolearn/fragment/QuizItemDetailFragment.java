@@ -156,11 +156,7 @@ public class QuizItemDetailFragment extends BaseFragment {
 
         editContentTxtView = (EditText) this.getView().findViewById(R.id.et_content);
         editContentTxtView.setText(src.getContent());
-
-
         editOption1TxtView = (EditText) this.getView().findViewById(R.id.et_option_content1);
-
-
         editOption2TxtView = (EditText) this.getView().findViewById(R.id.et_option_content2);
         editOption3TxtView = (EditText) this.getView().findViewById(R.id.et_option_content3);
         editOption4TxtView = (EditText) this.getView().findViewById(R.id.et_option_content4);
@@ -216,7 +212,6 @@ public class QuizItemDetailFragment extends BaseFragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_PERMISSION);
         }
-
         //capture image
         CaptureImageButton = (ImageButton) this.getView().findViewById(R.id.imgbtn_CaptureImage);
         CaptureImageButton.setOnClickListener(new View.OnClickListener() {
@@ -231,34 +226,32 @@ public class QuizItemDetailFragment extends BaseFragment {
     public class SaveServiceCallback implements ServiceCallback<Item> {
         @Override
         public void onComplete(Item data) {
+
             QuizItem source = (QuizItem) data;
+            source.getQuizOptions().clear();
             QuizOption option1 = new QuizOption(source);
             option1.setContent(editOption1TxtView.getText().toString());
             option1.setAnswer(chkOption1.isChecked());
-            source.Add(option1);
+            source.Update(0,option1);
 
             QuizOption option2 = new QuizOption(source);
             option2.setContent(editOption2TxtView.getText().toString());
             option2.setAnswer(chkOption2.isChecked());
-            source.Add(option2);
+            source.Update(1,option2);
             // source.createQuizOption(option2,SaveOptionServiceCallback);
 
             QuizOption option3 = new QuizOption(source);
             option3.setContent(editOption3TxtView.getText().toString());
             option3.setAnswer(chkOption3.isChecked());
-            source.Add(option3);
+            source.Update(2,option3);
             //source.createQuizOption(option3,SaveOptionServiceCallback);
 
             QuizOption option4 = new QuizOption(source);
             option4.setContent(editOption4TxtView.getText().toString());
             option4.setAnswer(chkOption4.isChecked());
-            source.Add(option4);
+            source.Update(3,option4);
 
             title.updateItem(source,new UpdateServiceCallback());
-
-
-            //Toast.makeText(getContext(),"Save succesfull "+source.getId(),Toast.LENGTH_LONG).show();
-           // getFragmentManager().popBackStackImmediate("QuizFragment", 0);
         }
 
         @Override
@@ -272,8 +265,6 @@ public class QuizItemDetailFragment extends BaseFragment {
     public class UpdateServiceCallback implements ServiceCallback<Boolean> {
         @Override
         public void onComplete(Boolean data) {
-            //LearningItem source= (LearningItem) data;
-            //Toast.makeText(getContext(),"Save succesfull "+source.getId(),Toast.LENGTH_LONG).show();
             if (data) {
                 getFragmentManager().popBackStackImmediate("QuizFragment", 0);
             } else {
@@ -281,7 +272,6 @@ public class QuizItemDetailFragment extends BaseFragment {
             }
 
         }
-
         @Override
         public void onError(int code, String message, String details) {
             Log.w("ERROR", code + "-" + message + "-" + details);
@@ -382,25 +372,7 @@ public class QuizItemDetailFragment extends BaseFragment {
                     Log.e("", "");
                 }
             });
-            // src.setPhotoURL(fN);
-            /*try {
-                Uri URl=mStorageHelper.GetdownloadFileUrl(fN).getResult();
-                src.setPhotoURL(URl.toString());
-            }
-            catch (Exception ex){
 
-            }*/
-
-            /* download test
-            File sDir=getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-            try {
-                String tmpImgPath= mStorageHelper.downloadFile(sDir,fN).getAbsolutePath();
-                imageView.setImageURI(Uri.parse(tmpImgPath));
-                Toast.makeText(this, "downloaded..", Toast.LENGTH_SHORT).show();
-
-            }
-            catch(IOException ie){}*/
 
         }
     }

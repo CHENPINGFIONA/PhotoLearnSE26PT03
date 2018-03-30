@@ -17,7 +17,7 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
  * Created by chen ping on 3/10/2018.
  */
 
-public class Item extends BaseObservable implements Serializable  {
+public abstract class Item extends BaseObservable implements Serializable  {
     private String photoURL;
     private String id;
 
@@ -91,22 +91,9 @@ public class Item extends BaseObservable implements Serializable  {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-    @Bindable
-    public boolean getValidity() {
-        if ("".equals(getContent())) return false;
-        return true;
-    }
-    @Bindable
-    public String getContentError() {
-        if (getContent() != null && getContent().isEmpty()) {
-            return "Content is required";
-        }
-        return "";
-    }
 
-    private void notifyValidity() {
-        //notifyPropertyChanged();
-        notifyPropertyChanged(BR.validity);
-        notifyPropertyChanged(BR.contentError);
-    }
+
+
+
+    protected abstract void notifyValidity();
 }
