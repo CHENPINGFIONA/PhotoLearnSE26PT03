@@ -46,7 +46,7 @@ public class QuizItemService extends BaseService<Item, QuizItemDAO> {
                         option.setAnswer(optionDAO.isAnswer());
                         option.setContent(optionDAO.getContent());
                         option.setId(Integer.toString(i));
-                        result.Add(option);
+                        result.add(option);
                         i++;
                     }
                 }
