@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import sg.edu.nus.se26pt03.photolearn.BAL.LearningSession;
 import sg.edu.nus.se26pt03.photolearn.BAL.QuizTitle;
 import sg.edu.nus.se26pt03.photolearn.DAL.QuizTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.database.QuizTitleRepo;
@@ -18,15 +19,16 @@ import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 public class QuizTitleService extends BaseService<QuizTitle, QuizTitleDAO> {
     private QuizTitleRepo quizTitleRepo = new QuizTitleRepo();
-
-    public QuizTitleService() {
+    private  LearningSession learningSession;
+    public QuizTitleService(LearningSession learningSession) {
         setBaseRepo(quizTitleRepo);
+        this.learningSession=learningSession;
         setDAOConversion(new DAOConversion<QuizTitle, QuizTitleDAO>() {
             @Override
             public QuizTitle convertFromDAO(QuizTitleDAO value) {
                 QuizTitle quizTitle = new QuizTitle();
                 quizTitle.setId(value.getId());
-                quizTitle.getLearningSession().setId(value.getLearningSessionId());
+                quizTitle.setLearningSession(learningSession);
                 quizTitle.setTitle(value.getTitle());
                 quizTitle.setCreatedBy(value.getCreatedBy());
                 quizTitle.setTimestamp(new Date(value.getTimestamp()));

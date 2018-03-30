@@ -20,7 +20,7 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 public abstract class Item extends BaseObservable implements Serializable  {
     private String photoURL;
     private String id;
-    private QuizAnswerService quizAnswerService;
+    private transient QuizAnswerService quizAnswerService;
 
     public Item(Title title) {
         this.title = title;
