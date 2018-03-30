@@ -152,8 +152,8 @@ public class LearningTitleListFragment extends BaseFragment implements SwipeRefr
                 if (view instanceof LinearLayout) {
                     LearningTitle title = learningTitleListAdapter.learningTitleList.get(position);
                     LinearLayout linearLayout = (LinearLayout) ((LinearLayout) view).getChildAt(0);
-                    linearLayout.findViewWithTag("edit").setVisibility(title.getCreatedBy().equals(App.getCurrentUser().getId()) ? View.VISIBLE : View.GONE);
-                    linearLayout.findViewWithTag("delete").setVisibility(title.getCreatedBy().equals(App.getCurrentUser().getId()) ? View.VISIBLE : View.GONE);
+                    linearLayout.findViewWithTag("edit").setVisibility(App.getCurrentAppMode()== AppMode.TRAINER ? View.VISIBLE : View.GONE);
+                    linearLayout.findViewWithTag("delete").setVisibility(App.getCurrentAppMode()==AppMode.TRAINER ? View.VISIBLE : View.GONE);
                 }
             }
 
