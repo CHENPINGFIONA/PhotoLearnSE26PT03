@@ -1,5 +1,6 @@
 package sg.edu.nus.se26pt03.photolearn.database;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
@@ -22,6 +23,8 @@ public interface IRepository<T extends BaseDAO> {
     void getById(String id, RepoCallback<T> callback);
 
     void getAll(RepoCallback<List<T>> callback);
+
+    void getAllByKeyValueList(List<AbstractMap.SimpleEntry<String, Object>> listKeyValue, RepoCallback<List<T>> callback);
 
     void getAllByKeyValue(String key, Object value, RepoCallback<List<T>> callback);
 

@@ -86,4 +86,12 @@ public class QuizTitle extends Title implements Serializable {
             throw ex;
         }
     }
+
+    public void getQuizItems(ServiceCallback<List<Item>> callback) {
+        try {
+            quizItemService.getAllByKeyValue("quizTitleId", this.getId(), callback);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 }
