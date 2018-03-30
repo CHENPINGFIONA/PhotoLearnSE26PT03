@@ -199,6 +199,7 @@ public class QuizItemDetailFragment extends BaseFragment {
                 if (src.getId() == null || src.getId().equals("")) {
                     title.createItem(src, itemServiceCallback);
                 } else {
+                    setupOptions(src);
                     title.updateItem(src, booleanServiceCallback);
                 }
             }
@@ -223,33 +224,38 @@ public class QuizItemDetailFragment extends BaseFragment {
 
     }
 
+    private void setupOptions(QuizItem source)
+    {
+       // QuizItem source = (QuizItem) data;
+        source.getQuizOptions().clear();
+        QuizOption option1 = new QuizOption(source);
+        option1.setContent(editOption1TxtView.getText().toString());
+        option1.setAnswer(chkOption1.isChecked());
+        source.Update(0,option1);
+
+        QuizOption option2 = new QuizOption(source);
+        option2.setContent(editOption2TxtView.getText().toString());
+        option2.setAnswer(chkOption2.isChecked());
+        source.Update(1,option2);
+        // source.createQuizOption(option2,SaveOptionServiceCallback);
+
+        QuizOption option3 = new QuizOption(source);
+        option3.setContent(editOption3TxtView.getText().toString());
+        option3.setAnswer(chkOption3.isChecked());
+        source.Update(2,option3);
+        //source.createQuizOption(option3,SaveOptionServiceCallback);
+
+        QuizOption option4 = new QuizOption(source);
+        option4.setContent(editOption4TxtView.getText().toString());
+        option4.setAnswer(chkOption4.isChecked());
+        source.Update(3,option4);
+    }
     public class SaveServiceCallback implements ServiceCallback<Item> {
         @Override
         public void onComplete(Item data) {
 
             QuizItem source = (QuizItem) data;
-            source.getQuizOptions().clear();
-            QuizOption option1 = new QuizOption(source);
-            option1.setContent(editOption1TxtView.getText().toString());
-            option1.setAnswer(chkOption1.isChecked());
-            source.Update(0,option1);
-
-            QuizOption option2 = new QuizOption(source);
-            option2.setContent(editOption2TxtView.getText().toString());
-            option2.setAnswer(chkOption2.isChecked());
-            source.Update(1,option2);
-            // source.createQuizOption(option2,SaveOptionServiceCallback);
-
-            QuizOption option3 = new QuizOption(source);
-            option3.setContent(editOption3TxtView.getText().toString());
-            option3.setAnswer(chkOption3.isChecked());
-            source.Update(2,option3);
-            //source.createQuizOption(option3,SaveOptionServiceCallback);
-
-            QuizOption option4 = new QuizOption(source);
-            option4.setContent(editOption4TxtView.getText().toString());
-            option4.setAnswer(chkOption4.isChecked());
-            source.Update(3,option4);
+            setupOptions(source);
 
             title.updateItem(source,new UpdateServiceCallback());
         }
