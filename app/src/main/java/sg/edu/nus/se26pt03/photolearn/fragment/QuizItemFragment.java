@@ -206,7 +206,6 @@ public class QuizItemFragment extends BaseFragment {
             quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
                 @Override
                 public void onComplete(QuizAnswer data) {
-                    displayInfoMessage("Quiz Answer saved successfully!");
                     quizAnswer = data;
                     ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
                     if (isLastQuizItem() && direction == 2) {
@@ -228,7 +227,6 @@ public class QuizItemFragment extends BaseFragment {
                 @Override
                 public void onComplete(Boolean data) {
                     if (data) {
-                        displayInfoMessage("Quiz Answer updated successfully!");
                         ((QuizItemListFragment) (getParentFragment())).updateCurrentAttempt(quizAnswer);
                     } else displayInfoMessage("Error occured when updating Quiz Answer!");
                     if (isLastQuizItem() && direction == 2) {
