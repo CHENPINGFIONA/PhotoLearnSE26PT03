@@ -1,6 +1,8 @@
 package sg.edu.nus.se26pt03.photolearn.activity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,6 +26,7 @@ import sg.edu.nus.se26pt03.photolearn.application.UserActionListener;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionEmitter;
 import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 import sg.edu.nus.se26pt03.photolearn.fragment.BaseFragment;
+import sg.edu.nus.se26pt03.photolearn.utility.PhotoLearnAppExceptionHandler;
 
 /**
  * Created by MyatMin on 12/3/18.
@@ -32,6 +35,12 @@ import sg.edu.nus.se26pt03.photolearn.fragment.BaseFragment;
 public class BaseActivity extends AppCompatActivity implements UserActionListener{
 
     private UserActionEmitter userActionEmitter = new UserActionEmitter(this);
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        Thread.setDefaultUncaughtExceptionHandler(new PhotoLearnAppExceptionHandler(this));
+    }
 
     @Override
     public final List<UserActionListener> getRelatives() {

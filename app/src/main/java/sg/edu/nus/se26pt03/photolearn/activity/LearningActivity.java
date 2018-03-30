@@ -182,7 +182,7 @@ public class LearningActivity extends BaseActivity {
             public void onPass() {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ConstHelper.REF_QUIZ_TITLES, quizTitle);
-                setFragment(R.id.fl_main, new QuizItemListFragment(), quizTitle.getTitle(), true, "QuizFragment", bundle);
+                setFragment(R.id.fl_main, new QuizItemListFragment(), quizTitle.getTitle(), true, "QuizFragment"+quizTitle.getId(), bundle);
             }
         });
     }

@@ -231,29 +231,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                 }
             }
 
-            private void getLastAttempt() {
-                List<String> quizItemIds = quizItemList.stream().map(x -> x.getId()).collect(Collectors.toList());
-                quizAnswerService.getCurrentAttemptByQuizItemIDAndParticipantID
-                        (App.getCurrentUser().getId(), quizItemIds, new ServiceCallback<QuizAnswer>() {
-                            @Override
-                            public void onComplete(QuizAnswer data) {
-                                currentAttempt = data;
-                                if (data == null) {
-                                    return;
-                                }
-                                OptionalInt position = IntStream.range(0, quizItemIds.size()).filter(i -> (data.getQuizItemId()).equals(quizItemIds.get(i))).findFirst();
-                                if (position.isPresent() && position.getAsInt() >= 0) {
-                                    int currentPosition = position.getAsInt() + 1;
-                                    mPager.setCurrentItem(currentPosition > mPagerAdapter.getCount() - 1 ? currentPosition - 1 : currentPosition);
-                                }
-                            }
 
-                            @Override
-                            public void onError(int code, String message, String details) {
-                                displayErrorMessage(message);
-                            }
-                        });
-            }
 
             @Override
             public void onError(int code, String message, String details) {
@@ -263,7 +241,29 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
         });
     }
 
+    private void getLastAttempt() {
+        List<String> quizItemIds = quizItemList.stream().map(x -> x.getId()).collect(Collectors.toList());
+        quizAnswerService.getCurrentAttemptByQuizItemIDAndParticipantID
+                (App.getCurrentUser().getId(), quizItemIds, new ServiceCallback<QuizAnswer>() {
+                    @Override
+                    public void onComplete(QuizAnswer data) {
+                        currentAttempt = data;
+                        if (data == null) {
+                            return;
+                        }
+                        OptionalInt position = IntStream.range(0, quizItemIds.size()).filter(i -> (data.getQuizItemId()).equals(quizItemIds.get(i))).findFirst();
+                        if (position.isPresent() && position.getAsInt() >= 0) {
+                            int currentPosition = position.getAsInt() + 1;
+                            mPager.setCurrentItem(currentPosition > mPagerAdapter.getCount() - 1 ? currentPosition - 1 : currentPosition);
+                        }
+                    }
 
+                    @Override
+                    public void onError(int code, String message, String details) {
+                        displayErrorMessage(message);
+                    }
+                });
+    }
     @Override
     public void onRefresh() {
         loadList();

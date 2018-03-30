@@ -25,12 +25,13 @@ public class ViewPager extends android.support.v4.view.ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return swipeEnabled && super.onInterceptTouchEvent(event);
+        return super.onInterceptTouchEvent(event);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return swipeEnabled && super.onInterceptTouchEvent(event);
+        return super.onInterceptTouchEvent(event);
     }
+
 
 }
