@@ -122,7 +122,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                tools:hint="Course Date"
+                android:hint="Course Date"
                 app:error="@{learningSession.courseDateError}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
