@@ -162,9 +162,7 @@ public class QuizItemFragment extends BaseFragment {
                 }
             }
         });
-        if (isLastQuizItem()) {
-            btnNext.setText("Submit");
-        }
+
         progressBar = getView().findViewById(R.id.quizitemListprogressBarSmall);
 
 
@@ -203,7 +201,7 @@ public class QuizItemFragment extends BaseFragment {
         if (quizAnswer == null) {
             quizAnswer = new QuizAnswer();
             quizAnswer.setQuizItemId(quizItem.getId());
-            quizAnswer.setIsCurrentAttempt(true);
+            quizAnswer.setIsCurrentAttempt(false);
             quizAnswer.setSelectedOptionIds(checkedIds);
             quizAnswerService.save(quizAnswer, new ServiceCallback<QuizAnswer>() {
                 @Override
@@ -225,7 +223,6 @@ public class QuizItemFragment extends BaseFragment {
             });
         } else {
             quizAnswer.setQuizItemId(quizItem.getId());
-            quizAnswer.setIsCurrentAttempt(true);
             quizAnswer.setSelectedOptionIds(checkedIds);
             quizAnswerService.update(quizAnswer, new ServiceCallback<Boolean>() {
                 @Override
@@ -263,8 +260,16 @@ public class QuizItemFragment extends BaseFragment {
             chk_opt2.setEnabled(true);
             chk_opt3.setEnabled(true);
             chk_opt4.setEnabled(true);
-            btnPrev.setVisibility(View.VISIBLE);
+
             btnNext.setVisibility(View.VISIBLE);
+            if (isLastQuizItem()) {
+                btnNext.setText("Submit");
+            }
+            if (isFirstQuizItem()) {
+                btnPrev.setVisibility(View.GONE);
+            } else {
+                btnPrev.setVisibility(View.VISIBLE);
+            }
            // mPager.setSwipeEnabled(false);
         }
     }
@@ -287,5 +292,9 @@ public class QuizItemFragment extends BaseFragment {
 
     boolean isLastQuizItem() {
         return itemPosition == mPager.getAdapter().getCount() - 1;
+    }
+
+    boolean isFirstQuizItem() {
+        return itemPosition == 0;
     }
 }

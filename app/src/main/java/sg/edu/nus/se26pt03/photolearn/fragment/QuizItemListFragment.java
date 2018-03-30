@@ -91,13 +91,13 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     }
 
     public void updateCurrentAttempt(QuizAnswer quizAnswer) {
-        if (currentAttempt != null && currentAttempt.getQuizItemId() != null && !currentAttempt.getQuizItemId().equals(quizAnswer.getQuizItemId())) {
-            currentAttempt.setIsCurrentAttempt(false);
-            quizAnswerService.update(currentAttempt, new ServiceCallback<Boolean>() {
+        if ( currentAttempt == null){
+            quizAnswer.setIsCurrentAttempt(true);
+            quizAnswerService.update(quizAnswer, new ServiceCallback<Boolean>() {
                 @Override
                 public void onComplete(Boolean data) {
-                    if (data) displayInfoMessage("Former Attempt removed!");
-                    else displayInfoMessage("Error occured when removing Former Attempt!");
+                    if (data) currentAttempt = quizAnswer;
+                    else displayInfoMessage("Error occured when saving Last Attempt!");
                 }
 
                 @Override
@@ -106,7 +106,36 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                 }
             });
         }
-        currentAttempt = quizAnswer;
+        else if ( quizAnswer != null && getQuizItemIndex(currentAttempt).getAsInt()<getQuizItemIndex(quizAnswer).getAsInt() ) {
+            currentAttempt.setIsCurrentAttempt(false);
+            quizAnswerService.update(currentAttempt, new ServiceCallback<Boolean>() {
+                @Override
+                public void onComplete(Boolean data) {
+                    if (data) {
+                        quizAnswer.setIsCurrentAttempt(true);
+                        quizAnswerService.update(quizAnswer, new ServiceCallback<Boolean>() {
+                            @Override
+                            public void onComplete(Boolean data) {
+                                if (data) currentAttempt = quizAnswer;
+                                else displayInfoMessage("Error occured when saving Last Attempt!");
+                            }
+
+                            @Override
+                            public void onError(int code, String message, String details) {
+
+                            }
+                        });
+                    } else {
+                        displayInfoMessage("Error occured when removing Former Attempt!");
+                    }
+                }
+
+                @Override
+                public void onError(int code, String message, String details) {
+
+                }
+            });
+        }
     }
 
     private void setupControls() {
@@ -235,16 +264,16 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
     }
 
     private void getLastAttempt() {
-        List<String> quizItemIds = quizItemList.stream().map(x -> x.getId()).collect(Collectors.toList());
+
         quizAnswerService.getCurrentAttemptByQuizItemIDAndParticipantID
-                (App.getCurrentUser().getId(), quizItemIds, new ServiceCallback<QuizAnswer>() {
+                (App.getCurrentUser().getId(), quizItemList.stream().map(x -> x.getId()).collect(Collectors.toList()), new ServiceCallback<QuizAnswer>() {
                     @Override
                     public void onComplete(QuizAnswer data) {
                         currentAttempt = data;
                         if (data == null) {
                             return;
                         }
-                        OptionalInt position = IntStream.range(0, quizItemIds.size()).filter(i -> (data.getQuizItemId()).equals(quizItemIds.get(i))).findFirst();
+                        OptionalInt position = getQuizItemIndex(data);
                         if (position.isPresent() && position.getAsInt() >= 0) {
                             int currentPosition = position.getAsInt() + 1;
                             mPager.setCurrentItem(currentPosition > mPagerAdapter.getCount() - 1 ? currentPosition - 1 : currentPosition);
@@ -256,6 +285,11 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
                         displayErrorMessage(message);
                     }
                 });
+    }
+
+    private OptionalInt getQuizItemIndex(QuizAnswer data) {
+        List<String> quizItemIds = quizItemList.stream().map(x -> x.getId()).collect(Collectors.toList());
+        return IntStream.range(0, quizItemIds.size()).filter(i -> (data.getQuizItemId()).equals(quizItemIds.get(i))).findFirst();
     }
 
     @Override
