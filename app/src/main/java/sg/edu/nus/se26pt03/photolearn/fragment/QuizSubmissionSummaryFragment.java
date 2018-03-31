@@ -117,7 +117,7 @@ public class QuizSubmissionSummaryFragment extends BaseFragment {
                 }
 
             }
-            if (totalCorrectAnswer == totalAnswer) {
+            if (totalCorrectAnswer == totalAnswer && quizItemQuizAnswer.getValue().getSelectedOptionIds().size()==totalAnswer) {
                 totalScore = totalScore + 1;//(totalCorrectAnswer / totalAnswer);
             }
         }

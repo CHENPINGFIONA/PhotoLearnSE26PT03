@@ -299,7 +299,7 @@ public class QuizItemListFragment extends BaseFragment implements SwipeRefreshLa
 
     @Override
     public void onBefore(@EventType.Event int event, final UserActionCallback callback) {
-        if (!emitter && event == EventType.BACKSTACK) {
+        if (!emitter && event == EventType.BACKSTACK && App.getCurrentAppMode()==AppMode.PARTICIPENT) {
             new AlertDialog.Builder(getContext())
                     .setTitle("Confirmation")
                     .setMessage("Do you wanted to save your answers?")
