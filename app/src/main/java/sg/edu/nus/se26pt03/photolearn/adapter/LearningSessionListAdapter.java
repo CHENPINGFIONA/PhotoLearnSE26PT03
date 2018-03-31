@@ -19,7 +19,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.utility.BindingHelper;
 
 /**
- * Created by MyatMin on 10/3/18.
+ * Created by part time team 3  on 10/3/18.
  */
 
 public class LearningSessionListAdapter extends RecyclerView.Adapter<LearningSessionListAdapter.LearningSessionViewHolder>  {

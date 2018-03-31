@@ -21,7 +21,7 @@ import sg.edu.nus.se26pt03.photolearn.fragment.LearningItemFragment;
 import sg.edu.nus.se26pt03.photolearn.fragment.QuizItemFragment;
 
 /**
- * Created by c.banisetty on 3/14/2018.
+ * Created by part time team 3 on 3/14/2018.
  */
 
 public class QuizItemFragmentPageAdapter extends FragmentItemIdStatePagerAdapter {

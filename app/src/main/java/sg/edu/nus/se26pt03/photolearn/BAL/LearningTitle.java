@@ -12,7 +12,7 @@ import sg.edu.nus.se26pt03.photolearn.service.LearningItemService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
- * Created by chen ping on 7/3/2018.
+ * Created by part time team 3 on 7/3/2018.
  */
 
 public class LearningTitle extends Title implements Serializable {

@@ -5,8 +5,8 @@ import java.util.Date;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 /**
- * Created by chen ping on 3/10/2018.
- * Restructured by MyatMin on 12/3/2018.
+ * Created by part time team 3 on 3/10/2018.
+ * Restructured by part time team 3  on 12/3/2018.
  */
 
 public class QuizTitleDAO extends BaseDAO {

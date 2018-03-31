@@ -1,7 +1,7 @@
 package sg.edu.nus.se26pt03.photolearn.BAL;
 
 /**
- * Created by chen ping on 7/3/2018.
+ * Created by part time team 3 on 7/3/2018.
  */
 
 public class AppException extends Exception{

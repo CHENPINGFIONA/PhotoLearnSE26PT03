@@ -6,8 +6,8 @@ import java.util.List;
 import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
 
 /**
- * Created by c.banisetty on 3/11/2018.
- * Modified by MyatMin on 12/3/2018.
+ * Created by part time team 3 on 3/11/2018.
+ * Modified by part time team 3  on 12/3/2018.
  */
 
 public interface IRepository<T extends BaseDAO> {

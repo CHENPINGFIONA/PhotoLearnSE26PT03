@@ -12,7 +12,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 /**
- * Created by c.banisetty on 3/17/2018.
+ * Created by part time team 3 on 3/17/2018.
  */
 
 public class GPSHelper {

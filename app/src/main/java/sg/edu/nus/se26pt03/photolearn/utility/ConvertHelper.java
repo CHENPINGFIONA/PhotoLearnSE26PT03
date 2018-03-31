@@ -6,7 +6,7 @@ import sg.edu.nus.se26pt03.photolearn.DAL.LearningTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.DAL.QuizTitleDAO;
 
 /**
- * Created by chen_ on 15/3/2018.
+ * Created by part time team 3  on 15/3/2018.
  */
 
 public class ConvertHelper {

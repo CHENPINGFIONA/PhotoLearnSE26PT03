@@ -16,7 +16,7 @@ import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 /**
- * Created by MyatMin on 9/3/18.
+ * Created by part time team 3  on 9/3/18.
  */
 public class App extends Application {
 //    public static LearningSession session;

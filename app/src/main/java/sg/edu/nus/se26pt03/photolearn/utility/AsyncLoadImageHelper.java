@@ -35,7 +35,7 @@ import javax.net.ssl.X509TrustManager;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
- * Created by c.banisetty on 3/17/2018.
+ * Created by part time team 3 on 3/17/2018.
  */
 
 

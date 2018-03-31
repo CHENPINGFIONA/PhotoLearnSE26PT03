@@ -14,7 +14,7 @@ import sg.edu.nus.se26pt03.photolearn.service.QuizAnswerService;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
- * Created by chen ping on 3/10/2018.
+ * Created by part time team 3  on 3/10/2018.
  */
 
 public abstract class Item extends BaseObservable implements Serializable  {

@@ -5,7 +5,7 @@ import java.util.List;
 import sg.edu.nus.se26pt03.photolearn.DAL.BaseDAO;
 
 /**
- * Created by MyatMin on 21/3/18.
+ * Created by part time team 3  on 21/3/18.
  */
 
 public interface IDAOConversion<T, V extends BaseDAO> {

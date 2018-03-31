@@ -7,7 +7,7 @@ import java.util.List;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
- * Created by chen ping on 3/8/2018.
+ * Created by part time team 3 on 3/8/2018.
  */
 
 public class Participant extends User {

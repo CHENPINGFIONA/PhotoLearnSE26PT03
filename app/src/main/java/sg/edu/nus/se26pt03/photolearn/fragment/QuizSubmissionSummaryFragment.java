@@ -29,7 +29,7 @@ import sg.edu.nus.se26pt03.photolearn.application.App;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
- * Created by MyatMin on 08/3/18.
+ * Created by part time team 3  on 08/3/18.
  */
 public class QuizSubmissionSummaryFragment extends BaseFragment {
     private QuizItemQuizAnswerListAdapter quizItemQuizAnswerListAdapter;

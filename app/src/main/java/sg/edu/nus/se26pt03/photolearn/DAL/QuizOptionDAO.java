@@ -5,8 +5,8 @@ import com.google.firebase.database.Exclude;
 import java.util.Date;
 
 /**
- * Created by chen ping on 11/3/2018.
- * Restructured by MyatMin on 12/3/2018.
+ * Created by part time team 3 on 11/3/2018.
+ * Restructured by part time team 3  on 12/3/2018.
  */
 
 public class QuizOptionDAO extends BaseDAO {

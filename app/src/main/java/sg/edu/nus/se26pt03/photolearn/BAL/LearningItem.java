@@ -9,7 +9,7 @@ import android.databinding.Observable;
 import sg.edu.nus.se26pt03.photolearn.BR;
 
 /**
- * Created by chen ping on 7/3/2018.
+ * Created by part time team 3 on 7/3/2018.
  */
 
 public class LearningItem extends Item implements Serializable,Cloneable {

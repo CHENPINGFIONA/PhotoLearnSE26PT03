@@ -18,7 +18,7 @@ import sg.edu.nus.se26pt03.photolearn.enums.AccessMode;
 import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 
 /**
- * Created by MyatMin on 13/3/18.
+ * Created by part time team 3  on 13/3/18.
  */
 
 public interface UserActionListener {

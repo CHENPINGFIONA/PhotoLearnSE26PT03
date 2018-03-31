@@ -14,7 +14,7 @@ import sg.edu.nus.se26pt03.photolearn.BAL.LearningTitle;
 import sg.edu.nus.se26pt03.photolearn.R;
 
 /**
- * Created by chen ping on 11/3/2018.
+ * Created by part time team 3  on 11/3/2018.
  */
 
 public class LearningTitleListAdapter extends RecyclerView.Adapter<LearningTitleListAdapter.LearningTitleViewHolder> {

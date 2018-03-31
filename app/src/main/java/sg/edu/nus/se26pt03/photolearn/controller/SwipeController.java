@@ -20,7 +20,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.*;
 /**
- * Created by MyatMin on 15/3/18.
+ * Created by part time team 3  on 15/3/18.
  */
 
 public class SwipeController extends Callback {

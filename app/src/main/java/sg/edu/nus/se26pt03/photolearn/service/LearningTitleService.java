@@ -16,7 +16,7 @@ import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.DateConversionHelper;
 
 /**
- * Created by MyatMin on 21/3/18.
+ * Created by part time team 3  on 21/3/18.
  */
 
 public class LearningTitleService extends BaseService<LearningTitle, LearningTitleDAO> {

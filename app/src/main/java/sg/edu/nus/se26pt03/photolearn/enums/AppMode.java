@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by chen ping on 3/10/2018.
+ * Created by part time team 3 on 3/10/2018.
  */
 
 public class AppMode {

@@ -29,7 +29,7 @@ import java.util.UUID;
 import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 
 /**
- * Created by pradeep on 17/3/18.
+ * Created by part time team 3  on 17/3/18.
  */
 
 public class FileStorageHelper {

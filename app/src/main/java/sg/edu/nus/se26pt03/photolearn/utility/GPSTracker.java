@@ -20,7 +20,7 @@ import android.util.Log;
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 
 /**
- * Created by c.banisetty on 3/17/2018.
+ * Created by part time team 3 on 3/17/2018.
  */
 @SuppressLint("MissingPermission")
 public class GPSTracker extends Service implements LocationListener {

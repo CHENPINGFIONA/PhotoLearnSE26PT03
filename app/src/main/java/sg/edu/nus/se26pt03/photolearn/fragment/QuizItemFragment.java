@@ -38,7 +38,7 @@ import sg.edu.nus.se26pt03.photolearn.utility.GPSHelper;
 import sg.edu.nus.se26pt03.photolearn.utility.TTSHelper;
 
 /**
- * Created by MyatMin on 08/3/18.
+ * Created by part time team 3  on 08/3/18.
  */
 public class QuizItemFragment extends BaseFragment {
 

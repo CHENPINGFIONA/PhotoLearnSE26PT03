@@ -16,7 +16,7 @@ import sg.edu.nus.se26pt03.photolearn.database.LearningItemRepo;
 import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
 
 /**
- * Created by c.banisetty on 3/22/2018.
+ * Created by part time team 3  on 3/22/2018.
  */
 
 public class LearningItemService extends BaseService<Item, LearningItemDAO> {

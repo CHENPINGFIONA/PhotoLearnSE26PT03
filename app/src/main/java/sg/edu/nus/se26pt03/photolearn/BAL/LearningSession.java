@@ -17,7 +17,7 @@ import sg.edu.nus.se26pt03.photolearn.service.ServiceCallback;
 import sg.edu.nus.se26pt03.photolearn.utility.BindingHelper;
 
 /**
- * Created by chen ping on 7/3/2018.
+ * Created by part time team 3  on 7/3/2018.
  */
 
 public class LearningSession extends BaseObservable implements Cloneable, Serializable {

@@ -31,7 +31,7 @@ import sg.edu.nus.se26pt03.photolearn.application.UserActionEmitter;
 import sg.edu.nus.se26pt03.photolearn.enums.EventType;
 
 /**
- * Created by MyatMin on 10/3/18.
+ * Created by part time team 3  on 10/3/18.
  */
 
 public class BaseFragment extends Fragment implements UserActionListener {

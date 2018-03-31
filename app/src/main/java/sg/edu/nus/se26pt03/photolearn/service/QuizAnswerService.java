@@ -11,7 +11,7 @@ import sg.edu.nus.se26pt03.photolearn.database.QuizAnswerRepo;
 import sg.edu.nus.se26pt03.photolearn.database.RepoCallback;
 
 /**
- * Created by Administrator on 2018/3/24.
+ * Created by part time team 3  on 2018/3/24.
  */
 
 public class QuizAnswerService extends BaseService<QuizAnswer, QuizAnswerDAO> {

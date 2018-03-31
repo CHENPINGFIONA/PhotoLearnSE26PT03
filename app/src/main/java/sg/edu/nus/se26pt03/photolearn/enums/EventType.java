@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by MyatMin on 27/3/18.
+ * Created by part time team 3  on 27/3/18.
  */
 
 public class EventType {

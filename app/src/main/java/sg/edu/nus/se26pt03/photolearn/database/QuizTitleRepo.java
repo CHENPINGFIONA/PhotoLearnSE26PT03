@@ -12,8 +12,8 @@ import sg.edu.nus.se26pt03.photolearn.DAL.QuizTitleDAO;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 /**
- * Created by yijie on 2018/3/11.
- * Restructured by MyatMin on 3/12/2018.
+ * Created by part time team 3  on 2018/3/11.
+ * Restructured by part time team 3  on 3/12/2018.
  */
 
 public class QuizTitleRepo extends BaseRepo<QuizTitleDAO> {

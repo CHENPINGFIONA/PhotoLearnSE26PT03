@@ -14,8 +14,8 @@ import sg.edu.nus.se26pt03.photolearn.DAL.QuizOptionDAO;
 import sg.edu.nus.se26pt03.photolearn.utility.ConstHelper;
 
 /**
- * Created by yijie on 2018/3/11.
- * Restructured by MyatMin on 3/12/2018.
+ * Created by part time team 3  on 2018/3/11.
+ * Restructured by part time team 3  on 3/12/2018.
  */
 
 public class QuizOptionRepo extends BaseRepo<QuizOptionDAO> {

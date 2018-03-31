@@ -14,7 +14,7 @@ import sg.edu.nus.se26pt03.photolearn.R;
 import sg.edu.nus.se26pt03.photolearn.application.UserActionCallback;
 
 /**
- * Created by MyatMin on 08/3/18.
+ * Created by part time team 3  on 08/3/18.
  */
 public class LearningSessionFragment extends BaseFragment {
     private LearningSession learningSession;

@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by chen ping on 11/3/2018.
+ * Created by part time team 3 on 11/3/2018.
  */
 
 public class AccessMode {
